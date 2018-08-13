@@ -2435,7 +2435,7 @@ Mmul:	.inst.n	0x6838		//LDR	R0, [R7, #0]
 //	cbz	TOS, LL0
 
 	.global queDUP
-queDUP:	.inst.n	0xB10E		//CBZ	R6, 100030D0
+queDUP:	.inst.n	0xB10E		//CBZ	R6, 100030E0
 	.loc 1 639 0
 	.loc 1 639 0
 // CODL DUP	( N -- N,N )  \ !!!
@@ -2931,7 +2931,7 @@ FILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 769 0
 	.loc 1 769 0
 //	cbz	r2, LL0
-	.inst.n	0xB122		//CBZ	R2, 1000317A
+	.inst.n	0xB122		//CBZ	R2, 1000318A
 	.loc 1 770 0
 	.loc 1 770 0
 //	add	r2, r3
@@ -2947,7 +2947,7 @@ FILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 773 0
 	.loc 1 773 0
 //	bne	LL1
-	.inst.n	0xD1FB		//BNE.N	10003172
+	.inst.n	0xD1FB		//BNE.N	10003182
 	.loc 1 774 0
 	.loc 1 774 0
 //LL0:	DROP,
@@ -2986,7 +2986,7 @@ WFILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 783 0
 	.loc 1 783 0
 //	BNE	LL0
-	.inst.n	0xD1FB		//BNE.N	10003184
+	.inst.n	0xD1FB		//BNE.N	10003194
 	.loc 1 784 0
 	.loc 1 784 0
 //	DROP,
@@ -3013,7 +3013,7 @@ CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 790 0
 	.loc 1 790 0
 //	cbz	TOS, LL0
-	.inst.n	0xB136		//CBZ	R6, 100031A2
+	.inst.n	0xB136		//CBZ	R6, 100031B2
 	.loc 1 791 0
 	.loc 1 791 0
 //	add	TOS, r2
@@ -3033,7 +3033,7 @@ CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 795 0
 	.loc 1 795 0
 //	bne	LL1
-	.inst.n	0xD1F9		//BNE.N	10003196
+	.inst.n	0xD1F9		//BNE.N	100031A6
 	.loc 1 796 0
 	.loc 1 796 0
 //LL0:	DROP,
@@ -3060,7 +3060,7 @@ W2CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 802 0
 	.loc 1 802 0
 //	cbz	TOS, LL0
-	.inst.n	0xB136		//CBZ	R6, 100031B8
+	.inst.n	0xB136		//CBZ	R6, 100031C8
 	.loc 1 803 0
 	.loc 1 803 0
 //	add	TOS, r2
@@ -3080,7 +3080,7 @@ W2CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 807 0
 	.loc 1 807 0
 //	bne	LL1
-	.inst.n	0xD1F9		//BNE.N	100031AC
+	.inst.n	0xD1F9		//BNE.N	100031BC
 	.loc 1 808 0
 	.loc 1 808 0
 //LL0:	DROP,
@@ -3111,7 +3111,7 @@ CMOVEgreat:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
 	.loc 1 815 0
 	.loc 1 815 0
 //	BEQ	LL1
-	.inst.n	0xD009		//BEQ.N	100031D6
+	.inst.n	0xD009		//BEQ.N	100031E6
 	.loc 1 816 0
 	.loc 1 816 0
 //	ADD	R0,TOS, R0
@@ -3135,7 +3135,7 @@ CMOVEgreat:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
 	.loc 1 821 0
 	.loc 1 821 0
 //	BNE	LL0
-	.inst.n	0xD1F9		//BNE.N	100031CA
+	.inst.n	0xD1F9		//BNE.N	100031DA
 	.loc 1 822 0
 	.loc 1 822 0
 //LL1:
@@ -3169,7 +3169,7 @@ SERIALsubEMIT:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 1 830 0
 	.loc 1 830 0
 //	ldr	r0, = 0x40013800
-		LDR	R0, [PC, #8] @ [0x100031EC] 0x40013800
+		LDR	R0, [PC, #8] @ [0x100031FC] 0x40013800
 	.loc 1 831 0
 	.loc 1 831 0
 //	bl ' usart_send_blocking

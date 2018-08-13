@@ -135,7 +135,7 @@ UMrslMOD:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 21 0
 	.loc 3 21 0
 //                    ELSE    DUP R@ U< 0=            \ need to subt?
-	.inst.n	0xE014		//B.N	100033D8
+	.inst.n	0xE014		//B.N	100033E8
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x9E00		//LDR	R6, [SP, #0]
@@ -169,7 +169,7 @@ UMrslMOD:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 25 0
 	.loc 3 25 0
 //            REPEAT  
-	.inst.n	0xE7C1		//B.N	10003364
+	.inst.n	0xE7C1		//B.N	10003374
 	.loc 3 26 0
 	.loc 3 26 0
 //            RDROP DROP SWAP
@@ -181,7 +181,7 @@ UMrslMOD:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 27 0
 	.loc 3 27 0
 //    ELSE    2DROP -1 -1
-	.inst.n	0xE008		//B.N	100033FE
+	.inst.n	0xE008		//B.N	1000340E
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
@@ -425,7 +425,7 @@ TYPE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 71 0
 	.loc 3 71 0
 // REPEAT 2DROP 
-	.inst.n	0xE7EE		//B.N	100034BE
+	.inst.n	0xE7EE		//B.N	100034CE
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.loc 3 72 0
 	.loc 3 72 0
@@ -658,7 +658,7 @@ nS:	.inst.n	0xB500		//PUSH	{R14}
 //  UNTIL
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F5		//BEQ.N	100035F6
+	.inst.n	0xD0F5		//BEQ.N	10003606
 	.loc 3 110 0
 	.loc 3 110 0
 //;
@@ -988,7 +988,7 @@ WORDS_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 165 0
 	.loc 3 165 0
 //  REPEAT
-	.inst.n	0xE7ED		//B.N	1000375E
+	.inst.n	0xE7ED		//B.N	1000376E
 	.loc 3 166 0
 	.loc 3 166 0
 //; 
@@ -1067,7 +1067,7 @@ ACCEPT:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0x7836		//LDRB	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFE1E	//BL	EMIT
-	.inst.n	0xE023		//B.N	10003826
+	.inst.n	0xE023		//B.N	10003836
 	.loc 3 179 0
 	.loc 3 179 0
 //       DUP EMIT
@@ -1099,7 +1099,7 @@ ACCEPT:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.inst.n	0xF7FF,0xFB7F	//BL	UMAX
-	.inst.n	0xE003		//B.N	10003826
+	.inst.n	0xE003		//B.N	10003836
 	.loc 3 182 0
 	.loc 3 182 0
 //\       DUP 9  = IF  DROP DUP 8 SPACE
@@ -1129,7 +1129,7 @@ ACCEPT:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 188 0
 	.loc 3 188 0
 //   REPEAT                          \ SA EA A C
-	.inst.n	0xE7AF		//B.N	10003794
+	.inst.n	0xE7AF		//B.N	100037A4
 	.loc 3 189 0
 	.loc 3 189 0
 //
@@ -1337,7 +1337,7 @@ GetChar:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 229 0
 	.loc 3 229 0
 //	ELSE PeekChar TRUE THEN ;
-	.inst.n	0xE005		//B.N	10003900
+	.inst.n	0xE005		//B.N	10003910
 	.inst.n	0xF7FF,0xFFEA	//BL	PeekChar
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
@@ -1396,7 +1396,7 @@ SkipDelimiters:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 238 0
 	.loc 3 238 0
 //	REPEAT \ >IN @   T>IN_WORD !
-	.inst.n	0xE7EE		//B.N	1000391E
+	.inst.n	0xE7EE		//B.N	1000392E
 	.loc 3 239 0
 	.loc 3 239 0
 // ;
@@ -1454,7 +1454,7 @@ SkipWord:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 247 0
 	.loc 3 247 0
 // REPEAT ;
-	.inst.n	0xE7EE		//B.N	10003962
+	.inst.n	0xE7EE		//B.N	10003972
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 248 0
 	.loc 3 248 0
@@ -1568,7 +1568,7 @@ SkipUpTo:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 264 0
 	.loc 3 264 0
 //  REPEAT DROP
-	.inst.n	0xE7E2		//B.N	100039EE
+	.inst.n	0xE7E2		//B.N	100039FE
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 265 0
 	.loc 3 265 0
@@ -1789,7 +1789,7 @@ COMPARE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 298 0
 //   UNTIL R>
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0D0		//BEQ.N	10003AEA
+	.inst.n	0xD0D0		//BEQ.N	10003AFA
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.loc 3 299 0
@@ -1942,7 +1942,7 @@ UCOMPARE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 321 0
 //   UNTIL R>
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0C8		//BEQ.N	10003B9E
+	.inst.n	0xD0C8		//BEQ.N	10003BAE
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.loc 3 322 0
@@ -2092,7 +2092,7 @@ SEARCHsubWORDLIST:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 347 0
 	.loc 3 347 0
 //	REPEAT
-	.inst.n	0xE7CD		//B.N	10003C48
+	.inst.n	0xE7CD		//B.N	10003C58
 	.loc 3 348 0
 	.loc 3 348 0
 //	2DROP DROP 0 \ Not found.
@@ -2193,7 +2193,7 @@ SFIND:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 365 0
 	.loc 3 365 0
 //  REPEAT @
-	.inst.n	0xE7DC		//B.N	10003CD6
+	.inst.n	0xE7DC		//B.N	10003CE6
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 366 0
 	.loc 3 366 0
@@ -2590,7 +2590,7 @@ COMPILEcom_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 421 0
 	.loc 3 421 0
 // ELSE   NCOMPILE,
-	.inst.n	0xE001		//B.N	10003F5E
+	.inst.n	0xE001		//B.N	10003F6E
 	.inst.n	0xF7FF,0xFF6D	//BL	NCOMPILEcom
 	.loc 3 422 0
 	.loc 3 422 0
@@ -2861,7 +2861,7 @@ THROW:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 459 0
 	.loc 3 459 0
 //     ELSE \ FATAL-HANDLER
-	.inst.n	0xE7FF		//B.N	100040E2
+	.inst.n	0xE7FF		//B.N	100040F2
 	.loc 3 460 0
 	.loc 3 460 0
 //     THEN
@@ -2986,7 +2986,7 @@ greatNUMBER:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 484 0
 	.loc 3 484 0
 //  REPEAT
-	.inst.n	0xE7BD		//B.N	100040E6
+	.inst.n	0xE7BD		//B.N	100040F6
 	.loc 3 485 0
 	.loc 3 485 0
 //;
@@ -3034,7 +3034,7 @@ queSLITERAL0:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x6038		//STR	R0, [R7, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
-	.inst.n	0xE002		//B.N	100041B6
+	.inst.n	0xE002		//B.N	100041C6
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2600		//MOVS	R6, #0
 	.inst.n	0xB440		//PUSH	{R6}
@@ -3090,7 +3090,7 @@ queSLITERAL0:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 496 0
 	.loc 3 496 0
 //  ELSE DROP D>S
-	.inst.n	0xE009		//B.N	10004236
+	.inst.n	0xE009		//B.N	10004246
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.loc 3 497 0
@@ -3241,7 +3241,7 @@ INTERPRET_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 519 0
 	.loc 3 519 0
 //		ELSE EXECUTE \ LLL @ IF ." {L}" 0 LLL ! THEN
-	.inst.n	0xE001		//B.N	100042F2
+	.inst.n	0xE001		//B.N	10004302
 	.inst.n	0xF7FE,0xFDA3	//BL	EXECUTE
 	.loc 3 520 0
 	.loc 3 520 0
@@ -3249,7 +3249,7 @@ INTERPRET_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 521 0
 	.loc 3 521 0
 //	ELSE 	?SLITERAL
-	.inst.n	0xE001		//B.N	100042F8
+	.inst.n	0xE001		//B.N	10004308
 	.inst.n	0xF7FF,0xFFA0	//BL	queSLITERAL
 	.loc 3 522 0
 	.loc 3 522 0
@@ -3264,7 +3264,7 @@ INTERPRET_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 525 0
 	.loc 3 525 0
 //  REPEAT 2DROP
-	.inst.n	0xE7DB		//B.N	100042B6
+	.inst.n	0xE7DB		//B.N	100042C6
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.loc 3 526 0
 	.loc 3 526 0
@@ -3327,7 +3327,7 @@ QUIT:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 538 0
 	.loc 3 538 0
 // REPEAT ;
-	.inst.n	0xE7F4		//B.N	1000431E
+	.inst.n	0xE7F4		//B.N	1000432E
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 539 0
 	.loc 3 539 0
@@ -3362,7 +3362,7 @@ HELLO:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xF89F	//BL	cSdticcend
 	.inst.n	0x4605		//MOV	R5, R0
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100044AC] 0xFFFFBD00
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100044BC] 0xFFFFBD00
 	.inst.n	0xF7FF,0xF8AE	//BL	TYPE
 	.inst.n	0xF7FF,0xF9C2	//BL	CR
 	.inst.n	0xBD00		//POP	{R15}
@@ -3443,7 +3443,7 @@ GETsubORDER:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 555 0
 	.loc 3 555 0
 //  REPEAT  DROP
-	.inst.n	0xE7F0		//B.N	100043A6
+	.inst.n	0xE7F0		//B.N	100043B6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 556 0
 	.loc 3 556 0
@@ -3457,7 +3457,7 @@ GETsubORDER:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 557 0
 //  UNTIL DROP
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F6		//BEQ.N	100043C6
+	.inst.n	0xD0F6		//BEQ.N	100043D6
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.loc 3 558 0
 	.loc 3 558 0
@@ -3523,7 +3523,7 @@ SETsubORDER:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7E1		//BVC.N	10004400
+	.inst.n	0xD7E1		//BVC.N	10004410
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 3 566 0
 	.loc 3 566 0
@@ -3567,7 +3567,7 @@ VOCsubNAMEdot:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xF813	//BL	cSdticcend
 	.inst.n	0x4605		//MOV	R5, R0
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100045C4] 0x6D04F847
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100045D4] 0x6D04F847
 	.inst.n	0xF7FF,0xF822	//BL	TYPE
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 572 0
@@ -3582,11 +3582,11 @@ VOCsubNAMEdot:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF000,0x8004	//BEQ.W	VOCsubNAMEdot+44 
 	.inst.n	0xF7FF,0xFFD8	//BL	IDdot
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xE00B		//B.N	100044AC
+	.inst.n	0xE00B		//B.N	100044BC
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF7FE,0xFFFD	//BL	cSdticcend
 	.inst.n	0x3C09		//SUBS	R4, #9
-	.inst.n	0x4F4E		//LDR	R7, [PC, #312] @ [0x100045D8] 0xF7FFFFA1
+	.inst.n	0x4F4E		//LDR	R7, [PC, #312] @ [0x100045E8] 0xF7FFFFA1
 	.inst.n	0x414E		//ADCS	R6, R1
 	.inst.n	0x454D		//CMP	R5, R9
 	.inst.n	0x3A3E		//SUBS	R2, #62
@@ -3635,7 +3635,7 @@ ORDER_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F7		//BVC.N	100044D4
+	.inst.n	0xD7F7		//BVC.N	100044E4
 	.inst.n	0xB002		//ADD	SP, #8
 	.inst.n	0xF7FF,0xF8FF	//BL	CR
 	.loc 3 580 0
@@ -4145,12 +4145,12 @@ dot0:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F6		//BVC.N	10004740
+	.inst.n	0xD7F6		//BVC.N	10004750
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 3 663 0
 	.loc 3 663 0
 //    ELSE DROP THEN TYPE ;
-	.inst.n	0xE000		//B.N	10004758
+	.inst.n	0xE000		//B.N	10004768
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF7FE,0xFEB0	//BL	TYPE
 	.inst.n	0xBD00		//POP	{R15}
@@ -4213,7 +4213,7 @@ PTYPE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F3		//BVC.N	1000479A
+	.inst.n	0xD7F3		//BVC.N	100047AA
 	.inst.n	0xB002		//ADD	SP, #8
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -4308,7 +4308,7 @@ DUMP:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7DF		//BVC.N	10004828
+	.inst.n	0xD7DF		//BVC.N	10004838
 	.inst.n	0xB002		//ADD	SP, #8
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
@@ -4322,7 +4322,7 @@ DUMP:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7BB		//BVC.N	100047FA
+	.inst.n	0xD7BB		//BVC.N	1000480A
 	.inst.n	0xB002		//ADD	SP, #8
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0xBC40		//POP	{R6}
@@ -4367,7 +4367,7 @@ BXXdotN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FE,0xFDE7	//BL	cSdticcend
 	.inst.n	0x4205		//TST	R5, R0
 	.inst.n	0x5858		//LDR	R0, [R3, R1]
-	.inst.n	0x482E		//LDR	R0, [PC, #184] @ [0x10004984] 0x40302680
+	.inst.n	0x482E		//LDR	R0, [PC, #184] @ [0x10004994] 0x40302680
 	.inst.n	0xF7FE,0xFDF6	//BL	TYPE
 	.inst.n	0xF7FE,0xFEF4	//BL	Hdot
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
@@ -4981,7 +4981,7 @@ RESOLVEsubLEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 770 0
 	.loc 3 770 0
 //    ELSE  SWAP
-	.inst.n	0xE002		//B.N	10004C7C
+	.inst.n	0xE002		//B.N	10004C8C
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0x6038		//STR	R0, [R7, #0]
@@ -5003,7 +5003,7 @@ RESOLVEsubLEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 773 0
 	.loc 3 773 0
 //	REPEAT DROP ;
-	.inst.n	0xE7DF		//B.N	10004C54
+	.inst.n	0xE7DF		//B.N	10004C64
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 774 0
@@ -5058,7 +5058,7 @@ LEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 783 0
 	.loc 3 783 0
 //   ELSE HERE_ 0
-	.inst.n	0xE004		//B.N	10004CE2
+	.inst.n	0xE004		//B.N	10004CF2
 	.inst.n	0xF7FF,0xF830	//BL	HERE_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2600		//MOVS	R6, #0
@@ -5412,7 +5412,7 @@ c_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 845 0
 	.loc 3 845 0
 //  REPEAT
-	.inst.n	0xE7E3		//B.N	10004E7A
+	.inst.n	0xE7E3		//B.N	10004E8A
 	.loc 3 846 0
 	.loc 3 846 0
 //;
@@ -5580,7 +5580,7 @@ POSTPONE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 870 0
 	.loc 3 870 0
 //      ELSE LIT,_ ['] COMPILE,_ COMPILE,_ THEN
-	.inst.n	0xE009		//B.N	10004FAE
+	.inst.n	0xE009		//B.N	10004FBE
 	.inst.n	0xF7FE,0xFF27	//BL	LITcom_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 
@@ -5761,7 +5761,7 @@ SCAN:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 897 0
 	.loc 3 897 0
 //  REPEAT DROP
-	.inst.n	0xE7CA		//B.N	10005022
+	.inst.n	0xE7CA		//B.N	10005032
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 898 0
 	.loc 3 898 0

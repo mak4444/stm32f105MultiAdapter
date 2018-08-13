@@ -27,8 +27,9 @@ int ttkbhit()	{ // usbd_poll(); // stm32fx07_poll_mmo();
 
 //void UsbType(char* buf , unsigned len )
 void ttwrite(char* buf , unsigned len )
-{
-   while (usbd_ep_write_packet(usbd_dev, 0x82, buf, len) == 0);
+{ //	usbd_poll(usbd_dev);
+//	   usbd_ep_write_packet(usbd_dev, 0x82, buf, len);
+	   while (usbd_ep_write_packet(usbd_dev, 0x82, buf, len) == 0);
 }
 
 void USB_PUT(char c)

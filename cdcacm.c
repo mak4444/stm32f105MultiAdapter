@@ -295,13 +295,18 @@ void stm32f107_usb_init(void)
 	do{usbd_poll(usbd_dev); // stm32fx07_poll();
 	}while(gep!=1);
 
-//	return;
+//	USB_PUT('$');
+
+	return;
 	while (1)
 	{
-		usbd_poll(usbd_dev);
+//		usbd_poll(usbd_dev);
 //	usbd_dev->driver->poll(usbd_dev);
-	if( (i++&0xfffff) ==0 )
-		usbd_ep_write_packet(usbd_dev, 0x82, "*", 1);
+//	if( (i++&0xffffff) ==0 )
+		{
+//		usbd_ep_write_packet(usbd_dev, 0x82, "*", 1);
+		USB_PUT('+');
+		}
 	}
 
 }

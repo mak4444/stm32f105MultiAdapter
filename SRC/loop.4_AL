@@ -167,7 +167,7 @@ cqueDOcend:	.inst.n	0x0030		//MOVS	R0, R6
 	.loc 2 45 0
 	.loc 2 45 0
 //	BEQ	LL0
-	.inst.n	0xD006		//BEQ.N	100032D4
+	.inst.n	0xD006		//BEQ.N	100032E4
 	.loc 2 46 0
 	.loc 2 46 0
 //	eors	R1 , # 0x80000000

@@ -113,7 +113,7 @@ usbsubio:	.inst.n	0xB500		//PUSH	{R14}
 //: +usb ( -- )  \ Init USB hardware and switch to USB terminal
 
 	.global addusb
-addusb:		PUSH	{R14}
+addusb:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 4 21 0
 	.loc 4 21 0
 // \ tx.pend 0!
@@ -135,15 +135,14 @@ addusb:		PUSH	{R14}
 //\   stm32f107_USBdInit
 	.loc 4 27 0
 	.loc 4 27 0
-//   stm32f107_usb_init
-	BL	stm32f107_usb_init
+//\   stm32f107_usb_init
 	.loc 4 28 0
 	.loc 4 28 0
 //   
 	.loc 4 29 0
 	.loc 4 29 0
 //   usb-io
-	.inst.n	0xF7FF,0xFFC5	//BL	usbsubio
+	.inst.n	0xF7FF,0xFFC7	//BL	usbsubio
 	.loc 4 30 0
 	.loc 4 30 0
 // \  BEGIN usb-key? WHILE usb-key H. REPEAT
@@ -242,25 +241,25 @@ TRANS:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 4 46 0
 	.loc 4 46 0
 //        SERIAL-KEY? IF  SERIAL-KEY USB-EMIT THEN
-	.inst.n	0xF7FE,0xF826	//BL	SERIALsubKEYque
+	.inst.n	0xF7FE,0xF828	//BL	SERIALsubKEYque
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+16 
-	.inst.n	0xF7FE,0xF827	//BL	SERIALsubKEY
-	.inst.n	0xF7FE,0xF82C	//BL	usbsubemit
+	.inst.n	0xF7FE,0xF829	//BL	SERIALsubKEY
+	.inst.n	0xF7FE,0xF82E	//BL	usbsubemit
 	.loc 4 47 0
 	.loc 4 47 0
 //        USB-KEY? IF  USB-KEY SERIAL-EMIT THEN
-	.inst.n	0xF7FE,0xF830	//BL	usbsubkeyque
+	.inst.n	0xF7FE,0xF832	//BL	usbsubkeyque
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+2A 
-	.inst.n	0xF7FE,0xF831	//BL	usbsubkey
-	.inst.n	0xF7FE,0xF805	//BL	SERIALsubEMIT
+	.inst.n	0xF7FE,0xF833	//BL	usbsubkey
+	.inst.n	0xF7FE,0xF807	//BL	SERIALsubEMIT
 	.loc 4 48 0
 	.loc 4 48 0
 //  AGAIN
-	.inst.n	0xE7EA		//B.N	100051AA
+	.inst.n	0xE7EA		//B.N	100051B6
 	.loc 4 49 0
 	.loc 4 49 0
 //;
