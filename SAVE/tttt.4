@@ -1,0 +1,132 @@
+
+FLOAD VForthM/vfmneed.4 
+
+FLOAD _mak/COMM6.F
+
+S" /dev/ttyACM3" COMM_OPEN
+
+: TERM
+ BEGIN
+   KEY? IF  KEY   UEMIT  THEN
+   COM-CNT IF  COM-GET 
+ ." <" EMIT ." >"  THEN
+ AGAIN
+;
+
+: TERMTST
+ BEGIN
+   KEY? IF KEY EMIT THEN
+ AGAIN
+;
+
+: COMEMITS
+ BEGIN
+    COM-CNT  KEY? 0= AND
+ WHILE
+     COM-GET EMIT
+ REPEAT ;
+
+CREATE 'ok.'  'o' C, 'k' C, '.'  C,
+0 VALUE ok.I
+
+: COMEMITS_OK
+ 0 TO ok.I
+ BEGIN
+        COM-CNT
+	IF	'~' EMIT  COM-GET DUP EMIT   DUP H.
+		'ok.' ok.I + C@ = IF ok.I 1+ TO ok.I ELSE 0 TO ok.I THEN
+	THEN	
+ 	KEY? IF KEY DUP $20 or 'q' = THROW '|' EMIT EMIT  THEN
+\ 	KEY? IF KEY  THROW THEN
+	  2 ok.I  U<
+ UNTIL
+ ;
+
+VARIABLE &#I 
+VARIABLE S&#I
+
+: #I0  PARSE-NAME 2DUP + 0 SWAP C! INCLUDED ;
+: #I1 &#I @ S&#I ! 
+  ['] #I0 DUP &#I !  CATCH DROP  S&#I @ &#I !  ;
+
+' #I1 &#I  !
+: #I  &#I @ EXECUTE ;
+
+: #EXIT [  &INTERPRET @ LIT,  ] &INTERPRET ! ;
+: MEC&INTERPRET_
+  SOURCE DROP
+ C@
+  '#'
+ =
+  IF [  &INTERPRET @ COMPILE,  ]
+  ELSE COMEMITS
+ SOURCE
+ CR ." {" 2DUP TYPE ." }"
+ TO_COMN 
+ CR 1 EMIT  COMEMITS_OK  2 EMIT
+  THEN
+;
+
+
+: MEC&INTERPRET
+\ F7_ED
+ ['] MEC&INTERPRET_ CATCH 
+ DUP IF [  &INTERPRET @ LIT,  ] &INTERPRET ! THEN
+ THROW
+;
+
+: TERM3 ( -- )
+
+ [']  MEC&INTERPRET_  &INTERPRET !
+
+;
+
+: %> 0 parse 2DUP ." <" 2DUP TYPE ." >" TO_COMN  COMEMITS_OK ;
+
+\ COM.
+\ TERM3
+\ TERMTST
+  
+\ WORDS
+
+VARIABLE MENUID
+
+2 MENUID !
+
+: MENU<
+ CR  MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+
+: >MENU
+   MENUID @ = IF  $1B EMIT ." [0m" THEN
+;
+
+: CURUP $1B EMIT ." [A" ;
+
+: KEY0  KEY? DUP IF DROP KEY THEN ;
+
+: MENU
+ BEGIN
+ 0 MENU< ."  ZZZZZZZZZ" 0 >MENU
+ 1 MENU< ."  ZZZZZZZZZ" 1 >MENU
+ 2 MENU< ."  ZZZZZZZZZ" 2 >MENU
+ 3 MENU< ."  ZZZZZZZZZ" 3 >MENU
+ KEY DUP $D  <> OVER $A <> AND
+ WHILE  $1B =
+	IF KEY0 '[' = 
+	  IF KEY0
+	   DUP 'A' =  IF  MENUID @ 3 +    ELSE 
+	       'B' =  IF  MENUID @ 1+    ELSE 
+             MENUID @
+	     THEN  THEN  4 MOD MENUID !
+
+	  THEN
+	THEN   
+	CURUP
+	CURUP
+	CURUP
+	CURUP
+ REPEAT DROP
+
+;
+

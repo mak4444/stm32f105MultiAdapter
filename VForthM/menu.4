@@ -1,0 +1,69 @@
+\- BREAK : BREAK  POSTPONE EXIT POSTPONE THEN ; IMMEDIATE
+
+\ : XXX ;
+VARIABLE MENUID
+
+\ 2 MENUID !
+
+
+: MENU<
+  $D EMIT $A EMIT \ CR
+ DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+
+: >MENU
+ DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+
+;
+
+: CURUP $1B EMIT ." [A" ;
+VARIABLE TTTIME
+: KEY0
+ KEY ; \  KEY? DUP IF DROP KEY THEN ;
+
+: KEYW
+ 999999
+ BEGIN 1- DUP 0= IF BREAK  KEY? \ dup .
+ UNTIL DROP 7 TTTIME !
+ KEY ; \  KEY? DUP IF DROP KEY THEN ;
+
+: CHMEHU
+  $1B =
+ IF  KEY0 [CHAR] [  =
+   IF KEY0
+      DUP [CHAR] A =  IF DROP DUP 1- MENUID @ +   ELSE 
+         [CHAR] B =  IF  MENUID @ 1+   ELSE 
+             MENUID @
+      THEN  THEN OVER MOD MENUID !
+   THEN
+ THEN   
+   0 DO  CURUP LOOP
+;
+\ EOF 
+
+: MMENU
+ 7 TTTIME !
+ BEGIN  0
+ MENU< ." ZZZZZZZZZ" >MENU
+ MENU< ." QWERTY"  >MENU
+ MENU< ." FORTH"  >MENU
+ MENU< ." SAVE"  >MENU
+ MENU< ." START"  >MENU
+   DUP >R
+ KEYW
+ dup   $D  <>
+ over  $a  <> AND
+
+ MENUID @ R> 1- <> OR
+
+ TTTIME @
+ 9 EMIT DUP .
+ DUP 1- TTTIME !   
+ 0<> AND
+
+ WHILE  CHMEHU
+ REPEAT 2DROP
+
+
+;
+
+

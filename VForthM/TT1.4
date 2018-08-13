@@ -1,0 +1,174 @@
+
+\ Displaying:
+
+: DRAW-BOTTOM	\ --- ; redraw the bottom of the pit
+		DEEP -1 POSITION
+		[CHAR] + DUP STONE
+		WIDE 0 DO  [CHAR] = DUP STONE  LOOP
+		[CHAR] + DUP STONE ;
+
+: DRAW-FRAME	\ --- ; draw the border of the pit
+		DEEP 0 DO
+		    I -1   POSITION [CHAR] | DUP STONE
+		    I WIDE POSITION [CHAR] | DUP STONE
+		LOOP  DRAW-BOTTOM ;
+
+: BOTTOM-MSG	\ addr cnt --- ; output a message in the bottom of the pit
+		DEEP OVER 2/ WIDE SWAP - 2/ POSITION TYPE ;
+
+: DRAW-LINE	\ line ---
+		DUP 0 POSITION  WIDE 0 DO  DUP I PIT 2C@ 2EMIT  LOOP  DROP ;
+
+: DRAW-PIT	\ --- ; draw the contents of the pit
+		DEEP 0 DO  I DRAW-LINE  LOOP ;
+
+: SHOW-KEY	\ char --- ; visualization of that character
+		DUP BL <
+		IF  [CHAR] @ OR  [CHAR] ^ EMIT  EMIT  SPACE
+		ELSE  [CHAR] ` EMIT  EMIT  [CHAR] ' EMIT
+		THEN ;
+
+
+: UPDATE-SCORE	\ --- ; display current score
+		38 16 AT-XY SCORE @ 3 .R
+		38 17 AT-XY PIECES @ 3 .R
+		38 18 AT-XY LEVELS @ 3 .R ;
+
+: REFRESH	\ --- ; redraw everything on screen
+		PAGE DRAW-FRAME DRAW-PIT UPDATE-SCORE ;
+
+
+\ Define shapes of bricks:
+
+: DEF-BRICK	CREATE	4 0 DO
+			    ' EXECUTE  0 DO  DUP I + C@ C,  LOOP DROP
+			    REFILL DROP
+			LOOP
+		DOES>	ROT 4 * ROT + 2* + ;
+
+DEF-BRICK BRICK1	S"         "
+			S" ######  "
+			S"   ##    "
+			S"         "
+
+DEF-BRICK BRICK2	S"         "
+			S" <><><><>"
+			S"         "
+			S"         "
+
+DEF-BRICK BRICK3	S"         "
+			S"   {}{}{}"
+			S"   {}    "
+			S"         "
+
+DEF-BRICK BRICK4	S"         "
+			S" ()()()  "
+			S"     ()  "
+			S"         "
+
+DEF-BRICK BRICK5	S"         "
+			S"   [][]  "
+			S"   [][]  "
+			S"         "
+
+DEF-BRICK BRICK6	S"         "
+			S" @@@@    "
+			S"   @@@@  "
+			S"         "
+
+DEF-BRICK BRICK7	S"         "
+			S"   %%%%  "
+			S" %%%%    "
+			S"         "
+
+\ this brick is actually in use:
+
+DEF-BRICK BRICK		S"         "
+			S"         "
+			S"         "
+			S"         "
+
+DEF-BRICK SCRATCH	S"         "
+			S"         "
+			S"         "
+			S"         "
+
+CREATE BRICKS	' BRICK1 ,  ' BRICK2 ,  ' BRICK3 ,  ' BRICK4 ,
+		' BRICK5 ,  ' BRICK6 ,  ' BRICK7 ,
+
+CREATE BRICK-VAL 1 C, 2 C, 3 C, 3 C, 4 C, 5 C, 5 C,
+
+
+: IS-BRICK	\ brick --- ; activate a shape of brick
+		>BODY ['] BRICK >BODY 32 CMOVE ;
+
+: NEW-BRICK	\ --- ; select a new brick by random, count it
+		1 PIECES +!  7 RANDOM
+		BRICKS OVER CELLS + @ IS-BRICK
+		BRICK-VAL SWAP  + C@ SCORE +! ;
+
+: ROTLEFT	4 0 DO 4 0 DO
+		    J I BRICK 2C@  3 I - J SCRATCH 2C!
+		LOOP LOOP
+		['] SCRATCH IS-BRICK ;
+
+: ROTRIGHT	4 0 DO 4 0 DO
+		    J I BRICK 2C@  I 3 J - SCRATCH 2C!
+		LOOP LOOP
+		['] SCRATCH IS-BRICK ;
+
+: DRAW-BRICK	\ row col ---
+		4 0 DO 4 0 DO
+		    J I BRICK 2C@  EMPTY D<>
+		    IF  OVER J + OVER I +  POSITION
+			J I BRICK 2C@  STONE
+		    THEN
+		LOOP LOOP  2DROP ;
+
+: SHOW-BRICK	FALSE WIPING ! DRAW-BRICK ;
+: HIDE-BRICK	TRUE  WIPING ! DRAW-BRICK ;
+
+: PUT-BRICK	\ row col --- ; put the brick into the pit
+		4 0 DO 4 0 DO
+		    J I BRICK 2C@  EMPTY D<>
+		    IF  OVER J +  OVER I +  PIT
+			J I BRICK 2C@  ROT 2C!
+		    THEN
+		LOOP LOOP  2DROP ;
+
+: REMOVE-BRICK	\ row col --- ; remove the brick from that position
+		4 0 DO 4 0 DO
+		    J I BRICK 2C@  EMPTY D<>
+		    IF  OVER J + OVER I + PIT EMPTY ROT 2C!  THEN
+		LOOP LOOP  2DROP ;
+
+: TEST-BRICK	\ row col --- flag ; could the brick be there?
+		4 0 DO 4 0 DO
+		    J I BRICK 2C@ EMPTY D<>
+		    IF  OVER J +  OVER I +
+			OVER DUP 0< SWAP DEEP >= OR
+			OVER DUP 0< SWAP WIDE >= OR
+			2SWAP PIT 2C@  EMPTY D<>
+			OR OR IF  UNLOOP UNLOOP 2DROP FALSE  EXIT  THEN
+		    THEN
+		LOOP LOOP  2DROP TRUE ;
+
+: MOVE-BRICK	\ rows cols --- flag ; try to move the brick
+		BROW @ BCOL @ REMOVE-BRICK
+		SWAP BROW @ + SWAP BCOL @ + 2DUP TEST-BRICK
+		IF  BROW @ BCOL @ HIDE-BRICK
+		    2DUP BCOL ! BROW !  2DUP SHOW-BRICK PUT-BRICK  TRUE
+		ELSE  2DROP BROW @ BCOL @ PUT-BRICK  FALSE
+		THEN ;
+
+: ROTATE-BRICK	\ flag --- flag ; left/right, success
+		BROW @ BCOL @ REMOVE-BRICK
+		DUP IF  ROTRIGHT  ELSE  ROTLEFT  THEN
+		BROW @ BCOL @ TEST-BRICK
+		OVER IF  ROTLEFT  ELSE  ROTRIGHT  THEN
+		IF  BROW @ BCOL @ HIDE-BRICK
+		    IF  ROTRIGHT  ELSE  ROTLEFT  THEN
+		    BROW @ BCOL @ PUT-BRICK
+		    BROW @ BCOL @ SHOW-BRICK  TRUE
+		ELSE  DROP FALSE  THEN ;
+

@@ -1,0 +1,346 @@
+	.file 2 "SRC/loop.4"
+	.loc 2 1 0
+	.loc 2 1 0
+//
+	.loc 2 2 0
+	.loc 2 2 0
+//
+	.loc 2 3 0
+	.loc 2 3 0
+//
+	.loc 2 4 0
+	.loc 2 4 0
+//\  get the current index of the innermost loop
+	.loc 2 5 0
+	.loc 2 5 0
+//CODE I ( -- n ) ( R: x1 x2 -- x1 x2 )
+	.loc 2 6 0
+	.loc 2 6 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global I
+I:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 2 7 0
+	.loc 2 7 0
+//	LDMIA	RSTK, {r1,TOS}
+	.inst.n	0xE89D,0x0042	//LDMIA.W	R13, {R1, R6}
+	.loc 2 8 0
+	.loc 2 8 0
+//	ADDS	TOS,TOS,R1
+	.inst.n	0x1876		//ADDS	R6, R6, R1
+	.loc 2 9 0
+	.loc 2 9 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 10 0
+	.loc 2 10 0
+//END-CODE
+	.loc 2 11 0
+	.loc 2 11 0
+//
+	.loc 2 12 0
+	.loc 2 12 0
+//\  Get the index of the second most inner loop.
+	.loc 2 13 0
+	.loc 2 13 0
+//CODE J ( -- n )
+	.loc 2 14 0
+	.loc 2 14 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global J
+J:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 2 15 0
+	.loc 2 15 0
+//\	ADD	R1,RSTK,#8	LDMIA	R1, {r0,TOS}
+	.loc 2 16 0
+	.loc 2 16 0
+//  	LDR	TOS,[RSTK,#8]
+	.inst.n	0x9E02		//LDR	R6, [SP, #8]
+	.loc 2 17 0
+	.loc 2 17 0
+//  	LDR	R1,[RSTK,#0xC]
+	.inst.n	0x9903		//LDR	R1, [SP, #12]
+	.loc 2 18 0
+	.loc 2 18 0
+//	ADDS	TOS,TOS,R1
+	.inst.n	0x1876		//ADDS	R6, R6, R1
+	.loc 2 19 0
+	.loc 2 19 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 20 0
+	.loc 2 20 0
+//END-CODE
+	.loc 2 21 0
+	.loc 2 21 0
+//
+	.loc 2 22 0
+	.loc 2 22 0
+//\  Get the index of the third most inner loop.
+	.loc 2 23 0
+	.loc 2 23 0
+//CODE K ( -- n )
+	.loc 2 24 0
+	.loc 2 24 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global K
+K:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 2 25 0
+	.loc 2 25 0
+//\	ADD	TOS,RSTK,#0x10	LDMIA	R1, {r0,TOS}
+	.loc 2 26 0
+	.loc 2 26 0
+//  	LDR	TOS,[RSTK,#0x10]
+	.inst.n	0x9E04		//LDR	R6, [SP, #16]
+	.loc 2 27 0
+	.loc 2 27 0
+//  	LDR	R1,[RSTK,#0x14]
+	.inst.n	0x9905		//LDR	R1, [SP, #20]
+	.loc 2 28 0
+	.loc 2 28 0
+//	ADDS	TOS,TOS,R1
+	.inst.n	0x1876		//ADDS	R6, R6, R1
+	.loc 2 29 0
+	.loc 2 29 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 30 0
+	.loc 2 30 0
+//END-CODE
+	.loc 2 31 0
+	.loc 2 31 0
+//
+	.loc 2 32 0
+	.loc 2 32 0
+//CODE (DO)  ( limit,index -- ) ( R: -- limit1, index1 )
+	.loc 2 33 0
+	.loc 2 33 0
+//	movs	R0, tos			\ index --> R0 
+
+	.global cDOcend
+cDOcend:	.inst.n	0x0030		//MOVS	R0, R6
+	.loc 2 34 0
+	.loc 2 34 0
+//	LDMIA	DSTK!, { R1 , tos }	\ tmp=index, r1=limit
+	.inst.n	0xCF42		//LDMIA	R7!, {R1, R6}
+	.loc 2 35 0
+	.loc 2 35 0
+//	eors	R1 , # 0x80000000       \ limit eors 0x80000000
+	.inst.n	0xF091,0x4100	//EORS.W	R1, R1, #2147483648 @ 0x80000000
+	.loc 2 36 0
+	.loc 2 36 0
+//	subs 	R0 , R0 , R1		\ R0=index - limit eors 0x80000000
+	.inst.n	0x1A40		//SUBS	R0, R0, R1
+	.loc 2 37 0
+	.loc 2 37 0
+//	push	{ R0, R1 }		\ limit1, index1 --> Rstack
+	.inst.n	0xB403		//PUSH	{R0, R1}
+	.loc 2 38 0
+	.loc 2 38 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 39 0
+	.loc 2 39 0
+//END-CODE
+	.loc 2 40 0
+	.loc 2 40 0
+//
+	.loc 2 41 0
+	.loc 2 41 0
+//CODE (?DO) ( n1|u1 n2|u2 -- ) ( R: -- x1 x2 )
+	.loc 2 42 0
+	.loc 2 42 0
+//	movs	R0, tos
+
+	.global cqueDOcend
+cqueDOcend:	.inst.n	0x0030		//MOVS	R0, R6
+	.loc 2 43 0
+	.loc 2 43 0
+//	LDMIA	DSTK!, { R1 , tos }	\ tmp=index, r1=limit
+	.inst.n	0xCF42		//LDMIA	R7!, {R1, R6}
+	.loc 2 44 0
+	.loc 2 44 0
+//	CMP	R0, R1
+	.inst.n	0x4288		//CMP	R0, R1
+	.loc 2 45 0
+	.loc 2 45 0
+//	BEQ	LL0
+	.inst.n	0xD006		//BEQ.N	100032D4
+	.loc 2 46 0
+	.loc 2 46 0
+//	eors	R1 , # 0x80000000
+	.inst.n	0xF091,0x4100	//EORS.W	R1, R1, #2147483648 @ 0x80000000
+	.loc 2 47 0
+	.loc 2 47 0
+//	subs 	R0 , R0 , R1
+	.inst.n	0x1A40		//SUBS	R0, R0, R1
+	.loc 2 48 0
+	.loc 2 48 0
+//	push	{ R0, R1 }
+	.inst.n	0xB403		//PUSH	{R0, R1}
+	.loc 2 49 0
+	.loc 2 49 0
+//
+	.loc 2 50 0
+	.loc 2 50 0
+//	ADD	LR, LR, #2
+	.inst.n	0xF10E,0x0E02	//ADD.W	R14, R14, #2 
+	.loc 2 51 0
+	.loc 2 51 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 52 0
+	.loc 2 52 0
+//LL0:
+	.loc 2 53 0
+	.loc 2 53 0
+//	LDRH	R0, [LR,#-1]
+	.inst.n	0xF83E,0x0C01	//LDRH.W	R0, [R14, #-1]
+	.loc 2 54 0
+	.loc 2 54 0
+//	ADD	LR, R0
+	.inst.n	0x4486		//ADD	R14, R0
+	.loc 2 55 0
+	.loc 2 55 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 56 0
+	.loc 2 56 0
+//
+	.loc 2 57 0
+	.loc 2 57 0
+//END-CODE
+	.loc 2 58 0
+	.loc 2 58 0
+//
+	.loc 2 59 0
+	.loc 2 59 0
+//
+	.loc 2 60 0
+	.loc 2 60 0
+//\ Primitive form of LOOP
+	.loc 2 61 0
+	.loc 2 61 0
+//CODE (LOOP)  ( -- ) ( R: x1 x2 -- x3 x2 | )
+	.loc 2 62 0
+	.loc 2 62 0
+//	pop	{ R0 }		\ index-n from return stack to R0
+
+	.global cLOOPcend
+cLOOPcend:	.inst.n	0xBC01		//POP	{R0}
+	.loc 2 63 0
+	.loc 2 63 0
+//	adds	R0, #1		\ index-n + 1
+	.inst.n	0x3001		//ADDS	R0, #1
+	.loc 2 64 0
+	.loc 2 64 0
+//	push	{ R0 }		\ index-n + 1 --> return stack
+	.inst.n	0xB401		//PUSH	{R0}
+	.loc 2 65 0
+	.loc 2 65 0
+//	itee	vc
+	.inst.n	0xBF72		//ITEE	VC
+	.loc 2 66 0
+	.loc 2 66 0
+// 	ldrvc	ip, [ip]	\ jump
+	.inst.n	0xF8DC,0xC000	//LDRVC.W	R12, [R12]
+	.loc 2 67 0
+	.loc 2 67 0
+// 	addvs	ip, #4          \ get addres next word after loop
+	.inst.n	0xF10C,0x0C04	//ADDVS.W	R12, R12, #4 
+	.loc 2 68 0
+	.loc 2 68 0
+//	ADDvs	SP, #8		\ rdrop, rdrop 
+	.inst.n	0xB002		//ADDVS	SP, #8
+	.loc 2 69 0
+	.loc 2 69 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 2 70 0
+	.loc 2 70 0
+//END-CODE
+	.loc 2 71 0
+	.loc 2 71 0
+//
+	.loc 2 72 0
+	.loc 2 72 0
+//\ Primitive form of +LOOP
+	.loc 2 73 0
+	.loc 2 73 0
+//CODE (+LOOP) ( n -- ) ( R: x1 x2 -- x3 x2 | ) 
+	.loc 2 74 0
+	.loc 2 74 0
+//	pop	{ R0 }		\ index-n --> R0
+
+	.global caddLOOPcend
+caddLOOPcend:	.inst.n	0xBC01		//POP	{R0}
+	.loc 2 75 0
+	.loc 2 75 0
+//	adds	R0, TOS		\ index-n + n
+	.inst.n	0xEB10,0x0006	//ADDS.W	R0, R0, R6
+	.loc 2 76 0
+	.loc 2 76 0
+//	push	{ R0 }		\ index-n + n --> return stack
+	.inst.n	0xB401		//PUSH	{R0}
+	.loc 2 77 0
+	.loc 2 77 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 2 78 0
+	.loc 2 78 0
+//	itee	vc
+	.inst.n	0xBF72		//ITEE	VC
+	.loc 2 79 0
+	.loc 2 79 0
+// 	ldrvc	ip, [ip]
+	.inst.n	0xF8DC,0xC000	//LDRVC.W	R12, [R12]
+	.loc 2 80 0
+	.loc 2 80 0
+// 	addvs	ip, #4		\ get address next word after loop
+	.inst.n	0xF10C,0x0C04	//ADDVS.W	R12, R12, #4 
+	.loc 2 81 0
+	.loc 2 81 0
+//	ADDvs	SP, #8		\ rdrop, rdrop 
+	.inst.n	0xB002		//ADDVS	SP, #8
+	.loc 2 82 0
+	.loc 2 82 0
+//	ldr	pc, [IP], #4
+	.inst.n	0xF85C,0xFB04	//LDR.W	R15, [R12], #4
+	.loc 2 83 0
+	.loc 2 83 0
+//END-CODE
+	.loc 2 84 0
+	.loc 2 84 0
+//
+	.loc 2 85 0
+	.loc 2 85 0
+//CODE (LEAVE)
+	.loc 2 86 0
+	.loc 2 86 0
+//	LDRH	R0, [LR,#-1]
+
+	.global cLEAVEcend
+cLEAVEcend:	.inst.n	0xF83E,0x0C01	//LDRH.W	R0, [R14, #-1]
+	.loc 2 87 0
+	.loc 2 87 0
+//	ADD	RSTK, #8
+	.inst.n	0xB002		//ADD	SP, #8
+	.loc 2 88 0
+	.loc 2 88 0
+//	ADD	LR, R0
+	.inst.n	0x4486		//ADD	R14, R0
+	.loc 2 89 0
+	.loc 2 89 0
+//	NEXT
+		BX	R14
+	.loc 2 90 0
+	.loc 2 90 0
+//
+	.loc 2 91 0
+	.loc 2 91 0
+//END-CODE
+	.loc 2 92 0
+	.loc 2 92 0
+//

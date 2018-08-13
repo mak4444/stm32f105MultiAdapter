@@ -1,0 +1,10 @@
+	\ words
+
+VARIABLE SEED
+
+: RANDOMIZE 0 ." Press any key." CR BEGIN 1+ KEY? UNTIL KEY DROP SEED ! ;
+
+: xxxx	." tttt" ;
+
+
+.( [IFDEF]  T-RP0) CR

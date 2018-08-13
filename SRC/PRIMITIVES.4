@@ -1,0 +1,934 @@
+
+[IFDEF]  T-RP0
+T-RP0	CONSTANT	NRP0
+T-SP0	CONSTANT	NSP0
+[THEN]
+
+CODE RP@	( -- N )
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	MOV	TOS, RSTK
+CODL	NOOP
+	NEXT
+END-CODE
+
+
+CODE RP!	( N -- )
+	MOV	RSTK, TOS
+CODL	DROP
+CODL	D>S
+	DROP,
+	NEXT
+END-CODE
+
+' DROP TO 'DROP
+
+CODE R@		( -- addr )
+	STR	TOS, [DSTK, #-4]!		\ DUP
+CODL DROPR@	( a -- b )
+	LDR	TOS, [RSTK]	\ TOS <- [RSTK]
+	NEXT
+END-CODE
+
+CODE 2RDROP
+CODL UNLOOP
+	add	RSTK, RSTK, #4
+CODL RDROP	( -- )
+CODL R>DROP	( -- )
+	ADD	RSTK, #4
+	NEXT
+END-CODE
+
+
+CODE DUP>R	( N -- N )
+	PUSH	{TOS}		\ TOS -> [RSTK - 4], RSTK -= 4
+	NEXT
+END-CODE
+
+CODE >R		( a -- )
+	PUSH	{TOS}	\ TOS -> [RSTK - 4], RSTK -= 4	store TOS to incremented return srack pointer
+	DROP,
+	NEXT
+END-CODE
+
+CODE R>		( -- N )
+	STR	TOS, [DSTK, #-4]!	\ DUP
+	POP	{TOS}		\ TOS <- [RSTK], RSTK += 4
+	NEXT
+END-CODE
+
+CODE 2R>	( -- D.lo D.hi )
+	POP	{r0,r1}
+	STMDB	DSTK!,  {R1,TOS}
+	mov	TOS, r0
+	NEXT
+END-CODE
+
+CODE 2R@	( -- D.lo D.hi )
+	LDMIA	RSTK, {r0,r1}
+	STMDB	DSTK!,  {R1,TOS}
+	mov	TOS, r0
+	NEXT
+END-CODE
+
+CODE 2>R	( D -- )
+	mov	R0, TOS
+	LDMIA	DSTK!, {R1,TOS}
+	PUSH	{R0,R1}
+	NEXT
+END-CODE
+
+\ move 2 top values from data stack to return stack
+CODE >R>R	( a b -- )
+	LDMIA	DSTK!, {R0,R1}
+	PUSH	{R0,TOS}
+	mov	TOS, R1
+	NEXT
+END-CODE
+
+CODE SP@	( -- N )
+	STR	TOS, [DSTK, #-4]!		\ TOS -> [DSTK - 4], DSTK -=4			DUP
+	MOV	TOS, DSTK		\ TOS = addr of second value of data stack
+	NEXT
+END-CODE
+
+CODE SP!	( N -- )
+	MOV	DSTK, TOS	\ addr of second value of data stack = a
+	DROP,			\ TOS <- [DSTK + 4], DSTK+=4
+	NEXT
+END-CODE
+
+CODE PERFORM	( ... [tx] -- ...' )
+CODL @EXECUTE
+	        ldr	TOS, [TOS]
+
+CODL EXECUTE	( ... tx -- ...' )
+	mov	r0, TOS
+	DROP,
+	bx	r0
+END-CODE
+
+
+CODE C@		( A -- N )
+	ldrB	TOS,	[TOS]
+	NEXT
+END-CODE
+
+CODE WREG@	( A -- N )
+CODL H@		( A -- N )
+CODL W@		( A -- N )
+	ldrh	TOS,	[TOS]
+	NEXT
+END-CODE
+
+CODE 2C@	( A -- N )
+	ldrB	R0,	[TOS, #1]
+	ldrB	TOS,	[TOS]
+	orr	TOS,	TOS,  R0, LSL # 8
+	NEXT
+END-CODE
+
+CODE REG@	( A -- N )
+CODL @		( A -- N )
+	ldr	TOS,	[TOS]
+	NEXT
+END-CODE
+
+CODE 4C@	( A -- N )
+	ldrB	R2,	[TOS, #3]
+	ldrB	R1,	[TOS, #2]
+	ldrB	R0,	[TOS, #1]
+	ldrB	TOS,	[TOS]
+	orr	TOS,	TOS,  R0, LSL # 8
+	orr	TOS,	TOS,  R1, LSL # 16
+	orr	TOS,	TOS,  R2, LSL # 24
+	NEXT
+END-CODE
+
+
+CODE C!		( N,A -- )
+	LDMIA	DSTK!, {r0}		\ r0, <- N, DSTK += 4 
+	strB	r0,	[TOS]		\ N->[A]
+	DROP,
+	NEXT
+END-CODE
+
+CODE WREG!	( N,A -- )
+CODL H!		( N,A -- )
+CODL W!		( N,A -- )
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	strh	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE 2C!	( N,A -- )
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	strB	r0,	[TOS]		\ 0
+	LSRS	r0,	r0, #8
+	strB	r0,	[TOS, #1]	\ 1
+	DROP,
+	NEXT
+END-CODE
+
+CODE REG!	( N,A -- )
+CODL !		( N,A -- )
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE 4C!		( N,A -- )
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	strB	r0,	[TOS]
+	LSRS	r0,	r0, #8
+	strB	r0,	[TOS, #1]
+	LSRS	r0,	r0, #8
+	strB	r0,	[TOS, #2]
+	LSRS	r0,	r0, #8
+	strB	r0,	[TOS, #3]
+	DROP,
+	NEXT
+END-CODE
+
+\ [A] = 0
+CODE 0!		( A -- )
+CODL OFF		( A -- )
+	MOVS	R0,	# 0
+	STR	R0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE ON		( A -- )
+	MOV	R0,	# -1
+	STR	R0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+
+CODE 2!		( D A -- )
+	LDMIA	DSTK!,	{R0,r2}
+	strd	r0, r2, [TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE 2@		( A -- D )
+	ldrd	TOS, r0, [TOS]
+	STR	R0, [DSTK, #-4]!
+	NEXT
+END-CODE
+
+
+CODE +!	( N A -- )
+	ldr	r1,	[TOS]
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	ADDS	r0,r0, r1
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE C+!	( N A -- )
+	ldrb	r1,	[TOS]
+	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	ADDS	r0,r0, r1
+	strb	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+
+CODE 1+!	( N A -- )
+	ldr	r0,	[TOS]
+	ADDS	r0,#1
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE 1-!	( N A -- )
+	ldr	r0,	[TOS]
+	SUBS	r0,#1
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE MIN	( N1,N2 -- MIN )
+	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+	CMP	TOS,	r0		\ ALU.flags( N2 - N1 )
+	IT	GT
+	MOVGT	TOS,	r0
+	NEXT
+END-CODE
+
+CODE ABS	( n -- +n )
+	cmp	TOS, #0
+	IT	LT
+	neglt	TOS, TOS
+	NEXT
+ASM_END
+
+CODE UMIN	( N1,N2 -- MIN )
+	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+	CMP	r0,	TOS		\ ALU.flags( N1 - N2 )
+	IT	CC
+	MOVCC	TOS, r0
+	NEXT
+END-CODE
+
+
+CODE MAX	( N1,N2 -- MAX )
+	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+	CMP	TOS,	r0		\ ALU.flags( N2 - N1 )
+	IT	LT
+	MOVLT	TOS, r0
+	NEXT
+END-CODE
+
+
+\ ÌÀÊÑÈÌÓÌ
+CODE UMAX	( N1,N2 -- MAX )
+	LDMIA	DSTK!, {r0}
+	CMP	TOS,	r0	\ ALU.flags( N2 - N1 )
+	IT	CC
+	MOVCC	TOS, r0
+	NEXT
+END-CODE
+
+CODE 0MAX	( N -- MAX )
+	CMP	TOS, # 0
+	IT	LT
+	MOVLT	TOS, # 0
+	NEXT
+END-CODE
+
+CODE =		( a b -- f )
+	LDMIA	DSTK!, {r0}
+	EORS	TOS,	r0	\ TOS = a ^ b (XOR)
+CODL 0=		( a -- f )
+	SUBS	TOS,	#1	\ TOS = ( a ^ b ) - 1, set ALU flags
+	SBCS	TOS,	TOS	\ TOS = ( ( a ^ b ) - 1 ) - ( ( a ^ b ) - 1 ) - ALU.carry = -ALU.carry
+	NEXT
+END-CODE
+
+' =	TO '=
+
+CODE <>		( a b -- f )
+	LDMIA	DSTK!, {r0}
+	EORS	TOS,	r0
+CODL 0<>	( a -- F )
+	negs	TOS,	TOS	\ TOS = 0 - ( a ^ b ) , set ALU flags
+	SBCS	TOS,	TOS	\ TOS = ( tos - tos ) - ALU.carry = -ALU.carry
+	NEXT
+END-CODE
+
+CODE >		( a b -- f )
+	LDMIA	DSTK!, {r0}
+	cmp	r0, TOS
+	ite	le
+	movle	TOS, #0
+	mvngt	TOS, #0
+	NEXT
+END-CODE
+
+CODE <		( a b -- f )
+	LDMIA	DSTK!, {r0}
+	cmp	r0, TOS
+	ite	ge
+	movge	TOS, #0
+	mvnlt	TOS, #0
+	NEXT
+END-CODE
+
+CODE 0<		( a -- f )
+	ASRS	TOS, TOS, # 31		\ if( TOS == 0 ) then TOS = 0 else TOS = 0xFFFFFFFF
+	NEXT
+END-CODE
+
+
+CODE U>		( a b -- f )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4	r0 = second value of return stack, data stack dec
+	SUBS	TOS,	TOS,	r0	\ TOS = b - a, set ALU flags
+	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	NEXT
+END-CODE
+
+CODE U< ( a b -- f )
+	LDMIA	DSTK!, {r0}		\ TOS = a, DSTK += 4	TOS = second value of return stack, data stack dec
+	SUBS	r0,	r0,	TOS	\ TOS = a - b, set ALU flags
+	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	NEXT
+END-CODE
+
+
+\ N1 AND N2 = N
+CODE AND	( N1,N2 -- N )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4	
+	ANDS	TOS,	r0		\ TOS = a & b
+	NEXT
+END-CODE
+
+CODE ANDC	( N1,N2 -- N )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4	
+	bic	TOS, r0, TOS		\ TOS = a & !b
+	NEXT
+END-CODE
+
+CODE BIC!		( N1,N2 -- )
+CODL ANDC!
+	ldr	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	bic	r0,r1, r0
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE WANDC!		( N1,N2 -- )
+CODL HBIC!
+	ldrh	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	bic	r0,r1, r0
+	strh	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE CANDC!		( N1,N2 -- )
+	ldrb	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	bic	r0,r1, r0
+	strb	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE AND!		( N1,N2 -- N )
+	ldr	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	and	r0,r1, r0
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+\ N1 OR N2 = N
+CODE OR		( N1,N2 -- N )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+	ORRS	TOS,	r0		\ TOS = a | b
+	NEXT
+END-CODE
+
+\ N1 XOR N2 = N
+CODE XOR	( N1,N2 -- N )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+	EORS	TOS,	r0		\ TOS = a ^ b
+	NEXT
+END-CODE
+
+
+CODE BIS!		( N1,N2 -- )  \ Set bits
+CODL OR!
+	ldr	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	ORRS	r0, r1
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE WOR!		( N1,N2 --  )
+CODL HBIS!
+	ldrh	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	ORRS	r0, r1
+	strb	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE COR!		( N1,N2 --  )
+	ldrb	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	ORRS	r0, r1
+	strb	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+\ N1 XOR N2 = N
+CODE XOR!	( n addr -- )
+	ldr	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	EORS	r0, r1
+	str	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE CXOR!	( N1,N2 -- N )
+	ldrb	r1,	[TOS]		\ r1	<- [addr]
+	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	EORS	r0, r1
+	strb	r0,	[TOS]
+	DROP,
+	NEXT
+END-CODE
+
+CODE BIT@ ( x 32-addr -- Flag ) \ Check bits
+  LDMIA	DSTK!, {r0} \ Bitmaske holen
+  ldr tos, [tos]
+  ands tos, r0
+  it ne
+  movne tos, #-1
+	NEXT
+END-CODE
+
+CODE INVERT	( N -- N1 )
+CODL NOT	( N -- N1 )
+	mvns	TOS, TOS
+	NEXT
+ASM_END
+
+CODE NEGATE	( n - -n)
+	negs	TOS, TOS \ TOS := 0 - TOS (i.e. two's  complement)
+	NEXT
+ASM_END
+
+CODE DNEGATE ( n - -n)
+	dpop	r0
+	negs	r0, r0
+	sbc.w	TOS, TOS, TOS, lsl #1
+	dpush	r0
+	NEXT
+ASM_END
+
+CODE +		( N1 N2 -- N1+N2 )
+	LDMIA	DSTK!, {r0}		\ r0 <- N1, DSTK+=4
+	ADDS	TOS, r0, TOS	\ TOS = a + b
+	NEXT
+END-CODE
+
+CODE D+
+        ldmia	DSTK!, {r0, r1,r3}
+        adds	r0,r0,r3
+        adc	TOS,TOS,r1
+	str	r0, [DSTK,#-4]!
+	NEXT
+ASM_END
+
+CODE -		( N1,N2 -- N1-N2 )
+	LDMIA	DSTK!, {r0}	\ r0 <- N1, DSTK+=4
+	SUBS	TOS, r0, TOS		\ TOS = a - b
+	NEXT
+END-CODE
+
+CODE D-
+        ldmia	DSTK!, {r0, r1,r3}
+        subs	r3,r3,r0
+        sbc	TOS,r1,TOS
+	str	r3, [DSTK,#-4]!
+	NEXT
+ASM_END
+
+CODE DU<
+        ldmia	DSTK!, {r0, r1,r3}
+        subs	r3,r3,r0
+        sbc	TOS,r1,TOS
+	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	NEXT
+ASM_END
+
+CODE CELL+	( N -- N+4 )
+	ADDS	TOS, #2
+CODL 2+		( N -- N+2 )
+	ADDS	TOS, #1
+CODL 1+		( N -- N+1 )
+CODL CHAR+		( N -- N+1 )
+	ADDS	TOS, #1
+	NEXT
+END-CODE
+
+CODE CELL-	( N -- N-4 )
+	SUBS	TOS, #2
+CODL 2-		( N -- N-1 )
+	SUBS	TOS, #1
+CODL 1-		( N -- N-1 )
+	SUBS	TOS, #1
+	NEXT
+END-CODE
+
+CODE CELLS	( N -- 4*N )
+	LSLS	TOS, TOS, # 1	\ TOS = TOS * 4
+CODL 2*		( N -- 2*N )
+	LSLS	TOS, TOS, # 1	\ TOS = TOS * 2
+	NEXT
+END-CODE
+
+CODE 2/		( N -- N/2 )
+	ASRS	TOS, TOS, # 1	\ TOS = TOS / 4
+	NEXT
+END-CODE
+
+CODE EVEN ( x -- x' )
+  movs r0, #1
+  ands r0, tos
+  adds tos, r0
+	NEXT
+END-CODE
+
+
+\ 32*32=lo(32)
+CODE *		( a b -- a*b )
+	LDMIA	DSTK!, {r0}	\ r0 = a, DSTK += 4	r0 = second value of return stack, data stack dec
+	MULS	TOS, r0		\ TOS = a *b
+	NEXT
+END-CODE
+
+CODE /
+	LDMIA	DSTK!, {r0}
+	sdiv	TOS, r0, TOS
+	NEXT
+ASM_END
+
+CODE MOD
+	LDMIA	DSTK!, {r0}
+	sdiv	r2, r0, TOS
+	mls	TOS, TOS, r2, r0	\ tos=r0-r2*tos
+	NEXT
+ASM_END
+
+CODE /MOD
+	LDR	r0, [DSTK]
+	sdiv	r2, r0, TOS
+	mls	R0, TOS, r2, r0		\ R0=r0-r2*tos
+	MOV	TOS,R2
+	STR	r0, [DSTK]
+	NEXT
+ASM_END
+
+CODE U/MOD
+	LDR	r0, [DSTK]
+	udiv	r2, r0, TOS
+	mls	R0, TOS, r2, r0		\ R0=r0-r2*tos
+	MOV	TOS,R2
+	STR	r0, [DSTK]
+	NEXT
+ASM_END
+
+CODE UM*	( u1 u2 - ud)
+	ldr	r0, [DSTK, #0]
+	umull	r0, TOS, r0, TOS
+	str	r0, [DSTK, #0]
+	NEXT
+ASM_END
+
+CODE M*		( n1 n2 - d) \ We probably want a 32x32-->64 signed multiply also
+	ldr	r0, [DSTK, #0]
+	smull	r0, TOS, r0, TOS
+	str	r0, [DSTK, #0]
+	NEXT
+ASM_END
+
+CODE ?DUP	( N -- N,N )  ( 0 -- 0 )
+	cbz	TOS, LL0
+ CODL DUP	( N -- N,N )  \ !!!
+	STR	TOS, [DSTK, #-4]!	\ if( TOS != 0 ) then DUP
+LL0:
+	NEXT
+END-CODE
+
+CODE 2DUP	(  a b -- a b a b )
+	LDR	r0, 	[DSTK]		\ r0 = a
+	STMDB	DSTK!,	{r0, TOS}	\ a -> [DSTK - 2*4], b -> [DSTK - 4], DSTK -= 2*4
+	NEXT
+END-CODE
+
+
+CODE SWAP	( N1,N2 -- N2,N1 )
+	mov	r0,	TOS
+	ldr	TOS,	[DSTK]
+	str	r0,	[DSTK]
+	NEXT
+END-CODE
+
+CODE 2SWAP	( a b c d - c d a b )
+	mov	r1,	R6
+	LDMIA	DSTK!, {r2,R6,r8}
+	movs	r0,	r8
+	STMDB	DSTK!, {r0,r1, R2}
+	NEXT
+END-CODE
+
+
+CODE 2DROP	( D -- )
+	LDMIA	DSTK!,  {r0, TOS}	\ load 2 values from the top of data stack to r0 & TOS, DSTK += 2*4
+	NEXT
+END-CODE
+
+CODE 2DRRR	( D -- )
+	LDR	TOS, [DSTK], #8
+	NEXT
+END-CODE
+
+CODE OVER	( N1 N2 -- N1 N2 N1 )
+	STR	TOS,	[DSTK, #-4]!	\ DUP
+	LDR	TOS,	[DSTK, #4]	\ tos <- [DSTK + 4]
+	NEXT
+END-CODE
+
+' OVER	TO 'OVER
+
+CODE 2OVER	( a b c d -- a b c d a b )
+	ldr	r0,	[DSTK, # 8]	\ a -> r0
+	STMDB	DSTK!,	{r0, TOS}	\ d a -> steck
+	ldr	TOS,	[DSTK, # 12]	\ b -> tos
+	NEXT
+END-CODE
+
+\ CODE PLUCK	( N1 N2 N3 -- N1 N2 N3 N1 ) 
+
+CODE TUCK	( N1 N2 -- N2 N1 N2 )
+	ldr	r0,	[DSTK], #4	\ r0 <- N1 : r0 <- [DSTK], DSTK += 4 
+	STMDB	DSTK!,	{r0, TOS}	\ [DTSK - 4*2] <- r0, [DTSK - 4] <- TOS, DSTK -= 2*4
+	NEXT
+END-CODE
+
+CODE NIP	( N1 N2 -- N2 )
+	ADDS	DSTK,	#4
+	NEXT
+END-CODE
+
+CODE ROT	( N1 N2 N3 -- N2 N3 N1 )
+	MOV	 R2 , r6
+	LDMIA	DSTK!,	  {R3, R6}
+	STMDB	DSTK!,	  {R2, R3}
+	NEXT
+END-CODE
+
+CODE -ROT	( N1 N2 N3 -- N3 N1 N2 )
+	LDMIA	DSTK!,	  {R2, R3}
+	STMDB	DSTK!,	  {R3, R6}
+	MOV	R6,	    R2
+	NEXT
+END-CODE
+
+CODE PICK	( Nm,...,N1,K -- Nm,...,N1,Nk )
+	LDR	TOS, [DSTK, TOS, LSL #2]	\ TOS <- [DSTK + K*4]
+	NEXT
+END-CODE
+
+CODE ARSHIFT	( a b -- a>>b )
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+	ASR	TOS,	r0, TOS	\ TOS = a >> b (arithmetic shift)		n = a >> b
+	NEXT
+END-CODE
+
+CODE RSHIFT	( a b -- a>>b )
+CODL >>
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+	LSR	TOS,	r0, TOS	\ TOS = a >> b (arithmetic shift)		n = a >> b
+	NEXT
+END-CODE
+
+
+CODE LSHIFT	( a b -- a<<b )
+CODL <<
+	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+	LSL	TOS,	r0,	TOS	\ TOS = a << b
+	NEXT
+END-CODE
+
+CODE BIT	( bit# -- mask )
+	mov	r0, #1
+	LSL	TOS, r0, TOS		\ mask = 1 << bit#
+	NEXT
+END-CODE
+
+CODE COUNT	( a -- a+1 c ) 
+	ADDS	r0,	TOS, # 1	\ a+1
+	str	r0,	[DSTK, #-4]!
+	ldrB	TOS,	[TOS]		\ c = [a]
+	NEXT
+END-CODE
+
+CODE BOUNDS	( N1 N2 -- N1+N2 N1 )
+	MOV	r0,	TOS		\ r0=N2
+	ldr	TOS,	[DSTK]		\ TOS=N1
+	ADDS	r0,	r0,	TOS	\ r0=N1+N2
+	str	r0,	[DSTK]		\ N1+N2->[DSTK]
+	NEXT
+END-CODE
+
+CODE FILL ( addr len c -- )
+	LDMIA	DSTK!, {R2,R3}
+	cbz	r2, LL0
+	add	r2, r3
+LL1:	strb	TOS, [r3], #1
+	cmp	r3, r2
+	bne	LL1
+LL0:	DROP,
+	NEXT
+END-CODE
+
+CODE WFILL ( c-addr u char -- )
+	ldmia	DSTK!, {r2, r3}
+	ADD	R2,R3, R2, lsl #1
+LL0:	strh	TOS, [R3],#2
+	cmp	r3, r2
+	BNE	LL0
+	DROP,
+	NEXT
+ASM_END
+
+CODE CMOVE ( addr3 addr2 len -- )
+	LDMIA	DSTK!, {R2,R3}
+	cbz	TOS, LL0
+	add	TOS, r2
+LL1:	ldrb	r0, [r3], #1
+	strb	r0, [r2], #1
+	cmp	TOS, r2
+	bne	LL1
+LL0:	DROP,
+	NEXT
+END-CODE
+
+CODE W2CMOVE ( addr3 addr2 len -- )
+	LDMIA	DSTK!, {R2,R3}
+	cbz	TOS, LL0
+	add	TOS, r2
+LL1:	ldrh	r0, [r3], #2
+	strh	r0, [r2], #2
+	cmp	TOS, r2
+	bne	LL1
+LL0:	DROP,
+	NEXT
+END-CODE
+
+CODE CMOVE> ( c-addr1 c-addr2 u -- ) \ 94 STRING
+	ldmia	DSTK!, {r0, r1}
+	tst	TOS, TOS
+	BEQ	LL1
+	ADD	R0,TOS, R0
+	ADD	TOS,TOS, R1
+LL0:	ldrb	R3, [TOS,#-1]!
+	strb	R3, [R0,#-1]!
+	cmp	TOS,R1
+	BNE	LL0
+LL1:
+	ldr	TOS, [DSTK], #4
+	NEXT
+ASM_END
+
+CODE SERIAL-EMIT
+	push {lr}
+	MOV	r1,	TOS		\ r0=N2
+	ldr	r0, = 0x40013800
+	bl ' usart_send_blocking
+	DROP,
+	pop  {pc}
+ASM_END
+
+CODE SERIAL-EMIT?
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	mov	TOS,#-1
+	NEXT
+ASM_END
+
+CODE SERIAL-KEY?
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl '  ComCnt1
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+CODE SERIAL-KEY
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl '  WGetPort1 
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+CODE usb-emit
+	push {lr}
+	MOV	r0,	TOS		\ r0=N2
+	bl ' USB_PUT
+	DROP,
+	pop  {pc}
+ASM_END
+
+CODE usb-key?
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl '  ttkbhit
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+CODE usb-key
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl '  ttgetch 
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+CODE HHP
+	push {lr}
+	MOV	r0,	TOS		\ r0=N2
+	bl ' hht
+	DROP,
+	pop  {pc}
+ASM_END
+
+
+CODE FLASH! ( w adr --  )
+	push {lr}
+	LDMIA	DSTK!, {R1}
+	MOV	r0,	TOS		\ r0=N2
+	bl ' flash_program_half_word
+	DROP,
+	pop  {pc}
+ASM_END
+
+CODE FLASH-ERASE ( adr -- )
+	push {lr}
+	MOV	r0,	TOS		\ r0=N2
+	bl ' flash_erase_page
+	DROP,
+	pop  {pc}
+ASM_END
+
+
+CODE SLCAN_RXSPIN
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl ' slcan_rx_spin_rx 
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+
+CODE CAN_CNT
+	push {lr}
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	bl ' CanCnt 
+	mov	TOS,r0
+	pop  {pc}
+ASM_END
+
+
+CODE SLCAN_DECODE ( adr -- )
+	push {lr}
+	MOV	r0,	TOS		\ r0=N2
+	bl ' slcan_decode_line
+	DROP,
+	pop  {pc}
+ASM_END
+

@@ -1,0 +1,5799 @@
+	.file 3 "SRC/HPROC.4"
+	.loc 3 1 0
+	.loc 3 1 0
+// TSET-OPT 20 TO TMM_SIZE
+	.loc 3 2 0
+	.loc 3 2 0
+//\ TDIS-OPT
+	.loc 3 3 0
+	.loc 3 3 0
+//
+	.loc 3 4 0
+	.loc 3 4 0
+//: DOCREATE	R> 1- ;
+
+	.global DOCREATE
+DOCREATE:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 5 0
+	.loc 3 5 0
+//: DOCONST	R> 1- @ ;
+
+	.global DOCONST
+DOCONST:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 6 0
+	.loc 3 6 0
+//
+	.loc 3 7 0
+	.loc 3 7 0
+//: D2*      ( D -- D*2 )        2DUP D+     ;
+	.inst.n	0xFFFF @ ?????
+
+	.global D2mul
+D2mul:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xF7FF,0xFE77	//BL	Dadd
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 8 0
+	.loc 3 8 0
+//: D0= OR 0= ;
+	.inst.n	0xFFFF @ ?????
+
+	.global D0equ
+D0equ:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 9 0
+	.loc 3 9 0
+//
+	.loc 3 10 0
+	.loc 3 10 0
+//: UM/MOD       ( ud1 u1 -- rem quot )  ( divide unsigned double -> R Q )
+
+	.global UMrslMOD
+UMrslMOD:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 11 0
+	.loc 3 11 0
+//    ?DUP
+	.inst.n	0xF7FF,0xFEBC	//BL	queDUP
+	.loc 3 12 0
+	.loc 3 12 0
+//    IF
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8049	//BEQ.W	UMrslMOD+A0 
+	.loc 3 13 0
+	.loc 3 13 0
+//          32 >R           ( ud1 u1 | cnt )
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2620		//MOVS	R6, #32
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 14 0
+	.loc 3 14 0
+//            BEGIN   R@
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.loc 3 15 0
+	.loc 3 15 0
+//            WHILE
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8037	//BEQ.W	UMrslMOD+94 
+	.loc 3 16 0
+	.loc 3 16 0
+//               R> 1- >R   
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 17 0
+	.loc 3 17 0
+//                    >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 3 18 0
+	.loc 3 18 0
+//                     DUP >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 19 0
+	.loc 3 19 0
+// D2* R> 0<             ( ud1' . | cnt u1 )
+	.inst.n	0xF7FF,0xFFD3	//BL	D2mul
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x17F6		//ASRS	R6, R6, #31
+	.loc 3 20 0
+	.loc 3 20 0
+//                    IF      R@ - SWAP 1+ SWAP           \ shift: cy -> need sub
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800B	//BEQ.W	UMrslMOD+62 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 21 0
+	.loc 3 21 0
+//                    ELSE    DUP R@ U< 0=            \ need to subt?
+	.inst.n	0xE014		//B.N	100033D8
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0x1B80		//SUBS	R0, R0, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 22 0
+	.loc 3 22 0
+//                            IF      R@ - SWAP 1+ SWAP
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800A	//BEQ.W	UMrslMOD+8C 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 23 0
+	.loc 3 23 0
+//                            THEN
+	.loc 3 24 0
+	.loc 3 24 0
+//                    THEN    R>
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 25 0
+	.loc 3 25 0
+//            REPEAT  
+	.inst.n	0xE7C1		//B.N	10003364
+	.loc 3 26 0
+	.loc 3 26 0
+//            RDROP DROP SWAP
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 27 0
+	.loc 3 27 0
+//    ELSE    2DROP -1 -1
+	.inst.n	0xE008		//B.N	100033FE
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
+	.loc 3 28 0
+	.loc 3 28 0
+//    THEN 
+	.loc 3 29 0
+	.loc 3 29 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 30 0
+	.loc 3 30 0
+//
+	.loc 3 31 0
+	.loc 3 31 0
+//\ : U/MOD 0 SWAP UM/MOD ;
+	.loc 3 32 0
+	.loc 3 32 0
+//
+	.loc 3 33 0
+	.loc 3 33 0
+//: U/ ( n1 n2 -- n1*n2 )
+
+	.global Ursl
+Ursl:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 34 0
+	.loc 3 34 0
+// U/MOD  NIP ;
+	.inst.n	0xF7FF,0xFE50	//BL	UrslMOD
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 35 0
+	.loc 3 35 0
+//
+	.loc 3 36 0
+	.loc 3 36 0
+//: UMOD ( n1 n2 -- n1%n2 )
+	.inst.n	0xFFFF @ ?????
+
+	.global UMOD
+UMOD:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 37 0
+	.loc 3 37 0
+//  U/MOD DROP ;
+	.inst.n	0xF7FF,0xFE4A	//BL	UrslMOD
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 38 0
+	.loc 3 38 0
+//
+	.loc 3 39 0
+	.loc 3 39 0
+//VARIABLE HOOK-EMIT
+	.loc 3 40 0
+	.loc 3 40 0
+//VARIABLE HOOK-KEY
+	.loc 3 41 0
+	.loc 3 41 0
+//VARIABLE HOOK-EMIT?
+	.loc 3 42 0
+	.loc 3 42 0
+//VARIABLE HOOK-KEY?
+	.loc 3 43 0
+	.loc 3 43 0
+//
+	.loc 3 44 0
+	.loc 3 44 0
+//: EMIT
+	.inst.n	0xFFFF @ ?????
+
+	.global EMIT
+EMIT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 45 0
+	.loc 3 45 0
+// HOOK-EMIT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.loc 3 46 0
+	.loc 3 46 0
+//  PERFORM
+	.inst.n	0xF7FF,0xFD06	//BL	loadEXECUTE
+	.loc 3 47 0
+	.loc 3 47 0
+//   ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 48 0
+	.loc 3 48 0
+//: KEY  HOOK-KEY  PERFORM ;
+
+	.global KEY
+KEY:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+4 
+	MOVT	R6, #:upper16:sp_buff+4 
+	.inst.n	0xF7FF,0xFCFC	//BL	loadEXECUTE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 49 0
+	.loc 3 49 0
+//: KEY? HOOK-KEY? PERFORM ;
+
+	.global KEYque
+KEYque:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+12 @ 0xC
+	MOVT	R6, #:upper16:sp_buff+12 @ 0xC
+	.inst.n	0xF7FF,0xFCF2	//BL	loadEXECUTE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 50 0
+	.loc 3 50 0
+//
+	.loc 3 51 0
+	.loc 3 51 0
+//: HH. HHP BL EMIT ;
+
+	.global HHdot
+HHdot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFEF2	//BL	HHP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2620		//MOVS	R6, #32
+	.inst.n	0xF7FF,0xFFDA	//BL	EMIT
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 52 0
+	.loc 3 52 0
+//
+	.loc 3 53 0
+	.loc 3 53 0
+//: DABS     ( d -- ud )         DUP 0< IF DNEGATE THEN  ;
+	.inst.n	0xFFFF @ ?????
+
+	.global DABS
+DABS:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x17F0		//ASRS	R0, R6, #31
+	.inst.n	0xF000,0x8002	//BEQ.W	DABS+C 
+	.inst.n	0xF7FF,0xFDD0	//BL	DNEGATE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 54 0
+	.loc 3 54 0
+//
+	.loc 3 55 0
+	.loc 3 55 0
+//: HALIGNED  1+  1 ANDC ;
+	.inst.n	0xFFFF @ ?????
+
+	.global HALIGNED
+HALIGNED:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x0601	//BIC.W	R6, R0, #1 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 56 0
+	.loc 3 56 0
+//: IALIGNED  3 + 3 ANDC ;
+
+	.global IALIGNED
+IALIGNED:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1CC6		//ADDS	R6, R0, #3
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x0603	//BIC.W	R6, R0, #3 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 57 0
+	.loc 3 57 0
+//
+	.loc 3 58 0
+	.loc 3 58 0
+//: (S")  ( --- c-addr u )
+	.inst.n	0xFFFF @ ?????
+
+	.global cSdticcend
+cSdticcend:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 59 0
+	.loc 3 59 0
+//\ Runtime part of S"
+	.loc 3 60 0
+	.loc 3 60 0
+//\ It returns address and length of an in-line counted string.
+	.loc 3 61 0
+	.loc 3 61 0
+//  R> 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 62 0
+	.loc 3 62 0
+//  1- COUNT 2DUP + HALIGNED 1+ 
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0xF7FF,0xFFE2	//BL	HALIGNED
+	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 3 63 0
+	.loc 3 63 0
+//    >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 64 0
+	.loc 3 64 0
+//  ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 65 0
+	.loc 3 65 0
+//
+	.loc 3 66 0
+	.loc 3 66 0
+//' (S") TO '(S")
+	.loc 3 67 0
+	.loc 3 67 0
+//
+	.loc 3 68 0
+	.loc 3 68 0
+//: TYPE ( adr len )
+
+	.global TYPE
+TYPE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 69 0
+	.loc 3 69 0
+// BEGIN DUP 
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x800E	//BEQ.W	TYPE+24 
+	.loc 3 70 0
+	.loc 3 70 0
+// WHILE SWAP COUNT EMIT SWAP 1-
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFA1	//BL	EMIT
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 3 71 0
+	.loc 3 71 0
+// REPEAT 2DROP 
+	.inst.n	0xE7EE		//B.N	100034BE
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.loc 3 72 0
+	.loc 3 72 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 73 0
+	.loc 3 73 0
+//
+	.loc 3 74 0
+	.loc 3 74 0
+//
+	.loc 3 75 0
+	.loc 3 75 0
+// VARIABLE VXXX
+	.loc 3 76 0
+	.loc 3 76 0
+//CREATE   VXXC  44 ALLOT
+	.loc 3 77 0
+	.loc 3 77 0
+// $55  CONSTANT XXX
+	.loc 3 78 0
+	.loc 3 78 0
+//: zzz
+
+	.global zzz
+zzz:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 79 0
+	.loc 3 79 0
+// $74  VXXC $1c + !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2674		//MOVS	R6, #116
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+20 @ 0x14
+	MOVT	R6, #:upper16:sp_buff+20 @ 0x14
+	.inst.n	0xF116,0x061C	//ADDS.W	R6, R6, #28 @ 0x1C
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 80 0
+	.loc 3 80 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 81 0
+	.loc 3 81 0
+//
+	.loc 3 82 0
+	.loc 3 82 0
+//VARIABLE  HLD
+	.loc 3 83 0
+	.loc 3 83 0
+//VARIABLE  BASE
+	.loc 3 84 0
+	.loc 3 84 0
+//
+	.loc 3 85 0
+	.loc 3 85 0
+//$100 ALLOT
+	.loc 3 86 0
+	.loc 3 86 0
+//CREATE PAD $10 ALLOT
+	.loc 3 87 0
+	.loc 3 87 0
+//
+	.loc 3 88 0
+	.loc 3 88 0
+//: HEX_ 16 BASE ! ;
+
+	.global HEX_
+HEX_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+		MOVS	R0, #16
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 89 0
+	.loc 3 89 0
+//: DECIMAL_ 10 BASE ! ;
+	.inst.n	0xFFFF @ ?????
+
+	.global DECIMAL_
+DECIMAL_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+		MOVS	R0, #10
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 90 0
+	.loc 3 90 0
+//
+	.loc 3 91 0
+	.loc 3 91 0
+//: HOLD ( char -- ) \ 94
+	.inst.n	0xFFFF @ ?????
+
+	.global HOLD
+HOLD:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 92 0
+	.loc 3 92 0
+//  HLD @ 1- DUP HLD ! C!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+64 @ 0x40
+	MOVT	R6, #:upper16:sp_buff+64 @ 0x40
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+64 @ 0x40
+	MOVT	R6, #:upper16:sp_buff+64 @ 0x40
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 93 0
+	.loc 3 93 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 94 0
+	.loc 3 94 0
+//
+	.loc 3 95 0
+	.loc 3 95 0
+//: <# ( -- ) \ 94
+
+	.global lessn
+lessn:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 96 0
+	.loc 3 96 0
+//  PAD 1- HLD !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+328 @ 0x148
+	MOVT	R6, #:upper16:sp_buff+328 @ 0x148
+	.inst.n	0x3E01		//SUBS	R6, #1
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+64 @ 0x40
+	MOVT	R6, #:upper16:sp_buff+64 @ 0x40
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 97 0
+	.loc 3 97 0
+//  0 PAD 1- C!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+328 @ 0x148
+	MOVT	R6, #:upper16:sp_buff+328 @ 0x148
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 98 0
+	.loc 3 98 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 99 0
+	.loc 3 99 0
+//
+	.loc 3 100 0
+	.loc 3 100 0
+//: # ( ud1 -- ud2 ) \ 94
+
+	.global n
+n:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 101 0
+	.loc 3 101 0
+//  0 BASE @ UM/MOD >R BASE @ UM/MOD R>
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFECF	//BL	UMrslMOD
+		PUSH	{R6}
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFEC7	//BL	UMrslMOD
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 102 0
+	.loc 3 102 0
+//  ROT DUP 10 < 0= IF 7 + THEN 48 + 
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260A		//MOVS	R6, #10
+	.inst.n	0xF7FF,0xFCBA	//BL	less
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	n+54 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1DC6		//ADDS	R6, R0, #7
+	.inst.n	0xF116,0x0630	//ADDS.W	R6, R6, #48 @ 0x30
+	.loc 3 103 0
+	.loc 3 103 0
+//  HOLD
+	.inst.n	0xF7FF,0xFFA2	//BL	HOLD
+	.loc 3 104 0
+	.loc 3 104 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 105 0
+	.loc 3 105 0
+//
+	.loc 3 106 0
+	.loc 3 106 0
+//: #S ( ud1 -- ud2 ) \ 94
+	.inst.n	0xFFFF @ ?????
+
+	.global nS
+nS:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 107 0
+	.loc 3 107 0
+//  BEGIN
+	.loc 3 108 0
+	.loc 3 108 0
+//    # 2DUP D0=
+	.inst.n	0xF7FF,0xFFCD	//BL	n
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xF7FF,0xFE9E	//BL	D0equ
+	.loc 3 109 0
+	.loc 3 109 0
+//  UNTIL
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xD0F5		//BEQ.N	100035F6
+	.loc 3 110 0
+	.loc 3 110 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 111 0
+	.loc 3 111 0
+//
+	.loc 3 112 0
+	.loc 3 112 0
+//: #> ( xd -- c-addr u ) \ 94
+
+	.global ngreat
+ngreat:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 113 0
+	.loc 3 113 0
+//  2DROP HLD @ PAD OVER - 1-
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+64 @ 0x40
+	MOVT	R6, #:upper16:sp_buff+64 @ 0x40
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+328 @ 0x148
+	MOVT	R6, #:upper16:sp_buff+328 @ 0x148
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 3 114 0
+	.loc 3 114 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 115 0
+	.loc 3 115 0
+//
+	.loc 3 116 0
+	.loc 3 116 0
+//: SIGN ( n -- ) \ 94
+
+	.global SIGN
+SIGN:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 117 0
+	.loc 3 117 0
+//  0< IF [CHAR] - HOLD THEN
+	.inst.n	0x17F6		//ASRS	R6, R6, #31
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8005	//BEQ.W	SIGN+14 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x262D		//MOVS	R6, #45
+	.inst.n	0xF7FF,0xFF76	//BL	HOLD
+	.loc 3 118 0
+	.loc 3 118 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 119 0
+	.loc 3 119 0
+//
+	.loc 3 120 0
+	.loc 3 120 0
+//: (D.) ( d -- addr len )
+	.inst.n	0xFFFF @ ?????
+
+	.global cDdotcend
+cDdotcend:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 121 0
+	.loc 3 121 0
+//  DUP >R DABS <#
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FF,0xFF07	//BL	DABS
+	.inst.n	0xF7FF,0xFF81	//BL	lessn
+	.loc 3 122 0
+	.loc 3 122 0
+//   #S
+	.inst.n	0xF7FF,0xFFC9	//BL	nS
+	.loc 3 123 0
+	.loc 3 123 0
+//    R> SIGN #>
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF7FF,0xFFE4	//BL	SIGN
+	.inst.n	0xF7FF,0xFFCE	//BL	ngreat
+	.loc 3 124 0
+	.loc 3 124 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 125 0
+	.loc 3 125 0
+//
+	.loc 3 126 0
+	.loc 3 126 0
+//: SPACE BL EMIT ;
+	.inst.n	0xFFFF @ ?????
+
+	.global SPACE
+SPACE:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2620		//MOVS	R6, #32
+	.inst.n	0xF7FF,0xFECC	//BL	EMIT
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 127 0
+	.loc 3 127 0
+//
+	.loc 3 128 0
+	.loc 3 128 0
+//: D. ( d -- ) \ 94 DOUBLE
+	.inst.n	0xFFFF @ ?????
+
+	.global Ddot
+Ddot:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 129 0
+	.loc 3 129 0
+//  (D.) TYPE SPACE ;
+	.inst.n	0xF7FF,0xFFE1	//BL	cDdotcend
+	.inst.n	0xF7FF,0xFF17	//BL	TYPE
+	.inst.n	0xF7FF,0xFFF1	//BL	SPACE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 130 0
+	.loc 3 130 0
+//
+	.loc 3 131 0
+	.loc 3 131 0
+//: S>D  DUP 0< ;
+
+	.global SgreatD
+SgreatD:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x17F6		//ASRS	R6, R6, #31
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 132 0
+	.loc 3 132 0
+//
+	.loc 3 133 0
+	.loc 3 133 0
+//: . ( n -- )  S>D D. ;
+	.inst.n	0xFFFF @ ?????
+
+	.global dot
+dot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFF7	//BL	SgreatD
+	.inst.n	0xF7FF,0xFFED	//BL	Ddot
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 134 0
+	.loc 3 134 0
+//
+	.loc 3 135 0
+	.loc 3 135 0
+//: U. ( u -- )   0 D. ;
+
+	.global Udot
+Udot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FF,0xFFE6	//BL	Ddot
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 136 0
+	.loc 3 136 0
+//
+	.loc 3 137 0
+	.loc 3 137 0
+//: H.  ( u -- ) BASE @ SWAP HEX_ U. BASE ! ;
+	.inst.n	0xFFFF @ ?????
+
+	.global Hdot
+Hdot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF7FF,0xFF18	//BL	HEX_
+	.inst.n	0xF7FF,0xFFEA	//BL	Udot
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 138 0
+	.loc 3 138 0
+//
+	.loc 3 139 0
+	.loc 3 139 0
+//: CR  ( $D EMIT) $A EMIT ;
+
+	.global CR
+CR:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260A		//MOVS	R6, #10
+	.inst.n	0xF7FF,0xFE92	//BL	EMIT
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 140 0
+	.loc 3 140 0
+//
+	.loc 3 141 0
+	.loc 3 141 0
+// 16 CONSTANT CONTEXT-SIZE 
+	.loc 3 142 0
+	.loc 3 142 0
+// CREATE CONTEXT CONTEXT-SIZE 1+ CELLS ALLOT
+	.loc 3 143 0
+	.loc 3 143 0
+// 
+	.loc 3 144 0
+	.loc 3 144 0
+// VARIABLE FORTH-WORDLIST_
+	.loc 3 145 0
+	.loc 3 145 0
+// 
+	.loc 3 146 0
+	.loc 3 146 0
+// VARIABLE CURRENT
+	.loc 3 147 0
+	.loc 3 147 0
+// 
+	.loc 3 148 0
+	.loc 3 148 0
+// : FORTH_ FORTH-WORDLIST_  CONTEXT ! ;
+	.inst.n	0xFFFF @ ?????
+
+	.global FORTH_
+FORTH_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+412 @ 0x19C
+	MOVT	R6, #:upper16:sp_buff+412 @ 0x19C
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 149 0
+	.loc 3 149 0
+//: DEFINITIONS_  ( --- )
+	.inst.n	0xFFFF @ ?????
+
+	.global DEFINITIONS_
+DEFINITIONS_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 150 0
+	.loc 3 150 0
+//\ Set the definitions wordlist to the last wordlist in the search order.
+	.loc 3 151 0
+	.loc 3 151 0
+//  CONTEXT @ CURRENT ! ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 152 0
+	.loc 3 152 0
+//
+	.loc 3 153 0
+	.loc 3 153 0
+//  
+	.loc 3 154 0
+	.loc 3 154 0
+//: COTT
+
+	.global COTT
+COTT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 155 0
+	.loc 3 155 0
+// CONTEXT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.loc 3 156 0
+	.loc 3 156 0
+//  ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 157 0
+	.loc 3 157 0
+//
+	.loc 3 158 0
+	.loc 3 158 0
+//: PPP ;
+
+	.global PPP
+PPP:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 159 0
+	.loc 3 159 0
+//
+	.loc 3 160 0
+	.loc 3 160 0
+//: WORDS_
+
+	.global WORDS_
+WORDS_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 161 0
+	.loc 3 161 0
+//  CONTEXT @ @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 162 0
+	.loc 3 162 0
+//  BEGIN DUP 
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x800F	//BEQ.W	WORDS_+36 
+	.loc 3 163 0
+	.loc 3 163 0
+//  WHILE  DUP COUNT TYPE SPACE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFEA4	//BL	TYPE
+	.inst.n	0xF7FF,0xFF7E	//BL	SPACE
+	.loc 3 164 0
+	.loc 3 164 0
+//  		4 - @
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 165 0
+	.loc 3 165 0
+//  REPEAT
+	.inst.n	0xE7ED		//B.N	1000375E
+	.loc 3 166 0
+	.loc 3 166 0
+//; 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 167 0
+	.loc 3 167 0
+//
+	.loc 3 168 0
+	.loc 3 168 0
+//
+	.loc 3 169 0
+	.loc 3 169 0
+//: ACCEPT ( C-ADDR +N -- +N' ) \ GET LINE FROM TERM'L
+
+	.global ACCEPT
+ACCEPT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 170 0
+	.loc 3 170 0
+//\    BL EMIT 8 EMIT  \ FOR CR DO
+	.loc 3 171 0
+	.loc 3 171 0
+//   OVER + 1- OVER      \ SA EA A
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.loc 3 172 0
+	.loc 3 172 0
+//   BEGIN
+	.loc 3 173 0
+	.loc 3 173 0
+//\ GETXY 2>R  0 0 SETXY .S 2R> SETXY   
+	.loc 3 174 0
+	.loc 3 174 0
+//
+	.loc 3 175 0
+	.loc 3 175 0
+// KEY         \ SA EA A C
+	.inst.n	0xF7FF,0xFE4A	//BL	KEY
+	.loc 3 176 0
+	.loc 3 176 0
+//\  DUP 9 = IF DROP $20 THEN 
+	.loc 3 177 0
+	.loc 3 177 0
+//   DUP 0xD <> OVER 0xA <> AND WHILE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x260D		//MOVS	R6, #13
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x260A		//MOVS	R6, #10
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x803A	//BEQ.W	ACCEPT+B0 
+	.loc 3 178 0
+	.loc 3 178 0
+//       DUP 27 = IF  DROP DUP C@ EMIT  ELSE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x261B		//MOVS	R6, #27
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8005	//BEQ.W	ACCEPT+5A 
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFE1E	//BL	EMIT
+	.inst.n	0xE023		//B.N	10003826
+	.loc 3 179 0
+	.loc 3 179 0
+//       DUP EMIT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xFE19	//BL	EMIT
+	.loc 3 180 0
+	.loc 3 180 0
+//       DUP   8  = IF BL EMIT EMIT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2608		//MOVS	R6, #8
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8012	//BEQ.W	ACCEPT+9A 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2620		//MOVS	R6, #32
+	.inst.n	0xF7FF,0xFE0A	//BL	EMIT
+	.inst.n	0xF7FF,0xFE08	//BL	EMIT
+	.loc 3 181 0
+	.loc 3 181 0
+//                     2- >R OVER 1- R> UMAX ELSE
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF7FF,0xFB7F	//BL	UMAX
+	.inst.n	0xE003		//B.N	10003826
+	.loc 3 182 0
+	.loc 3 182 0
+//\       DUP 9  = IF  DROP DUP 8 SPACE
+	.loc 3 183 0
+	.loc 3 183 0
+//\                    >R OVER R>    \ SA EA SA A
+	.loc 3 184 0
+	.loc 3 184 0
+//\                    TUCK  -   \ SA EA SA A-SA
+	.loc 3 185 0
+	.loc 3 185 0
+//\                    8 / 1+ 8 * +  ELSE
+	.loc 3 186 0
+	.loc 3 186 0
+//	OVER  C! THEN THEN \ THEN
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 187 0
+	.loc 3 187 0
+//	1+ OVER UMIN  \ SA EA A
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0xF7FF,0xFB6A	//BL	UMIN
+	.loc 3 188 0
+	.loc 3 188 0
+//   REPEAT                          \ SA EA A C
+	.inst.n	0xE7AF		//B.N	10003794
+	.loc 3 189 0
+	.loc 3 189 0
+//
+	.loc 3 190 0
+	.loc 3 190 0
+//\ GETXY 2>R  0 1 SETXY $4 COLOR! .S GREEN COLOR! 2R> SETXY   
+	.loc 3 191 0
+	.loc 3 191 0
+//
+	.loc 3 192 0
+	.loc 3 192 0
+//   DROP NIP SWAP -
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 193 0
+	.loc 3 193 0
+//
+	.loc 3 194 0
+	.loc 3 194 0
+// \ CR 
+	.loc 3 195 0
+	.loc 3 195 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 196 0
+	.loc 3 196 0
+//
+	.loc 3 197 0
+	.loc 3 197 0
+//VARIABLE TIB 200 ALLOT
+	.loc 3 198 0
+	.loc 3 198 0
+//VARIABLE #TIB
+	.loc 3 199 0
+	.loc 3 199 0
+//VARIABLE ATIB
+	.loc 3 200 0
+	.loc 3 200 0
+//VARIABLE >IN
+	.loc 3 201 0
+	.loc 3 201 0
+//
+	.loc 3 202 0
+	.loc 3 202 0
+//
+	.loc 3 203 0
+	.loc 3 203 0
+//: SOURCE  ( c-addr u -- )
+
+	.global SOURCE
+SOURCE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 204 0
+	.loc 3 204 0
+// TIB #TIB @ ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+420 @ 0x1A4
+	MOVT	R6, #:upper16:sp_buff+420 @ 0x1A4
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 205 0
+	.loc 3 205 0
+//
+	.loc 3 206 0
+	.loc 3 206 0
+//: SOURCE! ( c-addr u -- ) 
+	.inst.n	0xFFFF @ ?????
+
+	.global SOURCEsave
+SOURCEsave:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 207 0
+	.loc 3 207 0
+//  #TIB ! ATIB ! ;
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
+		STR	R0, [R6, #0]
+	MOVW	R6, #:lower16:sp_buff+628 @ 0x274
+	MOVT	R6, #:upper16:sp_buff+628 @ 0x274
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 208 0
+	.loc 3 208 0
+//
+	.loc 3 209 0
+	.loc 3 209 0
+//
+	.loc 3 210 0
+	.loc 3 210 0
+//: EndOfChunk ( -- flag )
+	.inst.n	0xFFFF @ ?????
+
+	.global EndOfChunk
+EndOfChunk:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 211 0
+	.loc 3 211 0
+// >IN @ SOURCE NIP < 0=        \ >IN не меньше, чем длина чанка
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFD6	//BL	SOURCE
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0xF7FF,0xFB58	//BL	less
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 212 0
+	.loc 3 212 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 213 0
+	.loc 3 213 0
+//
+	.loc 3 214 0
+	.loc 3 214 0
+//: IsDelimiter ( char -- flag )
+
+	.global IsDelimiter
+IsDelimiter:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 215 0
+	.loc 3 215 0
+// BL 1+ < ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2621		//MOVS	R6, #33
+	.inst.n	0xF7FF,0xFB4F	//BL	less
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 216 0
+	.loc 3 216 0
+//
+	.loc 3 217 0
+	.loc 3 217 0
+//
+	.loc 3 218 0
+	.loc 3 218 0
+//: CharAddr ( -- c-addr )
+	.inst.n	0xFFFF @ ?????
+
+	.global CharAddr
+CharAddr:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 219 0
+	.loc 3 219 0
+//  SOURCE DROP >IN @ +
+	.inst.n	0xF7FF,0xFFC5	//BL	SOURCE
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.loc 3 220 0
+	.loc 3 220 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 221 0
+	.loc 3 221 0
+//
+	.loc 3 222 0
+	.loc 3 222 0
+//: PeekChar ( -- char )
+	.inst.n	0xFFFF @ ?????
+
+	.global PeekChar
+PeekChar:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 223 0
+	.loc 3 223 0
+//  CharAddr C@       \ символ из текущего значения >IN
+	.inst.n	0xF7FF,0xFFF1	//BL	CharAddr
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 3 224 0
+	.loc 3 224 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 225 0
+	.loc 3 225 0
+//
+	.loc 3 226 0
+	.loc 3 226 0
+//: GetChar ( -- char flag )
+	.inst.n	0xFFFF @ ?????
+
+	.global GetChar
+GetChar:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 227 0
+	.loc 3 227 0
+//	EndOfChunk
+	.inst.n	0xF7FF,0xFFD3	//BL	EndOfChunk
+	.loc 3 228 0
+	.loc 3 228 0
+//	IF 0 FALSE
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8007	//BEQ.W	GetChar+1C 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 229 0
+	.loc 3 229 0
+//	ELSE PeekChar TRUE THEN ;
+	.inst.n	0xE005		//B.N	10003900
+	.inst.n	0xF7FF,0xFFEA	//BL	PeekChar
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 230 0
+	.loc 3 230 0
+//
+	.loc 3 231 0
+	.loc 3 231 0
+//: OnDelimiter ( -- flag )
+	.inst.n	0xFFFF @ ?????
+
+	.global OnDelimiter
+OnDelimiter:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 232 0
+	.loc 3 232 0
+//	GetChar SWAP IsDelimiter AND ;
+	.inst.n	0xF7FF,0xFFE7	//BL	GetChar
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF7FF,0xFFC8	//BL	IsDelimiter
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 233 0
+	.loc 3 233 0
+//
+	.loc 3 234 0
+	.loc 3 234 0
+//
+	.loc 3 235 0
+	.loc 3 235 0
+//: SkipDelimiters ( -- ) \ пропустить пробельные символы
+	.inst.n	0xFFFF @ ?????
+
+	.global SkipDelimiters
+SkipDelimiters:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 236 0
+	.loc 3 236 0
+//	BEGIN	OnDelimiter
+	.inst.n	0xF7FF,0xFFF1	//BL	OnDelimiter
+	.loc 3 237 0
+	.loc 3 237 0
+//	WHILE	>IN 1+!
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800B	//BEQ.W	SkipDelimiters+24 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 238 0
+	.loc 3 238 0
+//	REPEAT \ >IN @   T>IN_WORD !
+	.inst.n	0xE7EE		//B.N	1000391E
+	.loc 3 239 0
+	.loc 3 239 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 240 0
+	.loc 3 240 0
+//
+	.loc 3 241 0
+	.loc 3 241 0
+//: OnNotDelimiter ( -- flag )
+	.inst.n	0xFFFF @ ?????
+
+	.global OnNotDelimiter
+OnNotDelimiter:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 242 0
+	.loc 3 242 0
+//  GetChar SWAP IsDelimiter 0= AND ;
+	.inst.n	0xF7FF,0xFFC7	//BL	GetChar
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF7FF,0xFFA8	//BL	IsDelimiter
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 243 0
+	.loc 3 243 0
+//
+	.loc 3 244 0
+	.loc 3 244 0
+//: SkipWord ( -- ) \ пропустить непробельные символы
+	.inst.n	0xFFFF @ ?????
+
+	.global SkipWord
+SkipWord:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 245 0
+	.loc 3 245 0
+// BEGIN	OnNotDelimiter
+	.inst.n	0xF7FF,0xFFEF	//BL	OnNotDelimiter
+	.loc 3 246 0
+	.loc 3 246 0
+// WHILE	>IN 1+!
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800B	//BEQ.W	SkipWord+24 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 247 0
+	.loc 3 247 0
+// REPEAT ;
+	.inst.n	0xE7EE		//B.N	10003962
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 248 0
+	.loc 3 248 0
+//
+	.loc 3 249 0
+	.loc 3 249 0
+//: ParseWord ( -- c-addr u )
+	.inst.n	0xFFFF @ ?????
+
+	.global ParseWord
+ParseWord:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 250 0
+	.loc 3 250 0
+// CharAddr >IN @  SkipWord
+	.inst.n	0xF7FF,0xFF93	//BL	CharAddr
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFE0	//BL	SkipWord
+	.loc 3 251 0
+	.loc 3 251 0
+// >IN @ - NEGATE ;
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 252 0
+	.loc 3 252 0
+//
+	.loc 3 253 0
+	.loc 3 253 0
+//: PARSE-NAME ( -- c-addr u )
+
+	.global PARSEsubNAME
+PARSEsubNAME:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 254 0
+	.loc 3 254 0
+//  SkipDelimiters
+	.inst.n	0xF7FF,0xFFB3	//BL	SkipDelimiters
+	.loc 3 255 0
+	.loc 3 255 0
+//  ParseWord
+	.inst.n	0xF7FF,0xFFE7	//BL	ParseWord
+	.loc 3 256 0
+	.loc 3 256 0
+//  >IN @ 1+ #TIB @ MIN >IN !   \ для совместимости с spf3.16
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFA8C	//BL	MIN
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 257 0
+	.loc 3 257 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 258 0
+	.loc 3 258 0
+//
+	.loc 3 259 0
+	.loc 3 259 0
+//: SkipUpTo \ ( char -- )
+
+	.global SkipUpTo
+SkipUpTo:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 260 0
+	.loc 3 260 0
+//  BEGIN
+	.loc 3 261 0
+	.loc 3 261 0
+//    DUP GetChar >R <> R> AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xFF71	//BL	GetChar
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 262 0
+	.loc 3 262 0
+//  WHILE
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800B	//BEQ.W	SkipUpTo+3C 
+	.loc 3 263 0
+	.loc 3 263 0
+//    >IN 1+!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 264 0
+	.loc 3 264 0
+//  REPEAT DROP
+	.inst.n	0xE7E2		//B.N	100039EE
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 265 0
+	.loc 3 265 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 266 0
+	.loc 3 266 0
+//
+	.loc 3 267 0
+	.loc 3 267 0
+//
+	.loc 3 268 0
+	.loc 3 268 0
+//: PARSE_ \ ( char "ccc<char>" -- c-addr u ) \ 94 CORE EXT
+
+	.global PARSE_
+PARSE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 269 0
+	.loc 3 269 0
+//  CharAddr >IN @
+	.inst.n	0xF7FF,0xFF41	//BL	CharAddr
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 270 0
+	.loc 3 270 0
+//  ROT
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.loc 3 271 0
+	.loc 3 271 0
+// SkipUpTo
+	.inst.n	0xF7FF,0xFFD0	//BL	SkipUpTo
+	.loc 3 272 0
+	.loc 3 272 0
+//  >IN @ - NEGATE
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.loc 3 273 0
+	.loc 3 273 0
+//  >IN 1+!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 274 0
+	.loc 3 274 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 275 0
+	.loc 3 275 0
+//
+	.loc 3 276 0
+	.loc 3 276 0
+//: QUERY	( -- )	\ ACCEPT A LINE OF INPUT FROM THE USER TO TIB
+
+	.global QUERY
+QUERY:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 277 0
+	.loc 3 277 0
+//	TIB 180 ACCEPT #TIB !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+420 @ 0x1A4
+	MOVT	R6, #:upper16:sp_buff+420 @ 0x1A4
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x26B4		//MOVS	R6, #180
+	.inst.n	0xF7FF,0xFE7E	//BL	ACCEPT
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+		MOVS	R0, #0
+	.loc 3 278 0
+	.loc 3 278 0
+//	0 >IN !  0 SOURCE + C! ;
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FF,0xFECF	//BL	SOURCE
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 279 0
+	.loc 3 279 0
+//
+	.loc 3 280 0
+	.loc 3 280 0
+//: REFILL ( -- flag ) \ 94 FILE EXT
+	.inst.n	0xFFFF @ ?????
+
+	.global REFILL
+REFILL:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 281 0
+	.loc 3 281 0
+//  QUERY TRUE
+	.inst.n	0xF7FF,0xFFDB	//BL	QUERY
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
+	.loc 3 282 0
+	.loc 3 282 0
+// \ ." <"  SOURCE 0 ?DO COUNT H. LOOP DROP ." >"
+	.loc 3 283 0
+	.loc 3 283 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 284 0
+	.loc 3 284 0
+//: COMPARE ( addr1 u1 addr2 u2 --- diff )
+
+	.global COMPARE
+COMPARE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 285 0
+	.loc 3 285 0
+//\ Compare two strings. diff is negative if addr1 u1 is smaller, 0 if it
+	.loc 3 286 0
+	.loc 3 286 0
+//\ is equal and positive if it is greater than addr2 u2.
+	.loc 3 287 0
+	.loc 3 287 0
+//
+	.loc 3 288 0
+	.loc 3 288 0
+//  ROT 2DUP - >R        
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 289 0
+	.loc 3 289 0
+//  MIN DUP IF
+	.inst.n	0xF7FF,0xFA0A	//BL	MIN
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x8034	//BEQ.W	COMPARE+8A 
+	.loc 3 290 0
+	.loc 3 290 0
+//   >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 291 0
+	.loc 3 291 0
+//   BEGIN
+	.loc 3 292 0
+	.loc 3 292 0
+//    OVER   C@   OVER  C@ -
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 293 0
+	.loc 3 293 0
+//    IF
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800D	//BEQ.W	COMPARE+5C 
+	.loc 3 294 0
+	.loc 3 294 0
+//     SWAP C@ SWAP C@ - RDROP RDROP EXIT
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 295 0
+	.loc 3 295 0
+//    THEN 
+	.loc 3 296 0
+	.loc 3 296 0
+//    1+ SWAP 1+ SWAP
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 297 0
+	.loc 3 297 0
+//    R> 1- DUP >R 0=
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 298 0
+	.loc 3 298 0
+//   UNTIL R>
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xD0D0		//BEQ.N	10003AEA
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 299 0
+	.loc 3 299 0
+//  THEN DROP
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 300 0
+	.loc 3 300 0
+//  2DROP R> NEGATE
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4276		//NEGS	R6, R6
+	.loc 3 301 0
+	.loc 3 301 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 302 0
+	.loc 3 302 0
+//
+	.loc 3 303 0
+	.loc 3 303 0
+//: UPC  ( c -- c' )
+
+	.global UPC
+UPC:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 304 0
+	.loc 3 304 0
+//   DUP 'Z' U>
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x265A		//MOVS	R6, #90
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 305 0
+	.loc 3 305 0
+//   IF  0xDF AND
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8003	//BEQ.W	UPC+1A 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x06DF	//ANDS.W	R6, R0, #223 @ 0xDF
+	.loc 3 306 0
+	.loc 3 306 0
+//   THEN   ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 307 0
+	.loc 3 307 0
+//
+	.loc 3 308 0
+	.loc 3 308 0
+//: UCOMPARE ( addr1 u1 addr2 u2 --- diff )
+
+	.global UCOMPARE
+UCOMPARE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 309 0
+	.loc 3 309 0
+//\ Compare two strings. diff is negative if addr1 u1 is smaller, 0 if it
+	.loc 3 310 0
+	.loc 3 310 0
+//\ is equal and positive if it is greater than addr2 u2.
+	.loc 3 311 0
+	.loc 3 311 0
+//
+	.loc 3 312 0
+	.loc 3 312 0
+//  ROT 2DUP - >R        
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 313 0
+	.loc 3 313 0
+//  MIN DUP IF
+	.inst.n	0xF7FF,0xF9B0	//BL	MIN
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x803C	//BEQ.W	UCOMPARE+9A 
+	.loc 3 314 0
+	.loc 3 314 0
+//   >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 315 0
+	.loc 3 315 0
+//   BEGIN
+	.loc 3 316 0
+	.loc 3 316 0
+//    OVER C@ UPC OVER C@ UPC - IF
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFD9	//BL	UPC
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFD3	//BL	UPC
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8011	//BEQ.W	UCOMPARE+6C 
+	.loc 3 317 0
+	.loc 3 317 0
+//     SWAP C@ UPC SWAP C@ UPC -  RDROP RDROP  EXIT
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFC7	//BL	UPC
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFC1	//BL	UPC
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 318 0
+	.loc 3 318 0
+//    THEN 
+	.loc 3 319 0
+	.loc 3 319 0
+//    1+ SWAP 1+ SWAP
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 320 0
+	.loc 3 320 0
+//    R> 1- DUP >R 0=
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 321 0
+	.loc 3 321 0
+//   UNTIL R>
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xD0C8		//BEQ.N	10003B9E
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 322 0
+	.loc 3 322 0
+//  THEN DROP
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 323 0
+	.loc 3 323 0
+//  DROP DROP R> NEGATE
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4276		//NEGS	R6, R6
+	.loc 3 324 0
+	.loc 3 324 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 325 0
+	.loc 3 325 0
+//
+	.loc 3 326 0
+	.loc 3 326 0
+//: NAME> COUNT +  1+ 1 OR ;
+	.inst.n	0xFFFF @ ?????
+
+	.global NAMEgreat
+NAMEgreat:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 327 0
+	.loc 3 327 0
+//: NAME>F 6 - ;
+
+	.global NAMEgreatF
+NAMEgreatF:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2606		//MOVS	R6, #6
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 328 0
+	.loc 3 328 0
+//
+	.loc 3 329 0
+	.loc 3 329 0
+//: SEARCH-WORDLIST ( c-addr u wid --- 0 | xt 1 xt -1)
+	.inst.n	0xFFFF @ ?????
+
+	.global SEARCHsubWORDLIST
+SEARCHsubWORDLIST:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 330 0
+	.loc 3 330 0
+//\ Search the wordlist with address wid for the name c-addr u.
+	.loc 3 331 0
+	.loc 3 331 0
+//\ Return 0 if not found, the execution token xt and -1 for non-immediate
+	.loc 3 332 0
+	.loc 3 332 0
+//\ words and xt and 1 for immediate words.
+	.loc 3 333 0
+	.loc 3 333 0
+//	@ 
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 334 0
+	.loc 3 334 0
+//	BEGIN   DUP 
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x802F	//BEQ.W	SEARCHsubWORDLIST+68 
+	.loc 3 335 0
+	.loc 3 335 0
+//	WHILE
+	.loc 3 336 0
+	.loc 3 336 0
+//	>R 2DUP R@ COUNT \ 2DUP TYPE \ KEY DROP
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 3 337 0
+	.loc 3 337 0
+//\    CASE-INS @ IF UCOMPARE ELSE COMPARE THEN  0=
+	.loc 3 338 0
+	.loc 3 338 0
+//    UCOMPARE 0=
+	.inst.n	0xF7FF,0xFF87	//BL	UCOMPARE
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 339 0
+	.loc 3 339 0
+//		IF	2DROP
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8014	//BEQ.W	SEARCHsubWORDLIST+58 
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.loc 3 340 0
+	.loc 3 340 0
+//			R@ NAME>
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0xF7FF,0xFFD0	//BL	NAMEgreat
+	.loc 3 341 0
+	.loc 3 341 0
+//			R> NAME>F W@
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF7FF,0xFFD7	//BL	NAMEgreatF
+	.inst.n	0x8836		//LDRH	R6, [R6, #0]
+	.loc 3 342 0
+	.loc 3 342 0
+//\			." ZZ=<" 2DUP HH. HH. ." >"
+	.loc 3 343 0
+	.loc 3 343 0
+//			 1 AND
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x0601	//ANDS.W	R6, R0, #1 
+	.loc 3 344 0
+	.loc 3 344 0
+//			  1- 1 OR
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 345 0
+	.loc 3 345 0
+//			 EXIT
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 346 0
+	.loc 3 346 0
+//		THEN 	R> 4 - @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 347 0
+	.loc 3 347 0
+//	REPEAT
+	.inst.n	0xE7CD		//B.N	10003C48
+	.loc 3 348 0
+	.loc 3 348 0
+//	2DROP DROP 0 \ Not found.
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 349 0
+	.loc 3 349 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 350 0
+	.loc 3 350 0
+//
+	.loc 3 351 0
+	.loc 3 351 0
+//: 2NIP  >R NIP NIP R> ;
+	.inst.n	0xFFFF @ ?????
+
+	.global _2NIP
+_2NIP:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 352 0
+	.loc 3 352 0
+//
+	.loc 3 353 0
+	.loc 3 353 0
+//: SFIND ( addr len --- addr len 0| xt 1|xt -1 )
+	.inst.n	0xFFFF @ ?????
+
+	.global SFIND
+SFIND:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 354 0
+	.loc 3 354 0
+//\ Search all word lists in the search order for the name in the
+	.loc 3 355 0
+	.loc 3 355 0
+//\ counted string at c-addr. If not found return the name address and 0.
+	.loc 3 356 0
+	.loc 3 356 0
+//\ If found return the execution token xt and -1 if the word is non-immediate
+	.loc 3 357 0
+	.loc 3 357 0
+//\ and 1 if the word is immediate.
+	.loc 3 358 0
+	.loc 3 358 0
+//  CONTEXT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.loc 3 359 0
+	.loc 3 359 0
+//  BEGIN	DUP @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 360 0
+	.loc 3 360 0
+//  WHILE	>R
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x801C	//BEQ.W	SFIND+54 
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 361 0
+	.loc 3 361 0
+//	2DUP  R@ @ SEARCH-WORDLIST ?DUP
+	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFA5	//BL	SEARCHsubWORDLIST
+	.inst.n	0xF7FF,0xF9E6	//BL	queDUP
+	.loc 3 362 0
+	.loc 3 362 0
+//	IF    RDROP 2NIP  EXIT \ Exit if found.
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	SFIND+46 
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0xF7FF,0xFFD4	//BL	_2NIP
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 363 0
+	.loc 3 363 0
+//	THEN
+	.loc 3 364 0
+	.loc 3 364 0
+//	R> CELL+
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 3 365 0
+	.loc 3 365 0
+//  REPEAT @
+	.inst.n	0xE7DC		//B.N	10003CD6
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 366 0
+	.loc 3 366 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 367 0
+	.loc 3 367 0
+//
+	.loc 3 368 0
+	.loc 3 368 0
+//VARIABLE STATE
+	.loc 3 369 0
+	.loc 3 369 0
+// VARIABLE DP_
+	.loc 3 370 0
+	.loc 3 370 0
+//
+	.loc 3 371 0
+	.loc 3 371 0
+//: ALLOT_ DP_ +! ;
+
+	.global ALLOT_
+ALLOT_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1840		//ADDS	R0, R0, R1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 372 0
+	.loc 3 372 0
+//
+	.loc 3 373 0
+	.loc 3 373 0
+//: HERE_ DP_ @ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global HERE_
+HERE_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 374 0
+	.loc 3 374 0
+//
+	.loc 3 375 0
+	.loc 3 375 0
+//: ,_ HERE_ ! 4 ALLOT_ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global com_
+com_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFF3	//BL	HERE_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0xF7FF,0xFFE0	//BL	ALLOT_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 376 0
+	.loc 3 376 0
+//
+	.loc 3 377 0
+	.loc 3 377 0
+//: W,_ HERE_ W! 2 ALLOT_ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global Wcom_
+Wcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFE9	//BL	HERE_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x8030		//STRH	R0, [R6, #0]
+	.inst.n	0x2602		//MOVS	R6, #2
+	.inst.n	0xF7FF,0xFFD6	//BL	ALLOT_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 378 0
+	.loc 3 378 0
+//
+	.loc 3 379 0
+	.loc 3 379 0
+//: C,_ HERE_ C! 1 ALLOT_ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global Ccom_
+Ccom_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFDF	//BL	HERE_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0xF7FF,0xFFCC	//BL	ALLOT_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 380 0
+	.loc 3 380 0
+//
+	.loc 3 381 0
+	.loc 3 381 0
+//: LMOVWT,
+	.inst.n	0xFFFF @ ?????
+
+	.global LMOVWTcom
+LMOVWTcom:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 382 0
+	.loc 3 382 0
+//  OVER $F000 AND 12 >> OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x4670	//MOV.W	R6, #61440 @ 0xF000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0B06		//LSRS	R6, R0, #12
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 383 0
+	.loc 3 383 0
+//  OVER $800 AND 1 >> OR W,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x6600	//MOV.W	R6, #2048 @ 0x800
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0846		//LSRS	R6, R0, #1
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FF,0xFFD5	//BL	Wcom_
+	.loc 3 384 0
+	.loc 3 384 0
+//  DUP $FF AND ROT 8 << OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x06FF	//ANDS.W	R6, R0, #255 @ 0xFF
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x0236		//LSLS	R6, R6, #8
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 385 0
+	.loc 3 385 0
+//  SWAP $700 AND 4 <<
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x66E0	//MOV.W	R6, #1792 @ 0x700
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0106		//LSLS	R6, R0, #4
+	.loc 3 386 0
+	.loc 3 386 0
+//  OR W,_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FF,0xFFBD	//BL	Wcom_
+	.loc 3 387 0
+	.loc 3 387 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 388 0
+	.loc 3 388 0
+//
+	.loc 3 389 0
+	.loc 3 389 0
+//: LIT,_ ( n -- )
+
+	.global LITcom_
+LITcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 390 0
+	.loc 3 390 0
+// $6D04F847 ,_  \ STR.W   R6, [R7, #-4]! \ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x0647	//MOVW	R6, #:lower16:1829042247 @ 0x6D04F847
+	.inst.n	0xF6C6,0x5604	//MOVT	R6, #:upper16:1829042247 @ 0x6D04F847
+	.inst.n	0xF7FF,0xFFA9	//BL	com_
+	.loc 3 391 0
+	.loc 3 391 0
+//  DUP $FFFF AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF64F,0x76FF	//MOVW	R6, #65535 @ 0xFFFF
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 392 0
+	.loc 3 392 0
+//   6 SWAP 0xf240 LMOVWT, \ MOVW,
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2006		//MOVS	R0, #6
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24F,0x2640	//MOVW	R6, #62016 @ 0xF240
+	.inst.n	0xF7FF,0xFFB7	//BL	LMOVWTcom
+	.loc 3 393 0
+	.loc 3 393 0
+//  16 RSHIFT
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x0C06		//LSRS	R6, R0, #16
+	.loc 3 394 0
+	.loc 3 394 0
+//   6 SWAP 0xf2C0 LMOVWT, \ MOVT,
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2006		//MOVS	R0, #6
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24F,0x26C0	//MOVW	R6, #62144 @ 0xF2C0
+	.inst.n	0xF7FF,0xFFAB	//BL	LMOVWTcom
+	.loc 3 395 0
+	.loc 3 395 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 396 0
+	.loc 3 396 0
+//
+	.loc 3 397 0
+	.loc 3 397 0
+//: NCOMPILE, ( addr -- )
+
+	.global NCOMPILEcom
+NCOMPILEcom:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 398 0
+	.loc 3 398 0
+// HERE_ CELL+
+	.inst.n	0xF7FF,0xFF7F	//BL	HERE_
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 3 399 0
+	.loc 3 399 0
+// - 2/
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.loc 3 400 0
+	.loc 3 400 0
+//  DUP 0x800000 AND   0=
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x0600	//MOV.W	R6, #8388608 @ 0x800000
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 401 0
+	.loc 3 401 0
+//   IF 0x600000 XOR THEN
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	NCOMPILEcom+30 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x06C0	//MOV.W	R6, #6291456 @ 0x600000
+	.inst.n	0x4046		//EORS	R6, R0
+	.loc 3 402 0
+	.loc 3 402 0
+//
+	.loc 3 403 0
+	.loc 3 403 0
+//  DUP    0x7FF AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF240,0x76FF	//MOVW	R6, #2047 @ 0x7FF
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 404 0
+	.loc 3 404 0
+// OVER 0x1FF800 AND  5 <<  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF64F,0x0600	//MOVW	R6, #:lower16:2095104 @ 0x1FF800
+	.inst.n	0xF2C0,0x061F	//MOVT	R6, #:upper16:2095104 @ 0x1FF800
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0146		//LSLS	R6, R0, #5
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 405 0
+	.loc 3 405 0
+// OVER 0x200000 AND 10 >>  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x1600	//MOV.W	R6, #2097152 @ 0x200000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0A86		//LSRS	R6, R0, #10
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 406 0
+	.loc 3 406 0
+// OVER 0x400000 AND  9 >>  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x0680	//MOV.W	R6, #4194304 @ 0x400000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0A46		//LSRS	R6, R0, #9
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 407 0
+	.loc 3 407 0
+// SWAP 0x800000 AND  3 <<  OR
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x0600	//MOV.W	R6, #8388608 @ 0x800000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x00C6		//LSLS	R6, R0, #3
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4330		//ORRS	R0, R6
+	.loc 3 408 0
+	.loc 3 408 0
+//    0xf000D000 OR
+	.inst.n	0xF24D,0x0600	//MOVW	R6, #:lower16:4026585088 @ 0xF000D000
+	.inst.n	0xF2CF,0x0600	//MOVT	R6, #:upper16:4026585088 @ 0xF000D000
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 409 0
+	.loc 3 409 0
+//	DUP 16 >>  W,_ W,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x0C06		//LSRS	R6, R0, #16
+	.inst.n	0xF7FF,0xFF43	//BL	Wcom_
+	.inst.n	0xF7FF,0xFF41	//BL	Wcom_
+	.loc 3 410 0
+	.loc 3 410 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 411 0
+	.loc 3 411 0
+//
+	.loc 3 412 0
+	.loc 3 412 0
+//: COMPILE,_
+
+	.global COMPILEcom_
+COMPILEcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 413 0
+	.loc 3 413 0
+//  DUP HERE_ CELL+ - ABS 0x7FFFFF INVERT AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xFF27	//BL	HERE_
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF7FF,0xF801	//BL	ABS
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x76FF	//MOVW	R6, #:lower16:8388607 @ 0x7FFFFF
+	.inst.n	0xF2C0,0x067F	//MOVT	R6, #:upper16:8388607 @ 0x7FFFFF
+	.inst.n	0x43F6		//MVNS	R6, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 414 0
+	.loc 3 414 0
+// IF
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8023	//BEQ.W	COMPILEcom_+76 
+	.loc 3 415 0
+	.loc 3 415 0
+//
+	.loc 3 416 0
+	.loc 3 416 0
+//  DUP $FFFF AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF64F,0x76FF	//MOVW	R6, #65535 @ 0xFFFF
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 417 0
+	.loc 3 417 0
+//   0 SWAP 0xf240 LMOVWT, \ MOVW,
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2000		//MOVS	R0, #0
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24F,0x2640	//MOVW	R6, #62016 @ 0xF240
+	.inst.n	0xF7FF,0xFF2C	//BL	LMOVWTcom
+	.loc 3 418 0
+	.loc 3 418 0
+//  16 RSHIFT
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x0C06		//LSRS	R6, R0, #16
+	.loc 3 419 0
+	.loc 3 419 0
+//   0 SWAP 0xf2C0 LMOVWT, \ MOVT,
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2000		//MOVS	R0, #0
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24F,0x26C0	//MOVW	R6, #62144 @ 0xF2C0
+	.inst.n	0xF7FF,0xFF20	//BL	LMOVWTcom
+	.loc 3 420 0
+	.loc 3 420 0
+//    $4780	W,_ \	BLX	R0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF44F,0x468F	//MOV.W	R6, #18304 @ 0x4780
+	.inst.n	0xF7FF,0xFF06	//BL	Wcom_
+	.loc 3 421 0
+	.loc 3 421 0
+// ELSE   NCOMPILE,
+	.inst.n	0xE001		//B.N	10003F5E
+	.inst.n	0xF7FF,0xFF6D	//BL	NCOMPILEcom
+	.loc 3 422 0
+	.loc 3 422 0
+// THEN
+	.loc 3 423 0
+	.loc 3 423 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 424 0
+	.loc 3 424 0
+//
+	.loc 3 425 0
+	.loc 3 425 0
+//
+	.loc 3 426 0
+	.loc 3 426 0
+//: 2LITERAL_ STATE @ IF SWAP LIT,_ LIT,_ THEN ;
+
+	.global _2LITERAL_
+_2LITERAL_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8007	//BEQ.W	_2LITERAL_+26 
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF7FF,0xFF35	//BL	LITcom_
+	.inst.n	0xF7FF,0xFF33	//BL	LITcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 427 0
+	.loc 3 427 0
+//:  LITERAL_ STATE @ IF LIT,_ THEN ;
+
+	.global LITERAL_
+LITERAL_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	LITERAL_+1C 
+	.inst.n	0xF7FF,0xFF24	//BL	LITcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 428 0
+	.loc 3 428 0
+//
+	.loc 3 429 0
+	.loc 3 429 0
+//: DIGIT ( C, N1 -> N2, TF / FF ) 
+	.inst.n	0xFFFF @ ?????
+
+	.global DIGIT
+DIGIT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 430 0
+	.loc 3 430 0
+//\ N2 - значение литеры C как
+	.loc 3 431 0
+	.loc 3 431 0
+//\ цифры в системе счисления по основанию N1
+	.loc 3 432 0
+	.loc 3 432 0
+//   >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x2630		//MOVS	R6, #48
+	.loc 3 433 0
+	.loc 3 433 0
+//   [CHAR] 0 - 10 OVER U<
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x200A		//MOVS	R0, #10
+	.inst.n	0x1B80		//SUBS	R0, R0, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 434 0
+	.loc 3 434 0
+//   IF 
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x802F	//BEQ.W	DIGIT+78 
+	.loc 3 435 0
+	.loc 3 435 0
+//      DUP [CHAR] A [CHAR] 0 -     < IF  RDROP DROP 0 EXIT      THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2041		//MOVS	R0, #65
+	.inst.n	0x2630		//MOVS	R6, #48
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF7FE,0xFFBD	//BL	less
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8003	//BEQ.W	DIGIT+3A 
+	.inst.n	0xB001		//ADD	SP, #4
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 436 0
+	.loc 3 436 0
+//      DUP [CHAR] a [CHAR] 0 -  1- > IF [CHAR] a  [CHAR] A - -  THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2061		//MOVS	R0, #97
+	.inst.n	0x2630		//MOVS	R6, #48
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF7FE,0xFFA5	//BL	great
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8007	//BEQ.W	DIGIT+64 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2061		//MOVS	R0, #97
+	.inst.n	0x2641		//MOVS	R6, #65
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 437 0
+	.loc 3 437 0
+//          [CHAR] A [CHAR] 0 - 10 - -
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2041		//MOVS	R0, #65
+	.inst.n	0x2630		//MOVS	R6, #48
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x260A		//MOVS	R6, #10
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 438 0
+	.loc 3 438 0
+//   THEN R> OVER U> DUP 0= IF NIP THEN ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8001	//BEQ.W	DIGIT+96 
+	.inst.n	0x3704		//ADDS	R7, #4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 439 0
+	.loc 3 439 0
+//
+	.loc 3 440 0
+	.loc 3 440 0
+//VARIABLE HANDLER
+	.loc 3 441 0
+	.loc 3 441 0
+//
+	.loc 3 442 0
+	.loc 3 442 0
+//: CATCH ( i*x xt -- j*x 0 | i*x n ) \ 94 EXCEPTION
+
+	.global CATCH
+CATCH:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 443 0
+	.loc 3 443 0
+//  SP@ >R  HANDLER @ >R
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x463E		//MOV	R6, R7
+		PUSH	{R6}
+	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
+	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 444 0
+	.loc 3 444 0
+//  RP@ HANDLER !
+	.inst.n	0xF7FE,0xFEBC	//BL	RPload
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
+	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 445 0
+	.loc 3 445 0
+//  EXECUTE
+	.inst.n	0xF7FE,0xFEE5	//BL	EXECUTE
+	.loc 3 446 0
+	.loc 3 446 0
+//  R> HANDLER !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
+	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 447 0
+	.loc 3 447 0
+//  RDROP
+	.inst.n	0xB001		//ADD	SP, #4
+	.loc 3 448 0
+	.loc 3 448 0
+//  0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 449 0
+	.loc 3 449 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 450 0
+	.loc 3 450 0
+//
+	.loc 3 451 0
+	.loc 3 451 0
+//: THROW ( k*x n -- k*x | i*x n ) \ 94 EXCEPTION  
+
+	.global THROW
+THROW:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 452 0
+	.loc 3 452 0
+//  ?DUP
+	.inst.n	0xF7FF,0xF81C	//BL	queDUP
+	.loc 3 453 0
+	.loc 3 453 0
+//  IF HANDLER @ 
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8024	//BEQ.W	THROW+56 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
+	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 454 0
+	.loc 3 454 0
+//     ?DUP
+	.inst.n	0xF7FF,0xF80F	//BL	queDUP
+	.loc 3 455 0
+	.loc 3 455 0
+//     IF RP!
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8017	//BEQ.W	THROW+56 
+	.inst.n	0xF7FE,0xFE92	//BL	RPsave
+	.loc 3 456 0
+	.loc 3 456 0
+//        R> HANDLER !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
+	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 3 457 0
+	.loc 3 457 0
+//        R> SWAP >R
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 458 0
+	.loc 3 458 0
+//        SP! DROP R> \ ." TH=" DUP X. CR
+	.inst.n	0x4637		//MOV	R7, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 3 459 0
+	.loc 3 459 0
+//     ELSE \ FATAL-HANDLER
+	.inst.n	0xE7FF		//B.N	100040E2
+	.loc 3 460 0
+	.loc 3 460 0
+//     THEN
+	.loc 3 461 0
+	.loc 3 461 0
+//  THEN ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 462 0
+	.loc 3 462 0
+//
+	.loc 3 463 0
+	.loc 3 463 0
+//: >NUMBER ( ud1 c-addr1 u1 -- ud2 c-addr2 u2 ) \ 94
+
+	.global greatNUMBER
+greatNUMBER:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 464 0
+	.loc 3 464 0
+//\ ud2 - результат преобразования символов строки, заданной c-addr1 u1,
+	.loc 3 465 0
+	.loc 3 465 0
+//\ в цифры, используя число в BASE, и добавлением каждой к ud1 после
+	.loc 3 466 0
+	.loc 3 466 0
+//\ умножения ud1 на число в BASE. Преобразование продолжается слева
+	.loc 3 467 0
+	.loc 3 467 0
+//\ направо до первого непреобразуемого символа, включая символы "+" и "-",
+	.loc 3 468 0
+	.loc 3 468 0
+//\ или до полного преобразования строки.
+	.loc 3 469 0
+	.loc 3 469 0
+//\ c-addr2 - адрес первого непреобразумого символа или первого символа
+	.loc 3 470 0
+	.loc 3 470 0
+//\ за концом строки, если строка была полностью преобразована.
+	.loc 3 471 0
+	.loc 3 471 0
+//\ u2 - число непреобразованных символов в строке.
+	.loc 3 472 0
+	.loc 3 472 0
+//\ Неоднозначная ситуация возникает, если ud2 переполняется во время
+	.loc 3 473 0
+	.loc 3 473 0
+//\ преобразования.
+	.loc 3 474 0
+	.loc 3 474 0
+//  BEGIN
+	.loc 3 475 0
+	.loc 3 475 0
+//    DUP
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x803F	//BEQ.W	greatNUMBER+86 
+	.loc 3 476 0
+	.loc 3 476 0
+//  WHILE
+	.loc 3 477 0
+	.loc 3 477 0
+//    >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 3 478 0
+	.loc 3 478 0
+//    DUP >R
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 479 0
+	.loc 3 479 0
+//    C@ BASE @ DIGIT 0=     \ ud n flag
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFF50	//BL	DIGIT
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 480 0
+	.loc 3 480 0
+//    IF R> R> EXIT THEN     \ ud n  ( ud = udh udl )
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8007	//BEQ.W	greatNUMBER+3C 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 481 0
+	.loc 3 481 0
+//    SWAP BASE @ UM* DROP   \ udl n udh*base
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FE,0xFFBF	//BL	UMmul
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 482 0
+	.loc 3 482 0
+//    ROT BASE @ UM* D+      \ (n udh*base)+(udl*baseD)
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FE,0xFFB1	//BL	UMmul
+	.inst.n	0xF7FE,0xFF69	//BL	Dadd
+	.loc 3 483 0
+	.loc 3 483 0
+//    R> 1+ R> 1-
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 3 484 0
+	.loc 3 484 0
+//  REPEAT
+	.inst.n	0xE7BD		//B.N	100040E6
+	.loc 3 485 0
+	.loc 3 485 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 486 0
+	.loc 3 486 0
+//
+	.loc 3 487 0
+	.loc 3 487 0
+//: ?SLITERAL0 ( c-addr u -> ... )
+
+	.global queSLITERAL0
+queSLITERAL0:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 488 0
+	.loc 3 488 0
+//  \ преобразовать строку в число
+	.loc 3 489 0
+	.loc 3 489 0
+//  0 0 2SWAP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFFB2	//BL	_2SWAP
+	.loc 3 490 0
+	.loc 3 490 0
+//  OVER C@ [CHAR] - = IF 1- SWAP 1+ SWAP TRUE ELSE FALSE THEN >R
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x262D		//MOVS	R6, #45
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800D	//BEQ.W	queSLITERAL0+44 
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0600	//MVN.W	R6, #0 
+	.inst.n	0xE002		//B.N	100041B6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 491 0
+	.loc 3 491 0
+//  >NUMBER
+	.inst.n	0xF7FF,0xFF93	//BL	greatNUMBER
+	.loc 3 492 0
+	.loc 3 492 0
+//  DUP 1 > IF -2001 THROW THEN \ ABORT" -?"
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0xF7FE,0xFEBA	//BL	great
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8006	//BEQ.W	queSLITERAL0+74 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF46F,0x66FA	//MVN.W	R6, #2000 @ 0x7D0
+	.inst.n	0xF7FF,0xFF56	//BL	THROW
+	.loc 3 493 0
+	.loc 3 493 0
+//  IF C@ [CHAR] . <> IF -2002 THROW THEN \ ABORT" -??"
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x801D	//BEQ.W	queSLITERAL0+B6 
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x262E		//MOVS	R6, #46
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	queSLITERAL0+9E 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x062E	//MOVW	R6, #:lower16:4294965294 @ 0xFFFFF82E
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965294 @ 0xFFFFF82E
+	.inst.n	0xF7FF,0xFF41	//BL	THROW
+	.loc 3 494 0
+	.loc 3 494 0
+//       R> IF DNEGATE THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	queSLITERAL0+B0 
+	.inst.n	0xF7FE,0xFEFC	//BL	DNEGATE
+	.loc 3 495 0
+	.loc 3 495 0
+//       2LITERAL_
+	.inst.n	0xF7FF,0xFEA0	//BL	_2LITERAL_
+	.loc 3 496 0
+	.loc 3 496 0
+//  ELSE DROP D>S
+	.inst.n	0xE009		//B.N	10004236
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 3 497 0
+	.loc 3 497 0
+//       R> IF NEGATE THEN
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8001	//BEQ.W	queSLITERAL0+C6 
+	.inst.n	0x4276		//NEGS	R6, R6
+	.loc 3 498 0
+	.loc 3 498 0
+//       LITERAL_
+	.inst.n	0xF7FF,0xFEA9	//BL	LITERAL_
+	.loc 3 499 0
+	.loc 3 499 0
+//  THEN
+	.loc 3 500 0
+	.loc 3 500 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 501 0
+	.loc 3 501 0
+// 
+	.loc 3 502 0
+	.loc 3 502 0
+//: ?SLITERAL
+
+	.global queSLITERAL
+queSLITERAL:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 503 0
+	.loc 3 503 0
+//  OVER C@ '$' =
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2624		//MOVS	R6, #36
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 504 0
+	.loc 3 504 0
+// IF 1- SWAP 1+ SWAP BASE @ >R HEX ['] ?SLITERAL0 CATCH R> BASE ! THROW
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x802C	//BEQ.W	queSLITERAL+72 
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xB440		//PUSH	{R6}
+		MOVS	R0, #16
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:queSLITERAL0+1
+	MOVT R6, #:upper16:queSLITERAL0
+	.inst.n	0xF7FF,0xFED8	//BL	CATCH
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FF,0xFEF2	//BL	THROW
+	.loc 3 505 0
+	.loc 3 505 0
+// BREAK ?SLITERAL0
+	.inst.n	0xBD00		//POP	{R15}
+	.inst.n	0xF7FF,0xFF5F	//BL	queSLITERAL0
+	.loc 3 506 0
+	.loc 3 506 0
+//
+	.loc 3 507 0
+	.loc 3 507 0
+//
+	.loc 3 508 0
+	.loc 3 508 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 509 0
+	.loc 3 509 0
+//
+	.loc 3 510 0
+	.loc 3 510 0
+//: ?STACK ;
+
+	.global queSTACK
+queSTACK:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 511 0
+	.loc 3 511 0
+//: INTERPRET_ ( -> ) \ интерпретировать входной поток
+
+	.global INTERPRET_
+INTERPRET_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 512 0
+	.loc 3 512 0
+//\  SAVEERR? ON
+	.loc 3 513 0
+	.loc 3 513 0
+//  BEGIN	PARSE-NAME DUP
+	.inst.n	0xF7FF,0xFB7B	//BL	PARSEsubNAME
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x801F	//BEQ.W	INTERPRET_+4A 
+	.loc 3 514 0
+	.loc 3 514 0
+//  WHILE
+	.loc 3 515 0
+	.loc 3 515 0
+//\	." <" 2DUP TYPE ." >"
+	.loc 3 516 0
+	.loc 3 516 0
+// SFIND  ?DUP
+	.inst.n	0xF7FF,0xFD02	//BL	SFIND
+	.inst.n	0xF7FE,0xFF01	//BL	queDUP
+	.loc 3 517 0
+	.loc 3 517 0
+//	IF   STATE @ =
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8012	//BEQ.W	INTERPRET_+40 
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 518 0
+	.loc 3 518 0
+//		IF COMPILE,_
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8003	//BEQ.W	INTERPRET_+3A 
+	.inst.n	0xF7FF,0xFDFC	//BL	COMPILEcom_
+	.loc 3 519 0
+	.loc 3 519 0
+//		ELSE EXECUTE \ LLL @ IF ." {L}" 0 LLL ! THEN
+	.inst.n	0xE001		//B.N	100042F2
+	.inst.n	0xF7FE,0xFDA3	//BL	EXECUTE
+	.loc 3 520 0
+	.loc 3 520 0
+//		THEN
+	.loc 3 521 0
+	.loc 3 521 0
+//	ELSE 	?SLITERAL
+	.inst.n	0xE001		//B.N	100042F8
+	.inst.n	0xF7FF,0xFFA0	//BL	queSLITERAL
+	.loc 3 522 0
+	.loc 3 522 0
+//        THEN
+	.loc 3 523 0
+	.loc 3 523 0
+//
+	.loc 3 524 0
+	.loc 3 524 0
+//    ?STACK \  CACHBREAK
+	.inst.n	0xF7FF,0xFFDA	//BL	queSTACK
+	.loc 3 525 0
+	.loc 3 525 0
+//  REPEAT 2DROP
+	.inst.n	0xE7DB		//B.N	100042B6
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.loc 3 526 0
+	.loc 3 526 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 527 0
+	.loc 3 527 0
+//
+	.loc 3 528 0
+	.loc 3 528 0
+//VARIABLE SP0
+	.loc 3 529 0
+	.loc 3 529 0
+//
+	.loc 3 530 0
+	.loc 3 530 0
+//: OK. ."  ok."
+	.inst.n	0xFFFF @ ?????
+
+	.global OKdot
+OKdot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xF8C5	//BL	cSdticcend
+	.inst.n	0x2004		//MOVS	R0, #4
+	.inst.n	0x6B6F		//LDR	R7, [R5, #52]
+	.inst.n	0xFF2E @ ?????
+	.inst.n	0xF7FF,0xF8D4	//BL	TYPE
+	.loc 3 531 0
+	.loc 3 531 0
+//\ $A EMIT
+	.loc 3 532 0
+	.loc 3 532 0
+// CR
+	.inst.n	0xF7FF,0xF9E8	//BL	CR
+	.loc 3 533 0
+	.loc 3 533 0
+//  ; 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 534 0
+	.loc 3 534 0
+//
+	.loc 3 535 0
+	.loc 3 535 0
+//: QUIT
+	.inst.n	0xFFFF @ ?????
+
+	.global QUIT
+QUIT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 536 0
+	.loc 3 536 0
+// BEGIN  REFILL
+	.inst.n	0xF7FF,0xFBC9	//BL	REFILL
+	.loc 3 537 0
+	.loc 3 537 0
+// WHILE  INTERPRET_ OK.
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8005	//BEQ.W	QUIT+18 
+	.inst.n	0xF7FF,0xFFC3	//BL	INTERPRET_
+	.inst.n	0xF7FF,0xFFE9	//BL	OKdot
+	.loc 3 538 0
+	.loc 3 538 0
+// REPEAT ;
+	.inst.n	0xE7F4		//B.N	1000431E
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 539 0
+	.loc 3 539 0
+// 
+	.loc 3 540 0
+	.loc 3 540 0
+//: XXX
+	.inst.n	0xFFFF @ ?????
+
+	.global XXX
+XXX:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 541 0
+	.loc 3 541 0
+//    S" 123" S" 123" ;
+	.inst.n	0xF7FF,0xF8AB	//BL	cSdticcend
+	.inst.n	0x3103		//ADDS	R1, #3
+	.inst.n	0x3332		//ADDS	R3, #50
+	.inst.n	0xF7FF,0xF8A7	//BL	cSdticcend
+	.inst.n	0x3103		//ADDS	R1, #3
+	.inst.n	0x3332		//ADDS	R3, #50
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 542 0
+	.loc 3 542 0
+//: HELLO
+
+	.global HELLO
+HELLO:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 543 0
+	.loc 3 543 0
+//  CR ." FORTH" CR ;
+	.inst.n	0xF7FF,0xF9CB	//BL	CR
+	.inst.n	0xF7FF,0xF89F	//BL	cSdticcend
+	.inst.n	0x4605		//MOV	R5, R0
+	.inst.n	0x524F		//STRH	R7, [R1, R1]
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100044AC] 0xFFFFBD00
+	.inst.n	0xF7FF,0xF8AE	//BL	TYPE
+	.inst.n	0xF7FF,0xF9C2	//BL	CR
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 544 0
+	.loc 3 544 0
+//
+	.loc 3 545 0
+	.loc 3 545 0
+//
+	.loc 3 546 0
+	.loc 3 546 0
+//: SET-CURRENT ( wid -- )  CURRENT ! ;
+	.inst.n	0xFFFF @ ?????
+
+	.global SETsubCURRENT
+SETsubCURRENT:	.inst.n	0xB500		//PUSH	{R14}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 547 0
+	.loc 3 547 0
+//
+	.loc 3 548 0
+	.loc 3 548 0
+//: GET-CURRENT ( -- wid )  CURRENT @ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global GETsubCURRENT
+GETsubCURRENT:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 549 0
+	.loc 3 549 0
+//
+	.loc 3 550 0
+	.loc 3 550 0
+//: GET-ORDER ( -- widn ... wid1 n ) \ 94 SEARCH
+	.inst.n	0xFFFF @ ?????
+
+	.global GETsubORDER
+GETsubORDER:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 551 0
+	.loc 3 551 0
+//  SP@ >R 0 >R
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x463E		//MOV	R6, R7
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x2600		//MOVS	R6, #0
+		PUSH	{R6}
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.loc 3 552 0
+	.loc 3 552 0
+//  CONTEXT
+	.loc 3 553 0
+	.loc 3 553 0
+//  BEGIN DUP @ ?DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FE,0xFE8D	//BL	queDUP
+	.loc 3 554 0
+	.loc 3 554 0
+//  WHILE >R CELL+
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8006	//BEQ.W	GETsubORDER+34 
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 3 555 0
+	.loc 3 555 0
+//  REPEAT  DROP
+	.inst.n	0xE7F0		//B.N	100043A6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 556 0
+	.loc 3 556 0
+//  BEGIN R> DUP 0=
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 557 0
+	.loc 3 557 0
+//  UNTIL DROP
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xD0F6		//BEQ.N	100043C6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 3 558 0
+	.loc 3 558 0
+//  R> SP@ - 4 / 1-
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x463E		//MOV	R6, R7
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0xFB90,0xF6F6	//SDIV	R6, R0, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 3 559 0
+	.loc 3 559 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 560 0
+	.loc 3 560 0
+//
+	.loc 3 561 0
+	.loc 3 561 0
+//: SET-ORDER
+	.inst.n	0xFFFF @ ?????
+
+	.global SETsubORDER
+SETsubORDER:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 562 0
+	.loc 3 562 0
+//  0
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 563 0
+	.loc 3 563 0
+//  DO CONTEXT I CELLS +
+	.inst.n	0xF7FE,0xFF58	//BL	cDOcend
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
+	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xE89D,0x0042	//LDMIA.W	R13, {R1, R6}
+	.inst.n	0x1876		//ADDS	R6, R6, R1
+	.inst.n	0x0076		//LSLS	R6, R6, #1
+	.inst.n	0x0076		//LSLS	R6, R6, #1
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.loc 3 564 0
+	.loc 3 564 0
+//     DUP CELL+ 0!  !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x2000		//MOVS	R0, #0
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 565 0
+	.loc 3 565 0
+//  LOOP
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7E1		//BVC.N	10004400
+	.inst.n	0xB002		//ADD	SP, #8
+	.loc 3 566 0
+	.loc 3 566 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 567 0
+	.loc 3 567 0
+//
+	.loc 3 568 0
+	.loc 3 568 0
+//: ID. ( NFA[E] -> )  COUNT TYPE ;
+
+	.global IDdot
+IDdot:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xF837	//BL	TYPE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 569 0
+	.loc 3 569 0
+//
+	.loc 3 570 0
+	.loc 3 570 0
+//: VOC-NAME. ( wid -- )
+
+	.global VOCsubNAMEdot
+VOCsubNAMEdot:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 571 0
+	.loc 3 571 0
+//  DUP FORTH-WORDLIST = IF DROP ." FORTH" EXIT THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x7696	//MOV.W	R6, #300 @ 0x12C
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8009	//BEQ.W	VOCsubNAMEdot+2A 
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FF,0xF813	//BL	cSdticcend
+	.inst.n	0x4605		//MOV	R5, R0
+	.inst.n	0x524F		//STRH	R7, [R1, R1]
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100045C4] 0x6D04F847
+	.inst.n	0xF7FF,0xF822	//BL	TYPE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 572 0
+	.loc 3 572 0
+//  DUP CELL+ @ DUP IF ID. DROP ELSE DROP ." <NONAME>:" U. THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x3602		//ADDS	R6, #2
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x8004	//BEQ.W	VOCsubNAMEdot+44 
+	.inst.n	0xF7FF,0xFFD8	//BL	IDdot
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xE00B		//B.N	100044AC
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FE,0xFFFD	//BL	cSdticcend
+	.inst.n	0x3C09		//SUBS	R4, #9
+	.inst.n	0x4F4E		//LDR	R7, [PC, #312] @ [0x100045D8] 0xF7FFFFA1
+	.inst.n	0x414E		//ADCS	R6, R1
+	.inst.n	0x454D		//CMP	R5, R9
+	.inst.n	0x3A3E		//SUBS	R2, #62
+	.inst.n	0xF7FF,0xF80A	//BL	TYPE
+	.inst.n	0xF7FF,0xF900	//BL	Udot
+	.loc 3 573 0
+	.loc 3 573 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 574 0
+	.loc 3 574 0
+//
+	.loc 3 575 0
+	.loc 3 575 0
+//: ORDER_ ( -- ) \ 94 SEARCH EXT
+	.inst.n	0xFFFF @ ?????
+
+	.global ORDER_
+ORDER_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 576 0
+	.loc 3 576 0
+//  GET-ORDER ." Context: "
+	.inst.n	0xF7FF,0xFF6D	//BL	GETsubORDER
+	.inst.n	0xF7FE,0xFFED	//BL	cSdticcend
+	.inst.n	0x4309		//ORRS	R1, R1
+	.inst.n	0x6E6F		//LDR	R7, [R5, #100]
+	.inst.n	0x6574		//STR	R4, [R6, #84]
+	.inst.n	0x7478		//STRB	R0, [R7, #17]
+	.inst.n	0x203A		//MOVS	R0, #58
+	.inst.n	0xF7FE,0xFFFA	//BL	TYPE
+	.loc 3 577 0
+	.loc 3 577 0
+//  0 ?DO ( DUP .)
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFEF6	//BL	cqueDOcend
+	.inst.n	0x0014		//MOVS	R4, R2
+	.loc 3 578 0
+	.loc 3 578 0
+//   VOC-NAME.
+	.inst.n	0xF7FF,0xFFBC	//BL	VOCsubNAMEdot
+	.loc 3 579 0
+	.loc 3 579 0
+//    SPACE LOOP CR
+	.inst.n	0xF7FF,0xF8CC	//BL	SPACE
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7F7		//BVC.N	100044D4
+	.inst.n	0xB002		//ADD	SP, #8
+	.inst.n	0xF7FF,0xF8FF	//BL	CR
+	.loc 3 580 0
+	.loc 3 580 0
+//  ." Current: " GET-CURRENT VOC-NAME. CR
+	.inst.n	0xF7FE,0xFFD3	//BL	cSdticcend
+	.inst.n	0x4309		//ORRS	R1, R1
+	.inst.n	0x7275		//STRB	R5, [R6, #9]
+	.inst.n	0x6572		//STR	R2, [R6, #84]
+	.inst.n	0x746E		//STRB	R6, [R5, #17]
+	.inst.n	0x203A		//MOVS	R0, #58
+	.inst.n	0xF7FE,0xFFE0	//BL	TYPE
+	.inst.n	0xF7FF,0xFF3E	//BL	GETsubCURRENT
+	.inst.n	0xF7FF,0xFFA6	//BL	VOCsubNAMEdot
+	.inst.n	0xF7FF,0xF8F0	//BL	CR
+	.loc 3 581 0
+	.loc 3 581 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 582 0
+	.loc 3 582 0
+//\ tdis-opt
+	.loc 3 583 0
+	.loc 3 583 0
+//\ COMPILER
+	.loc 3 584 0
+	.loc 3 584 0
+//
+	.loc 3 585 0
+	.loc 3 585 0
+//: ALIGNED_  3 + -4 AND ;
+	.inst.n	0xFFFF @ ?????
+
+	.global ALIGNED_
+ALIGNED_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1CC6		//ADDS	R6, R0, #3
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF06F,0x0603	//MVN.W	R6, #3 
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 586 0
+	.loc 3 586 0
+//
+	.loc 3 587 0
+	.loc 3 587 0
+//: ALIGN_ HERE_ ALIGNED_ DP_ ! ;
+
+	.global ALIGN_
+ALIGN_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFC0D	//BL	HERE_
+	.inst.n	0xF7FF,0xFFF3	//BL	ALIGNED_
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 588 0
+	.loc 3 588 0
+//
+	.loc 3 589 0
+	.loc 3 589 0
+//: HALIGNED_  1+ -2 AND ;
+	.inst.n	0xFFFF @ ?????
+
+	.global HALIGNED_
+HALIGNED_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF06F,0x0601	//MVN.W	R6, #1 
+	.inst.n	0x4006		//ANDS	R6, R0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 590 0
+	.loc 3 590 0
+//: LALIGNED_  3 + 3 ANDC ;
+	.inst.n	0xFFFF @ ?????
+
+	.global LALIGNED_
+LALIGNED_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1CC6		//ADDS	R6, R0, #3
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x0603	//BIC.W	R6, R0, #3 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 591 0
+	.loc 3 591 0
+//
+	.loc 3 592 0
+	.loc 3 592 0
+//VARIABLE LAST 
+	.loc 3 593 0
+	.loc 3 593 0
+//
+	.loc 3 594 0
+	.loc 3 594 0
+//: LINK, ( wid -> ) 
+	.inst.n	0xFFFF @ ?????
+
+	.global LINKcom
+LINKcom:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 595 0
+	.loc 3 595 0
+//\  DUP @ ,_ HERE_ SWAP !
+	.loc 3 596 0
+	.loc 3 596 0
+//  @ ,_
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFBF8	//BL	com_
+	.loc 3 597 0
+	.loc 3 597 0
+//  HERE_ LAST !
+	.inst.n	0xF7FF,0xFBEC	//BL	HERE_
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
+	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 598 0
+	.loc 3 598 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 599 0
+	.loc 3 599 0
+//
+	.loc 3 600 0
+	.loc 3 600 0
+//: HEADER,_ ( -- )
+
+	.global HEADERcom_
+HEADERcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 601 0
+	.loc 3 601 0
+//  0 W,_		\ flags
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FF,0xFBF2	//BL	Wcom_
+	.loc 3 602 0
+	.loc 3 602 0
+//  CURRENT @ LINK, ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFE3	//BL	LINKcom
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 603 0
+	.loc 3 603 0
+//
+	.loc 3 604 0
+	.loc 3 604 0
+//: HALIGN_ HERE_
+
+	.global HALIGN_
+HALIGN_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFBD1	//BL	HERE_
+	.loc 3 605 0
+	.loc 3 605 0
+// HALIGNED_
+	.inst.n	0xF7FF,0xFFCD	//BL	HALIGNED_
+	.loc 3 606 0
+	.loc 3 606 0
+// DP_ ! ;
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 607 0
+	.loc 3 607 0
+//
+	.loc 3 608 0
+	.loc 3 608 0
+//: S",_ ( addr u -- ) \ компиляция строки, заданной addr u, в виде строки со счетчиком
+	.inst.n	0xFFFF @ ?????
+
+	.global Sdticcom_
+Sdticcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 609 0
+	.loc 3 609 0
+//	DUP  C,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xFBDF	//BL	Ccom_
+	.loc 3 610 0
+	.loc 3 610 0
+//	HERE_ SWAP DUP ALLOT_
+	.inst.n	0xF7FF,0xFBBF	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xFBAA	//BL	ALLOT_
+	.loc 3 611 0
+	.loc 3 611 0
+//	CMOVE ;
+	.inst.n	0xF7FE,0xFDE0	//BL	CMOVE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 612 0
+	.loc 3 612 0
+//
+	.loc 3 613 0
+	.loc 3 613 0
+//: SHEADER_0
+	.inst.n	0xFFFF @ ?????
+
+	.global SHEADER_0
+SHEADER_0:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 614 0
+	.loc 3 614 0
+//	ALIGN_
+	.inst.n	0xF7FF,0xFFA1	//BL	ALIGN_
+	.loc 3 615 0
+	.loc 3 615 0
+//   HEADER,_
+	.inst.n	0xF7FF,0xFFCB	//BL	HEADERcom_
+	.loc 3 616 0
+	.loc 3 616 0
+//    S",_
+	.inst.n	0xF7FF,0xFFE7	//BL	Sdticcom_
+	.loc 3 617 0
+	.loc 3 617 0
+//	HALIGN_
+	.inst.n	0xF7FF,0xFFD7	//BL	HALIGN_
+	.loc 3 618 0
+	.loc 3 618 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 619 0
+	.loc 3 619 0
+//
+	.loc 3 620 0
+	.loc 3 620 0
+//: SHEADER_
+
+	.global SHEADER_
+SHEADER_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 621 0
+	.loc 3 621 0
+//  SHEADER_0
+	.inst.n	0xF7FF,0xFFF3	//BL	SHEADER_0
+	.loc 3 622 0
+	.loc 3 622 0
+// LAST @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
+	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 623 0
+	.loc 3 623 0
+//  CURRENT @
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 3 624 0
+	.loc 3 624 0
+//\  2DUP H. H. 
+	.loc 3 625 0
+	.loc 3 625 0
+//    !
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 626 0
+	.loc 3 626 0
+//\ WORDS_    
+	.loc 3 627 0
+	.loc 3 627 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 628 0
+	.loc 3 628 0
+//
+	.loc 3 629 0
+	.loc 3 629 0
+//: IMMEDIATE_
+	.inst.n	0xFFFF @ ?????
+
+	.global IMMEDIATE_
+IMMEDIATE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 630 0
+	.loc 3 630 0
+//  1 LAST @ NAME>F OR!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
+	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFB07	//BL	NAMEgreatF
+	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4308		//ORRS	R0, R1
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 631 0
+	.loc 3 631 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 632 0
+	.loc 3 632 0
+//
+	.loc 3 633 0
+	.loc 3 633 0
+//: HEADER_
+	.inst.n	0xFFFF @ ?????
+
+	.global HEADER_
+HEADER_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 634 0
+	.loc 3 634 0
+//  PARSE-NAME
+	.inst.n	0xF7FF,0xF9B9	//BL	PARSEsubNAME
+	.loc 3 635 0
+	.loc 3 635 0
+//   SHEADER_
+	.inst.n	0xF7FF,0xFFD3	//BL	SHEADER_
+	.loc 3 636 0
+	.loc 3 636 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 637 0
+	.loc 3 637 0
+//
+	.loc 3 638 0
+	.loc 3 638 0
+//: '_ PARSE-NAME SFIND 0= IF -2001 THROW THEN  ;
+
+	.global tic_
+tic_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xF9B3	//BL	PARSEsubNAME
+	.inst.n	0xF7FF,0xFB3D	//BL	SFIND
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8006	//BEQ.W	tic_+20 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF46F,0x66FA	//MVN.W	R6, #2000 @ 0x7D0
+	.inst.n	0xF7FF,0xFD14	//BL	THROW
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 639 0
+	.loc 3 639 0
+//
+	.loc 3 640 0
+	.loc 3 640 0
+//: [']_ '_  LIT,_ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global xticy_
+xticy_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFEB	//BL	tic_
+	.inst.n	0xF7FF,0xFBBD	//BL	LITcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 641 0
+	.loc 3 641 0
+//
+	.loc 3 642 0
+	.loc 3 642 0
+//: ]_ STATE ON ;
+
+	.global y_
+y_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0xF7FE,0xFC12	//BL	ON
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 643 0
+	.loc 3 643 0
+//: [_ STATE OFF ;
+
+	.global x_
+x_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0x2000		//MOVS	R0, #0
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 644 0
+	.loc 3 644 0
+//
+	.loc 3 645 0
+	.loc 3 645 0
+//: EXIT,_
+	.inst.n	0xFFFF @ ?????
+
+	.global EXITcom_
+EXITcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 646 0
+	.loc 3 646 0
+// $BD00	W,_ \	POP	{R15}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF44F,0x463D	//MOV.W	R6, #48384 @ 0xBD00
+	.inst.n	0xF7FF,0xFB5B	//BL	Wcom_
+	.loc 3 647 0
+	.loc 3 647 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 648 0
+	.loc 3 648 0
+//: NEST,_
+
+	.global NESTcom_
+NESTcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 649 0
+	.loc 3 649 0
+// $B500 W,_ \	PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF44F,0x4635	//MOV.W	R6, #46336 @ 0xB500
+	.inst.n	0xF7FF,0xFB53	//BL	Wcom_
+	.loc 3 650 0
+	.loc 3 650 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 651 0
+	.loc 3 651 0
+//
+	.loc 3 652 0
+	.loc 3 652 0
+//: :_ PARSE-NAME  SHEADER_0 NEST,_ ]_ ;
+
+	.global dcoma_
+dcoma_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xF975	//BL	PARSEsubNAME
+	.inst.n	0xF7FF,0xFF85	//BL	SHEADER_0
+	.inst.n	0xF7FF,0xFFF1	//BL	NESTcom_
+	.inst.n	0xF7FF,0xFFD1	//BL	y_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 653 0
+	.loc 3 653 0
+//
+	.loc 3 654 0
+	.loc 3 654 0
+//: ?COMP ;
+
+	.global queCOMP
+queCOMP:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 655 0
+	.loc 3 655 0
+//
+	.loc 3 656 0
+	.loc 3 656 0
+//: ;_ ?COMP  EXIT,_
+
+	.global end_
+end_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFFB	//BL	queCOMP
+	.inst.n	0xF7FF,0xFFDF	//BL	EXITcom_
+	.loc 3 657 0
+	.loc 3 657 0
+// LAST @ CURRENT @ !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
+	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+416 @ 0x1A0
+	MOVT	R6, #:upper16:sp_buff+416 @ 0x1A0
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 658 0
+	.loc 3 658 0
+// [_ ;
+	.inst.n	0xF7FF,0xFFC2	//BL	x_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 659 0
+	.loc 3 659 0
+//
+	.loc 3 660 0
+	.loc 3 660 0
+//: .0
+	.inst.n	0xFFFF @ ?????
+
+	.global dot0
+dot0:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 661 0
+	.loc 3 661 0
+//  >R 0 <# #S #> R> OVER - 0 MAX DUP 
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFF27	//BL	lessn
+	.inst.n	0xF7FE,0xFF6F	//BL	nS
+	.inst.n	0xF7FE,0xFF79	//BL	ngreat
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFBF0	//BL	MAX
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x8010	//BEQ.W	dot0+4E 
+	.loc 3 662 0
+	.loc 3 662 0
+//    IF 0 DO [CHAR] 0 EMIT LOOP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFDB8	//BL	cDOcend
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2630		//MOVS	R6, #48
+	.inst.n	0xF7FE,0xFE67	//BL	EMIT
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7F6		//BVC.N	10004740
+	.inst.n	0xB002		//ADD	SP, #8
+	.loc 3 663 0
+	.loc 3 663 0
+//    ELSE DROP THEN TYPE ;
+	.inst.n	0xE000		//B.N	10004758
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FE,0xFEB0	//BL	TYPE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 664 0
+	.loc 3 664 0
+//
+	.loc 3 665 0
+	.loc 3 665 0
+//: >PRT
+	.inst.n	0xFFFF @ ?????
+
+	.global greatPRT
+greatPRT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 666 0
+	.loc 3 666 0
+//  DUP BL U< IF DROP [CHAR] . THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2620		//MOVS	R6, #32
+	.inst.n	0x1B80		//SUBS	R0, R0, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8001	//BEQ.W	greatPRT+16 
+	.inst.n	0x262E		//MOVS	R6, #46
+	.loc 3 667 0
+	.loc 3 667 0
+//  DUP $80 AND IF DROP [CHAR] . THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x0680	//ANDS.W	R6, R0, #128 @ 0x80
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8001	//BEQ.W	greatPRT+28 
+	.inst.n	0x262E		//MOVS	R6, #46
+	.loc 3 668 0
+	.loc 3 668 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 669 0
+	.loc 3 669 0
+//
+	.loc 3 670 0
+	.loc 3 670 0
+//: PTYPE
+	.inst.n	0xFFFF @ ?????
+
+	.global PTYPE
+PTYPE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 671 0
+	.loc 3 671 0
+//  0 ?DO COUNT >PRT EMIT LOOP DROP ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFD93	//BL	cqueDOcend
+	.inst.n	0x001C		//MOVS	R4, R3
+	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF7FF,0xFFDD	//BL	greatPRT
+	.inst.n	0xF7FE,0xFE37	//BL	EMIT
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7F3		//BVC.N	1000479A
+	.inst.n	0xB002		//ADD	SP, #8
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 672 0
+	.loc 3 672 0
+//
+	.loc 3 673 0
+	.loc 3 673 0
+//: DUMP ( addr u -- ) \ 94 TOOLS
+
+	.global DUMP
+DUMP:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 674 0
+	.loc 3 674 0
+//  DUP 0= IF 2DROP EXIT THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	DUMP+14 
+	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 675 0
+	.loc 3 675 0
+//  BASE @ >R HEX_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF7FE,0xFE91	//BL	HEX_
+	.loc 3 676 0
+	.loc 3 676 0
+//  $F + $10 U/ 0 DO
+	.inst.n	0xF116,0x060F	//ADDS.W	R6, R6, #15 @ 0xF
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2610		//MOVS	R6, #16
+	.inst.n	0xF7FE,0xFE08	//BL	Ursl
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFD5B	//BL	cDOcend
+	.loc 3 677 0
+	.loc 3 677 0
+//\    I IF CR THEN
+	.loc 3 678 0
+	.loc 3 678 0
+//    CR DUP 4 .0 SPACE
+	.inst.n	0xF7FE,0xFF75	//BL	CR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0xF7FF,0xFF7E	//BL	dot0
+	.inst.n	0xF7FE,0xFF32	//BL	SPACE
+	.loc 3 679 0
+	.loc 3 679 0
+//    SPACE DUP $10 0
+	.inst.n	0xF7FE,0xFF30	//BL	SPACE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2610		//MOVS	R6, #16
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 680 0
+	.loc 3 680 0
+//      DO I 4 MOD 0= IF SPACE THEN
+	.inst.n	0xF7FE,0xFD44	//BL	cDOcend
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xE89D,0x0042	//LDMIA.W	R13, {R1, R6}
+	.inst.n	0x1876		//ADDS	R6, R6, R1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0xF7FE,0xFC27	//BL	MOD
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	DUMP+92 
+	.inst.n	0xF7FE,0xFF15	//BL	SPACE
+	.loc 3 681 0
+	.loc 3 681 0
+//        DUP C@ 2 .0 SPACE 1+
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2602		//MOVS	R6, #2
+	.inst.n	0xF7FF,0xFF57	//BL	dot0
+	.inst.n	0xF7FE,0xFF0B	//BL	SPACE
+	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 3 682 0
+	.loc 3 682 0
+//      LOOP SWAP $10  PTYPE
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7DF		//BVC.N	10004828
+	.inst.n	0xB002		//ADD	SP, #8
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2610		//MOVS	R6, #16
+	.inst.n	0xF7FF,0xFF89	//BL	PTYPE
+	.loc 3 683 0
+	.loc 3 683 0
+//  LOOP DROP R> BASE !
+	.inst.n	0xBC01		//POP	{R0}
+	.inst.n	0x3001		//ADDS	R0, #1
+	.inst.n	0xB401		//PUSH	{R0}
+	.inst.n	0xD7BB		//BVC.N	100047FA
+	.inst.n	0xB002		//ADD	SP, #8
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0xBC40		//POP	{R6}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 684 0
+	.loc 3 684 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 685 0
+	.loc 3 685 0
+//
+	.loc 3 686 0
+	.loc 3 686 0
+//
+	.loc 3 687 0
+	.loc 3 687 0
+//: BXX.N HERE_ 4 + - 2/
+
+	.global BXXdotN
+BXXdotN:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFA4F	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1D06		//ADDS	R6, R0, #4
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.loc 3 688 0
+	.loc 3 688 0
+//  DUP $80 + $FF ANDC IF  CR ." BXX.H" H. -314 THROW THEN 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF116,0x0680	//ADDS.W	R6, R6, #128 @ 0x80
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x06FF	//BIC.W	R6, R0, #255 @ 0xFF
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8013	//BEQ.W	BXXdotN+4C 
+	.inst.n	0xF7FE,0xFF13	//BL	CR
+	.inst.n	0xF7FE,0xFDE7	//BL	cSdticcend
+	.inst.n	0x4205		//TST	R5, R0
+	.inst.n	0x5858		//LDR	R0, [R3, R1]
+	.inst.n	0x482E		//LDR	R0, [PC, #184] @ [0x10004984] 0x40302680
+	.inst.n	0xF7FE,0xFDF6	//BL	TYPE
+	.inst.n	0xF7FE,0xFEF4	//BL	Hdot
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x66C6	//MOVW	R6, #:lower16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF7FF,0xFBD4	//BL	THROW
+	.loc 3 689 0
+	.loc 3 689 0
+//  $FF AND ;
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x06FF	//ANDS.W	R6, R0, #255 @ 0xFF
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 690 0
+	.loc 3 690 0
+//
+	.loc 3 691 0
+	.loc 3 691 0
+//: BXX.W,_ ( label -- )
+
+	.global BXXdotWcom_
+BXXdotWcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 692 0
+	.loc 3 692 0
+// SWAP     HERE_ 4 + - 2/
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xF7FF,0xFA22	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1D06		//ADDS	R6, R0, #4
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.loc 3 693 0
+	.loc 3 693 0
+//
+	.loc 3 694 0
+	.loc 3 694 0
+//  DUP $400 + $7FF ANDC IF  CR ." BXX.W" H. -314 THROW THEN 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x6680	//MOV.W	R6, #1024 @ 0x400
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF240,0x76FF	//MOVW	R6, #2047 @ 0x7FF
+	.inst.n	0xEA20,0x0606	//BIC.W	R6, R0, R6
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8013	//BEQ.W	BXXdotWcom_+5A 
+	.inst.n	0xF7FE,0xFEE2	//BL	CR
+	.inst.n	0xF7FE,0xFDB6	//BL	cSdticcend
+	.inst.n	0x4205		//TST	R5, R0
+	.inst.n	0x5858		//LDR	R0, [R3, R1]
+	.inst.n	0x572E		//LDRSB	R6, [R5, R4]
+	.inst.n	0xF7FE,0xFDC5	//BL	TYPE
+	.inst.n	0xF7FE,0xFEC3	//BL	Hdot
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x66C6	//MOVW	R6, #:lower16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF7FF,0xFBA3	//BL	THROW
+	.loc 3 695 0
+	.loc 3 695 0
+//
+	.loc 3 696 0
+	.loc 3 696 0
+//  DUP    0x7FF AND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF240,0x76FF	//MOVW	R6, #2047 @ 0x7FF
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 3 697 0
+	.loc 3 697 0
+// OVER 0x01F800 AND  5 <<  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x36FC	//MOV.W	R6, #129024 @ 0x1F800
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0146		//LSLS	R6, R0, #5
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 698 0
+	.loc 3 698 0
+// OVER 0x020000 AND  6 >>  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x3600	//MOV.W	R6, #131072 @ 0x20000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0986		//LSRS	R6, R0, #6
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 699 0
+	.loc 3 699 0
+// OVER 0x040000 AND  5 >>  OR
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x2680	//MOV.W	R6, #262144 @ 0x40000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x0946		//LSRS	R6, R0, #5
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 700 0
+	.loc 3 700 0
+// SWAP 0x080000 AND  7 <<  OR
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x2600	//MOV.W	R6, #524288 @ 0x80000
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0x01C6		//LSLS	R6, R0, #7
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 701 0
+	.loc 3 701 0
+//    OR
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 3 702 0
+	.loc 3 702 0
+//	DUP 16 >>  W,_ W,_ ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x0C06		//LSRS	R6, R0, #16
+	.inst.n	0xF7FF,0xF9D9	//BL	Wcom_
+	.inst.n	0xF7FF,0xF9D7	//BL	Wcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 703 0
+	.loc 3 703 0
+//
+	.loc 3 704 0
+	.loc 3 704 0
+//: FAR? DUP HERE_ 4 + -
+
+	.global FARque
+FARque:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FF,0xF9BD	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1D06		//ADDS	R6, R0, #4
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 705 0
+	.loc 3 705 0
+// 2/  $80 + $FF ANDC ; \ ABS 0x7F NOT AND ;
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.inst.n	0xF116,0x0680	//ADDS.W	R6, R6, #128 @ 0x80
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x06FF	//BIC.W	R6, R0, #255 @ 0xFF
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 706 0
+	.loc 3 706 0
+//
+	.loc 3 707 0
+	.loc 3 707 0
+//: BEQ.W,_ 0xf0008000 BXX.W,_ ;
+
+	.global BEQdotWcom_
+BEQdotWcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF248,0x0600	//MOVW	R6, #:lower16:4026564608 @ 0xF0008000
+	.inst.n	0xF2CF,0x0600	//MOVT	R6, #:upper16:4026564608 @ 0xF0008000
+	.inst.n	0xF7FF,0xFF81	//BL	BXXdotWcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 708 0
+	.loc 3 708 0
+//
+	.loc 3 709 0
+	.loc 3 709 0
+//: ?BRANCH.F,_ ( A -- )
+
+	.global queBRANCHdotFcom_
+queBRANCHdotFcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 710 0
+	.loc 3 710 0
+//	$4236    W,_ \  	tst	r6, r6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF244,0x2636	//MOVW	R6, #16950 @ 0x4236
+	.inst.n	0xF7FF,0xF9B5	//BL	Wcom_
+	.loc 3 711 0
+	.loc 3 711 0
+//	$CF40	W,_ \	//LDMIA	R7!, {R6}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64C,0x7640	//MOVW	R6, #53056 @ 0xCF40
+	.inst.n	0xF7FF,0xF9AF	//BL	Wcom_
+	.loc 3 712 0
+	.loc 3 712 0
+//	BEQ.W,_
+	.inst.n	0xF7FF,0xFFE7	//BL	BEQdotWcom_
+	.loc 3 713 0
+	.loc 3 713 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 714 0
+	.loc 3 714 0
+//
+	.loc 3 715 0
+	.loc 3 715 0
+//: ?BRANCH,_ ( A -- )
+
+	.global queBRANCHcom_
+queBRANCHcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 716 0
+	.loc 3 716 0
+//	$4236    W,_ \  	tst	r6, r6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF244,0x2636	//MOVW	R6, #16950 @ 0x4236
+	.inst.n	0xF7FF,0xF9A5	//BL	Wcom_
+	.loc 3 717 0
+	.loc 3 717 0
+//	$CF40	W,_ \	//LDMIA	R7!, {R6} \ drop
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64C,0x7640	//MOVW	R6, #53056 @ 0xCF40
+	.inst.n	0xF7FF,0xF99F	//BL	Wcom_
+	.loc 3 718 0
+	.loc 3 718 0
+//  FAR?	IF BEQ.W,_ BREAK
+	.inst.n	0xF7FF,0xFFC7	//BL	FARque
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8003	//BEQ.W	queBRANCHcom_+2C 
+	.inst.n	0xF7FF,0xFFD1	//BL	BEQdotWcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 719 0
+	.loc 3 719 0
+//	BXX.N $d000 OR W,_	\ BEQ.N,
+	.inst.n	0xF7FF,0xFF2E	//BL	BXXdotN
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x4650	//MOV.W	R6, #53248 @ 0xD000
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FF,0xF98E	//BL	Wcom_
+	.loc 3 720 0
+	.loc 3 720 0
+//
+	.loc 3 721 0
+	.loc 3 721 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 722 0
+	.loc 3 722 0
+//
+	.loc 3 723 0
+	.loc 3 723 0
+//: BRANCH,_ \ ( A -- ) \ ZZZZ IF  THEN
+	.inst.n	0xFFFF @ ?????
+
+	.global BRANCHcom_
+BRANCHcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 724 0
+	.loc 3 724 0
+//	HERE_ 4 + - 2/ 0x7FF AND 0xE000 OR W,_ ;
+	.inst.n	0xF7FF,0xF975	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x1D06		//ADDS	R6, R0, #4
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF240,0x76FF	//MOVW	R6, #2047 @ 0x7FF
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0xF44F,0x4660	//MOV.W	R6, #57344 @ 0xE000
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FF,0xF97B	//BL	Wcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 725 0
+	.loc 3 725 0
+//
+	.loc 3 726 0
+	.loc 3 726 0
+//: BEGIN_ ?COMP HERE_ BEGIN_FLAG ;
+
+	.global BEGIN_
+BEGIN_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFE2F	//BL	queCOMP
+	.inst.n	0xF7FF,0xF961	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2603		//MOVS	R6, #3
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 727 0
+	.loc 3 727 0
+//: UNTIL_ ?COMP BEGIN_FLAG <> IF -2004 THROW THEN  ?BRANCH,_ ;
+	.inst.n	0xFFFF @ ?????
+
+	.global UNTIL_
+UNTIL_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFE25	//BL	queCOMP
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2603		//MOVS	R6, #3
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	UNTIL_+26 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x062C	//MOVW	R6, #:lower16:4294965292 @ 0xFFFFF82C
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965292 @ 0xFFFFF82C
+	.inst.n	0xF7FF,0xFAF1	//BL	THROW
+	.inst.n	0xF7FF,0xFFAF	//BL	queBRANCHcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 728 0
+	.loc 3 728 0
+//: AGAIN_ ?COMP BEGIN_FLAG <> IF -2004 THROW THEN   BRANCH,_ ;
+
+	.global AGAIN_
+AGAIN_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFE0F	//BL	queCOMP
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2603		//MOVS	R6, #3
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	AGAIN_+26 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x062C	//MOVW	R6, #:lower16:4294965292 @ 0xFFFFF82C
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965292 @ 0xFFFFF82C
+	.inst.n	0xF7FF,0xFADB	//BL	THROW
+	.inst.n	0xF7FF,0xFFB9	//BL	BRANCHcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 729 0
+	.loc 3 729 0
+//
+	.loc 3 730 0
+	.loc 3 730 0
+//: AHEAD_ ?COMP	HERE_ BRANCH,_		HERE_ HEAD_FLAG ;
+
+	.global AHEAD_
+AHEAD_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFDF9	//BL	queCOMP
+	.inst.n	0xF7FF,0xF92B	//BL	HERE_
+	.inst.n	0xF7FF,0xFFB1	//BL	BRANCHcom_
+	.inst.n	0xF7FF,0xF927	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260D		//MOVS	R6, #13
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 731 0
+	.loc 3 731 0
+//: IF_	?COMP	HERE_ ?BRANCH.F,_	HERE_ IF.F_FLAG ;
+	.inst.n	0xFFFF @ ?????
+
+	.global IF_
+IF_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFDEB	//BL	queCOMP
+	.inst.n	0xF7FF,0xF91D	//BL	HERE_
+	.inst.n	0xF7FF,0xFF73	//BL	queBRANCHdotFcom_
+	.inst.n	0xF7FF,0xF919	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260B		//MOVS	R6, #11
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 732 0
+	.loc 3 732 0
+//
+	.loc 3 733 0
+	.loc 3 733 0
+//: THEN_ ( A, N -- )
+	.inst.n	0xFFFF @ ?????
+
+	.global THEN_
+THEN_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 734 0
+	.loc 3 734 0
+//  DUP IF_FLAG	= IF DROP 2-
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8026	//BEQ.W	THEN_+62 
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 3 735 0
+	.loc 3 735 0
+//	HERE_ OVER - 4 - 2/
+	.inst.n	0xF7FF,0xF904	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.loc 3 736 0
+	.loc 3 736 0
+//
+	.loc 3 737 0
+	.loc 3 737 0
+// DUP  $80 + $FF ANDC IF -314 THROW THEN
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF116,0x0680	//ADDS.W	R6, R6, #128 @ 0x80
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF020,0x06FF	//BIC.W	R6, R0, #255 @ 0xFF
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	THEN_+54 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x66C6	//MOVW	R6, #:lower16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294966982 @ 0xFFFFFEC6
+	.inst.n	0xF7FF,0xFA92	//BL	THROW
+	.loc 3 738 0
+	.loc 3 738 0
+//
+	.loc 3 739 0
+	.loc 3 739 0
+// SWAP C! BREAK
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 740 0
+	.loc 3 740 0
+//
+	.loc 3 741 0
+	.loc 3 741 0
+// DUP  IF.F_FLAG	= IF DROP 4 - HERE_ >R DP_ ! 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x260B		//MOVS	R6, #11
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x801A	//BEQ.W	THEN_+AA 
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF7FF,0xF8D4	//BL	HERE_
+		PUSH	{R6}
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.loc 3 742 0
+	.loc 3 742 0
+//  	R@ BEQ.W,_
+	.inst.n	0xF7FF,0xFF18	//BL	BEQdotWcom_
+	.loc 3 743 0
+	.loc 3 743 0
+//	R> DP_ !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 744 0
+	.loc 3 744 0
+//	BREAK
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 745 0
+	.loc 3 745 0
+//
+	.loc 3 746 0
+	.loc 3 746 0
+//
+	.loc 3 747 0
+	.loc 3 747 0
+//  HEAD_FLAG	= IF 2-	HERE_ OVER - 4 - 2/ 0x7FF AND 0xE000 OR SWAP  W! BREAK
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x260D		//MOVS	R6, #13
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8019	//BEQ.W	THEN_+EC 
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0xF7FF,0xF8B3	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF240,0x76FF	//MOVW	R6, #2047 @ 0x7FF
+	.inst.n	0x4030		//ANDS	R0, R6
+	.inst.n	0xF44F,0x4660	//MOV.W	R6, #57344 @ 0xE000
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x8030		//STRH	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 748 0
+	.loc 3 748 0
+//	-2007 THROW  \ ABORT" Conditionals not paired"
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x0629	//MOVW	R6, #:lower16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF7FF,0xFA3E	//BL	THROW
+	.loc 3 749 0
+	.loc 3 749 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 750 0
+	.loc 3 750 0
+//
+	.loc 3 751 0
+	.loc 3 751 0
+//: CS-SWAP 2SWAP ;
+	.inst.n	0xFFFF @ ?????
+
+	.global CSsubSWAP
+CSsubSWAP:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FE,0xFA64	//BL	_2SWAP
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 752 0
+	.loc 3 752 0
+//
+	.loc 3 753 0
+	.loc 3 753 0
+//: ELSE_   ( BO BI ADDR ? -- 0 0 ADDR1 ?1 )
+
+	.global ELSE_
+ELSE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 754 0
+	.loc 3 754 0
+//  AHEAD_ CS-SWAP  THEN_ ;
+	.inst.n	0xF7FF,0xFF5D	//BL	AHEAD_
+	.inst.n	0xF7FF,0xFFF7	//BL	CSsubSWAP
+	.inst.n	0xF7FF,0xFF75	//BL	THEN_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 755 0
+	.loc 3 755 0
+//
+	.loc 3 756 0
+	.loc 3 756 0
+//: WHILE_  IF_  CS-SWAP ;
+
+	.global WHILE_
+WHILE_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFF63	//BL	IF_
+	.inst.n	0xF7FF,0xFFEF	//BL	CSsubSWAP
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 757 0
+	.loc 3 757 0
+//: REPEAT_  AGAIN_ THEN_ ;
+
+	.global REPEAT_
+REPEAT_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFF39	//BL	AGAIN_
+	.inst.n	0xF7FF,0xFF69	//BL	THEN_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 758 0
+	.loc 3 758 0
+//
+	.loc 3 759 0
+	.loc 3 759 0
+//\- 'LEAVE_ VARIABLE 'LEAVE_
+	.loc 3 760 0
+	.loc 3 760 0
+//
+	.loc 3 761 0
+	.loc 3 761 0
+//: RESOLVE-LEAVE_
+
+	.global RESOLVEsubLEAVE_
+RESOLVEsubLEAVE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 762 0
+	.loc 3 762 0
+//\ Resolve the references to the leave addresses of the loop.
+	.loc 3 763 0
+	.loc 3 763 0
+//\ EXIT
+	.loc 3 764 0
+	.loc 3 764 0
+//          'LEAVE_ @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 765 0
+	.loc 3 765 0
+//        BEGIN DUP
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x801D	//BEQ.W	RESOLVEsubLEAVE_+50 
+	.loc 3 766 0
+	.loc 3 766 0
+//	WHILE \ F7_ED
+	.loc 3 767 0
+	.loc 3 767 0
+//    DUP DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 3 768 0
+	.loc 3 768 0
+//    W@ DUP
+	.inst.n	0x8836		//LDRH	R6, [R6, #0]
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x8006	//BEQ.W	RESOLVEsubLEAVE_+32 
+	.loc 3 769 0
+	.loc 3 769 0
+//    IF -  OVER
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.loc 3 770 0
+	.loc 3 770 0
+//    ELSE  SWAP
+	.inst.n	0xE002		//B.N	10004C7C
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 771 0
+	.loc 3 771 0
+//    THEN  HERE_ - NEGATE  ROT  W!
+	.inst.n	0xF7FF,0xF85E	//BL	HERE_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x8030		//STRH	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 772 0
+	.loc 3 772 0
+//
+	.loc 3 773 0
+	.loc 3 773 0
+//	REPEAT DROP ;
+	.inst.n	0xE7DF		//B.N	10004C54
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 774 0
+	.loc 3 774 0
+//
+	.loc 3 775 0
+	.loc 3 775 0
+//: LEAVE_ ( --- )
+
+	.global LEAVE_
+LEAVE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 776 0
+	.loc 3 776 0
+//\ Runtime: leave the matching DO LOOP immediately.
+	.loc 3 777 0
+	.loc 3 777 0
+//\ All places where a leave address for the loop is needed are in a linked
+	.loc 3 778 0
+	.loc 3 778 0
+//\ list, starting with 'LEAVE variable, the other links in the cells where
+	.loc 3 779 0
+	.loc 3 779 0
+//\ the leave addresses will come.
+	.loc 3 780 0
+	.loc 3 780 0
+//  ['] (LEAVE) COMPILE,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:cLEAVEcend+1
+	MOVT R6, #:upper16:cLEAVEcend
+	.inst.n	0xF7FF,0xF91D	//BL	COMPILEcom_
+	.loc 3 781 0
+	.loc 3 781 0
+//   'LEAVE_ @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 782 0
+	.loc 3 782 0
+//   IF   HERE_  DUP 'LEAVE_ @ -
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800C	//BEQ.W	LEAVE_+40 
+	.inst.n	0xF7FF,0xF83C	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 3 783 0
+	.loc 3 783 0
+//   ELSE HERE_ 0
+	.inst.n	0xE004		//B.N	10004CE2
+	.inst.n	0xF7FF,0xF830	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 784 0
+	.loc 3 784 0
+//   THEN W,_
+	.inst.n	0xF7FF,0xF83F	//BL	Wcom_
+	.loc 3 785 0
+	.loc 3 785 0
+// 'LEAVE_ !
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 786 0
+	.loc 3 786 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 787 0
+	.loc 3 787 0
+//
+	.loc 3 788 0
+	.loc 3 788 0
+//: ?DO_
+	.inst.n	0xFFFF @ ?????
+
+	.global queDO_
+queDO_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 789 0
+	.loc 3 789 0
+//  'LEAVE_ @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 790 0
+	.loc 3 790 0
+//  ['] (?DO) COMPILE,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:cqueDOcend+1
+	MOVT R6, #:upper16:cqueDOcend
+	.inst.n	0xF7FF,0xF8E6	//BL	COMPILEcom_
+	.loc 3 791 0
+	.loc 3 791 0
+//
+	.loc 3 792 0
+	.loc 3 792 0
+//\   'LEAVE_ @
+	.loc 3 793 0
+	.loc 3 793 0
+//\   IF   HERE_ DUP 'LEAVE_ @ -
+	.loc 3 794 0
+	.loc 3 794 0
+//\   ELSE HERE_ 0
+	.loc 3 795 0
+	.loc 3 795 0
+//\   THEN
+	.loc 3 796 0
+	.loc 3 796 0
+// HERE_ 0
+	.inst.n	0xF7FF,0xF810	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.loc 3 797 0
+	.loc 3 797 0
+// W,_ 'LEAVE_ !
+	.inst.n	0xF7FF,0xF81F	//BL	Wcom_
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 798 0
+	.loc 3 798 0
+//
+	.loc 3 799 0
+	.loc 3 799 0
+//   HERE_ DO_FLAG1
+	.inst.n	0xF7FF,0xF802	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2607		//MOVS	R6, #7
+	.loc 3 800 0
+	.loc 3 800 0
+//
+	.loc 3 801 0
+	.loc 3 801 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 802 0
+	.loc 3 802 0
+//
+	.loc 3 803 0
+	.loc 3 803 0
+//: DO_
+
+	.global DO_
+DO_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 804 0
+	.loc 3 804 0
+//  'LEAVE_ @
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 3 805 0
+	.loc 3 805 0
+//  ['] (DO) COMPILE,_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:cDOcend+1
+	MOVT R6, #:upper16:cDOcend
+	.inst.n	0xF7FF,0xF8C2	//BL	COMPILEcom_
+	.loc 3 806 0
+	.loc 3 806 0
+//  HERE_   DO_FLAG1
+	.inst.n	0xF7FE,0xFFEC	//BL	HERE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2607		//MOVS	R6, #7
+	.loc 3 807 0
+	.loc 3 807 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 808 0
+	.loc 3 808 0
+//
+	.loc 3 809 0
+	.loc 3 809 0
+//: LOOP,
+
+	.global LOOPcom
+LOOPcom:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 810 0
+	.loc 3 810 0
+//	$BC01	W,_ \	POP	{R0}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64B,0x4601	//MOVW	R6, #48129 @ 0xBC01
+	.inst.n	0xF7FE,0xFFF5	//BL	Wcom_
+	.loc 3 811 0
+	.loc 3 811 0
+//	$3001	W,_ \	ADDS	R0, #1
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF243,0x0601	//MOVW	R6, #12289 @ 0x3001
+	.inst.n	0xF7FE,0xFFEF	//BL	Wcom_
+	.loc 3 812 0
+	.loc 3 812 0
+//	$B401	W,_ \	PUSH	{R0}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24B,0x4601	//MOVW	R6, #46081 @ 0xB401
+	.inst.n	0xF7FE,0xFFE9	//BL	Wcom_
+	.loc 3 813 0
+	.loc 3 813 0
+//	BXX.N $d700 OR W,_	\ BVC.N
+	.inst.n	0xF7FF,0xFD81	//BL	BXXdotN
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x4657	//MOV.W	R6, #55040 @ 0xD700
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FE,0xFFE1	//BL	Wcom_
+	.loc 3 814 0
+	.loc 3 814 0
+//	$B002	W,_ \	ADD	SP, #8
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24B,0x0602	//MOVW	R6, #45058 @ 0xB002
+	.inst.n	0xF7FE,0xFFDB	//BL	Wcom_
+	.loc 3 815 0
+	.loc 3 815 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 816 0
+	.loc 3 816 0
+//
+	.loc 3 817 0
+	.loc 3 817 0
+//: +LOOP,
+
+	.global addLOOPcom
+addLOOPcom:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 818 0
+	.loc 3 818 0
+//	$BC01	W,_ \	POP	{R0}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64B,0x4601	//MOVW	R6, #48129 @ 0xBC01
+	.inst.n	0xF7FE,0xFFD3	//BL	Wcom_
+	.loc 3 819 0
+	.loc 3 819 0
+//\	$0005EB10 ,_ \	ADDS.W	R0, R0, R5
+	.loc 3 820 0
+	.loc 3 820 0
+//	$1980   W,_ \  	adds	r0, r0, r6
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF44F,0x56CC	//MOV.W	R6, #6528 @ 0x1980
+	.inst.n	0xF7FE,0xFFCD	//BL	Wcom_
+	.loc 3 821 0
+	.loc 3 821 0
+//	$B401	W,_ \	PUSH	{R0}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24B,0x4601	//MOVW	R6, #46081 @ 0xB401
+	.inst.n	0xF7FE,0xFFC7	//BL	Wcom_
+	.loc 3 822 0
+	.loc 3 822 0
+//\	$CC20	W,_ \	LDMIA	R4!, {R5} \ drop
+	.loc 3 823 0
+	.loc 3 823 0
+//	$CF40	W,_ \	//LDMIA	R7!, {R6} \ drop
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64C,0x7640	//MOVW	R6, #53056 @ 0xCF40
+	.inst.n	0xF7FE,0xFFC1	//BL	Wcom_
+	.loc 3 824 0
+	.loc 3 824 0
+//	BXX.N $d700 OR W,_	\ BVC.N
+	.inst.n	0xF7FF,0xFD59	//BL	BXXdotN
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF44F,0x4657	//MOV.W	R6, #55040 @ 0xD700
+	.inst.n	0x4306		//ORRS	R6, R0
+	.inst.n	0xF7FE,0xFFB9	//BL	Wcom_
+	.loc 3 825 0
+	.loc 3 825 0
+//	$B002	W,_ \	ADD	SP, #8
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF24B,0x0602	//MOVW	R6, #45058 @ 0xB002
+	.inst.n	0xF7FE,0xFFB3	//BL	Wcom_
+	.loc 3 826 0
+	.loc 3 826 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 827 0
+	.loc 3 827 0
+//
+	.loc 3 828 0
+	.loc 3 828 0
+//: LOOP_
+
+	.global LOOP_
+LOOP_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 829 0
+	.loc 3 829 0
+// DO_FLAG1 <> IF -2007 THROW THEN \ Conditionals not paired
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2607		//MOVS	R6, #7
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	LOOP_+22 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x0629	//MOVW	R6, #:lower16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF7FF,0xF935	//BL	THROW
+	.loc 3 830 0
+	.loc 3 830 0
+//  LOOP,
+	.inst.n	0xF7FF,0xFFA3	//BL	LOOPcom
+	.loc 3 831 0
+	.loc 3 831 0
+// RESOLVE-LEAVE_ 'LEAVE_ !
+	.inst.n	0xF7FF,0xFF0D	//BL	RESOLVEsubLEAVE_
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 832 0
+	.loc 3 832 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 833 0
+	.loc 3 833 0
+//                                 
+	.loc 3 834 0
+	.loc 3 834 0
+//: +LOOP_
+	.inst.n	0xFFFF @ ?????
+
+	.global addLOOP_
+addLOOP_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 835 0
+	.loc 3 835 0
+// DO_FLAG1 <> IF -2007 THROW THEN \ Conditionals not paired
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2607		//MOVS	R6, #7
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x4276		//NEGS	R6, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8008	//BEQ.W	addLOOP_+22 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x0629	//MOVW	R6, #:lower16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF6CF,0x76FF	//MOVT	R6, #:upper16:4294965289 @ 0xFFFFF829
+	.inst.n	0xF7FF,0xF917	//BL	THROW
+	.loc 3 836 0
+	.loc 3 836 0
+//  +LOOP,
+	.inst.n	0xF7FF,0xFFA7	//BL	addLOOPcom
+	.loc 3 837 0
+	.loc 3 837 0
+// RESOLVE-LEAVE_ 'LEAVE_ !
+	.inst.n	0xF7FF,0xFEEF	//BL	RESOLVEsubLEAVE_
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
+	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 838 0
+	.loc 3 838 0
+// ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 839 0
+	.loc 3 839 0
+//
+	.loc 3 840 0
+	.loc 3 840 0
+//: (_ \ ( "ccc<paren>" -- ) \ 94 FILE
+	.inst.n	0xFFFF @ ?????
+
+	.global c_
+c_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 841 0
+	.loc 3 841 0
+//  BEGIN
+	.loc 3 842 0
+	.loc 3 842 0
+//    [CHAR] ) DUP PARSE_ + C@ = 0=
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2629		//MOVS	R6, #41
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FE,0xFDD2	//BL	PARSE_
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 843 0
+	.loc 3 843 0
+//  WHILE
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8009	//BEQ.W	c_+3A 
+	.loc 3 844 0
+	.loc 3 844 0
+//    REFILL 0= IF EXIT THEN
+	.inst.n	0xF7FE,0xFE08	//BL	REFILL
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8001	//BEQ.W	c_+38 
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 845 0
+	.loc 3 845 0
+//  REPEAT
+	.inst.n	0xE7E3		//B.N	10004E7A
+	.loc 3 846 0
+	.loc 3 846 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 847 0
+	.loc 3 847 0
+//
+	.loc 3 848 0
+	.loc 3 848 0
+//: .(  [CHAR] " PARSE_ TYPE ;
+
+	.global dotc
+dotc:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2622		//MOVS	R6, #34
+	.inst.n	0xF7FE,0xFDB6	//BL	PARSE_
+	.inst.n	0xF7FE,0xFAFC	//BL	TYPE
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 849 0
+	.loc 3 849 0
+//
+	.loc 3 850 0
+	.loc 3 850 0
+//: \_ SOURCE NIP >IN ! ;
+	.inst.n	0xFFFF @ ?????
+
+	.global sl_
+sl_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FE,0xFCBB	//BL	SOURCE
+	.inst.n	0x3704		//ADDS	R7, #4
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 851 0
+	.loc 3 851 0
+//
+	.loc 3 852 0
+	.loc 3 852 0
+//: SLIT,_ ( adr len -- [ adr len ] )
+
+	.global SLITcom_
+SLITcom_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 853 0
+	.loc 3 853 0
+//	['] (S") COMPILE,_ S",_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:cSdticcend+1
+	MOVT R6, #:upper16:cSdticcend
+	.inst.n	0xF7FE,0xFFF9	//BL	COMPILEcom_
+	.inst.n	0xF7FF,0xFB5D	//BL	Sdticcom_
+	.loc 3 854 0
+	.loc 3 854 0
+//	HERE_ 1 AND	IF 0xFF C,_ THEN
+	.inst.n	0xF7FE,0xFF21	//BL	HERE_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0xF010,0x0601	//ANDS.W	R6, R0, #1 
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8005	//BEQ.W	SLITcom_+30 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x26FF		//MOVS	R6, #255
+	.inst.n	0xF7FE,0xFF34	//BL	Ccom_
+	.loc 3 855 0
+	.loc 3 855 0
+//\+ LRINIT	HERE_ 3 AND IF 0xFFFF W,_	THEN
+	.loc 3 856 0
+	.loc 3 856 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 857 0
+	.loc 3 857 0
+//
+	.loc 3 858 0
+	.loc 3 858 0
+//: S"_
+	.inst.n	0xFFFF @ ?????
+
+	.global Sdtic_
+Sdtic_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 859 0
+	.loc 3 859 0
+//[CHAR] " PARSE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2622		//MOVS	R6, #34
+	.inst.n	0xF7FE,0xFD86	//BL	PARSE_
+	.loc 3 860 0
+	.loc 3 860 0
+//	STATE @ IF SLIT,_ THEN ;
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+636 @ 0x27C
+	MOVT	R6, #:upper16:sp_buff+636 @ 0x27C
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8002	//BEQ.W	Sdtic_+26 
+	.inst.n	0xF7FF,0xFFD3	//BL	SLITcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 861 0
+	.loc 3 861 0
+//
+	.loc 3 862 0
+	.loc 3 862 0
+//: ."_  S"_ ['] TYPE COMPILE,_ ;
+
+	.global dotdtic_
+dotdtic_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFE9	//BL	Sdtic_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:TYPE+1
+	MOVT R6, #:upper16:TYPE
+	.inst.n	0xF7FE,0xFFC9	//BL	COMPILEcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 863 0
+	.loc 3 863 0
+//
+	.loc 3 864 0
+	.loc 3 864 0
+//: [COMPILE]_ '_ COMPILE,_ ;
+
+	.global xCOMPILEy_
+xCOMPILEy_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFB75	//BL	tic_
+	.inst.n	0xF7FE,0xFFC3	//BL	COMPILEcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 865 0
+	.loc 3 865 0
+//
+	.loc 3 866 0
+	.loc 3 866 0
+//: POSTPONE_ \ 94
+
+	.global POSTPONE_
+POSTPONE_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 867 0
+	.loc 3 867 0
+//  PARSE-NAME SFIND DUP
+	.inst.n	0xF7FE,0xFD25	//BL	PARSEsubNAME
+	.inst.n	0xF7FE,0xFEAF	//BL	SFIND
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 3 868 0
+	.loc 3 868 0
+//  0= IF -321 THROW THEN
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8006	//BEQ.W	POSTPONE_+24 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF46F,0x76A0	//MVN.W	R6, #320 @ 0x140
+	.inst.n	0xF7FF,0xF884	//BL	THROW
+	.loc 3 869 0
+	.loc 3 869 0
+//  1 = IF COMPILE,_
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8003	//BEQ.W	POSTPONE_+3A 
+	.inst.n	0xF7FE,0xFFA6	//BL	COMPILEcom_
+	.loc 3 870 0
+	.loc 3 870 0
+//      ELSE LIT,_ ['] COMPILE,_ COMPILE,_ THEN
+	.inst.n	0xE009		//B.N	10004FAE
+	.inst.n	0xF7FE,0xFF27	//BL	LITcom_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:COMPILEcom_+1
+	MOVT R6, #:upper16:COMPILEcom_
+	.inst.n	0xF7FE,0xFF9B	//BL	COMPILEcom_
+	.loc 3 871 0
+	.loc 3 871 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 872 0
+	.loc 3 872 0
+//
+	.loc 3 873 0
+	.loc 3 873 0
+//2VARIABLE V_DOVAR
+	.loc 3 874 0
+	.loc 3 874 0
+//2VARIABLE V_DOCONST
+	.loc 3 875 0
+	.loc 3 875 0
+//
+	.loc 3 876 0
+	.loc 3 876 0
+//: CONSTANT_ HEADER_ NEST,_ V_DOCONST 1+ COMPILE,_  ,_ ; 
+
+	.global CONSTANT_
+CONSTANT_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFB41	//BL	HEADER_
+	.inst.n	0xF7FF,0xFB7B	//BL	NESTcom_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+672 @ 0x2A0
+	MOVT	R6, #:upper16:sp_buff+672 @ 0x2A0
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xF7FE,0xFF8C	//BL	COMPILEcom_
+	.inst.n	0xF7FE,0xFEC0	//BL	com_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 877 0
+	.loc 3 877 0
+//: CREATE_ HEADER_ NEST,_ V_DOVAR 1+ COMPILE,_  ; 
+	.inst.n	0xFFFF @ ?????
+
+	.global CREATE_
+CREATE_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFB2F	//BL	HEADER_
+	.inst.n	0xF7FF,0xFB69	//BL	NESTcom_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
+	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0xF7FE,0xFF7A	//BL	COMPILEcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 878 0
+	.loc 3 878 0
+//: VARIABLE_ CREATE_ 0 ,_ ; 
+	.inst.n	0xFFFF @ ?????
+
+	.global VARIABLE_
+VARIABLE_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFED	//BL	CREATE_
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FE,0xFEA6	//BL	com_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 879 0
+	.loc 3 879 0
+//
+	.loc 3 880 0
+	.loc 3 880 0
+//: CHAR_ ( "<spaces>name" -- char ) \ 94
+	.inst.n	0xFFFF @ ?????
+
+	.global CHAR_
+CHAR_:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 881 0
+	.loc 3 881 0
+// PARSE-NAME DROP C@ ;
+	.inst.n	0xF7FE,0xFCD1	//BL	PARSEsubNAME
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 882 0
+	.loc 3 882 0
+//
+	.loc 3 883 0
+	.loc 3 883 0
+//: [CHAR]_ CHAR_ LIT,_ ;
+
+	.global xCHARy_
+xCHARy_:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF7FF,0xFFF7	//BL	CHAR_
+	.inst.n	0xF7FE,0xFEE7	//BL	LITcom_
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 884 0
+	.loc 3 884 0
+//
+	.loc 3 885 0
+	.loc 3 885 0
+//: SCAN ( c-addr1 u1 c --- c-addr2 u2 )
+
+	.global SCAN
+SCAN:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 3 886 0
+	.loc 3 886 0
+//\ Find the first occurrence of character c in the string c-addr1 u1
+	.loc 3 887 0
+	.loc 3 887 0
+//\ c-addr2 u2 is the remaining part of the string starting with that char.
+	.loc 3 888 0
+	.loc 3 888 0
+//\ It is a zero-length string if c was not found.
+	.loc 3 889 0
+	.loc 3 889 0
+//  BEGIN
+	.loc 3 890 0
+	.loc 3 890 0
+//   OVER
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.loc 3 891 0
+	.loc 3 891 0
+//  WHILE
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x802E	//BEQ.W	SCAN+6C 
+	.loc 3 892 0
+	.loc 3 892 0
+//   ROT DUP C@ >R OVER R> =
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.inst.n	0xB440		//PUSH	{R6}
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xBC40		//POP	{R6}
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 3 893 0
+	.loc 3 893 0
+//   IF
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800A	//BEQ.W	SCAN+4A 
+	.loc 3 894 0
+	.loc 3 894 0
+//    ROT ROT DROP EXIT
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 895 0
+	.loc 3 895 0
+//   THEN
+	.loc 3 896 0
+	.loc 3 896 0
+//   1+ ROT ROT SWAP 1- SWAP
+	.inst.n	0x3601		//ADDS	R6, #1
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x4632		//MOV	R2, R6
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x4630		//MOV	R0, R6
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 3 897 0
+	.loc 3 897 0
+//  REPEAT DROP
+	.inst.n	0xE7CA		//B.N	10005022
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 3 898 0
+	.loc 3 898 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 3 899 0
+	.loc 3 899 0
+//
+	.loc 3 900 0
+	.loc 3 900 0
+//: ZCOUNT ( zaddr -- addr n )   dup dup if  65535 0 scan drop over - then ;
+
+	.global ZCOUNT
+ZCOUNT:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xF000,0x800C	//BEQ.W	ZCOUNT+24 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF64F,0x76FF	//MOVW	R6, #65535 @ 0xFFFF
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2600		//MOVS	R6, #0
+	.inst.n	0xF7FF,0xFFB9	//BL	SCAN
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+		POP	{R15}
+	.loc 3 901 0
+	.loc 3 901 0
+//
+	.loc 3 902 0
+	.loc 3 902 0
+//
+	.loc 3 903 0
+	.loc 3 903 0
+//

@@ -1,0 +1,166 @@
+$8007000 CONSTANT RAMIMG
+
+: SAVE
+  flash_unlock  
+  RAMIMG DUP FLASH-ERASE
+  HERE_ VAR_BIG
+  DO I W@ OVER FLASH! 2+  2 +LOOP
+  DROP
+  flash_lock
+;
+
+: REST
+	RAMIMG
+	VAR_BIG
+	DP_  VAR_BIG  - RAMIMG  +  @  VAR_BIG - 
+	CMOVE
+;
+
+CREATE  LINEBUF 500 ALLOT
+VARIABLE LPOS
+
+: SLCANGETLINE ( -- addr )
+		  	nndeb0
+  KEY? 0= IF 0 BREAK
+  KEY
+   DUP $A =
+   OVER
+    $D = OR
+   OVER
+   0= OR
+   IF
+		  	nndeb
+     DROP 0 LINEBUF LPOS @ + C!  LPOS 0!
+       LINEBUF  
+   ELSE
+\ [ ' DoTDTST TO TDTST ]
+     500
+       LPOS @
+      U<
+       IF
+        LPOS 0!
+       THEN
+   		LINEBUF
+   		 LPOS @
+   		  +
+   		   C!
+   		    1 LPOS +!
+   		     0 
+   THEN
+;
+
+: SLCANSPIN ( -- )
+\    slcan_getline
+    SLCANGETLINE
+      ?DUP
+    IF
+        DUP SLCAN_DECODE
+        ZCOUNT TYPE
+    THEN
+;
+
+: SLCAN_LOOP
+  BEGIN
+     CAN_CNT
+     if
+     		TXBUF SLCAN_RXSPIN TYPE 
+\		  	slcan_rx_spin_mmo
+
+     then
+    	SLCANSPIN \
+\    	 slcan_spin
+  AGAIN
+;
+
+\ : XXX ;
+VARIABLE MENUID
+VARIABLE MEID
+
+\ 2 MENUID !
+
+
+: MENU<
+  $D EMIT $A EMIT 
+  ."   " 
+ DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+
+: MENUW<
+  $D EMIT $A EMIT 
+  DUP MEID @ = IF ." * " ELSE ."   "  THEN 
+ DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+VARIABLE MESAID
+: MENUS<
+  $D EMIT $A EMIT 
+  MESAID @ IF ." * " ELSE ."   "  THEN 
+ DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+
+: >MENU
+ DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+
+;
+
+: CURUP $1B EMIT ." [A" ;
+VARIABLE TTTIME
+: KEY0
+ KEY ; \  KEY? DUP IF DROP KEY THEN ;
+
+: KEYW
+ 599999
+ BEGIN 1- DUP 0= IF BREAK  KEY?
+ UNTIL DROP 7 TTTIME !
+ KEY ; \  KEY? DUP IF DROP KEY THEN ;
+
+: CHMEHU
+  $1B =
+ IF  KEY0 [CHAR] [  =
+   IF KEY0
+      DUP [CHAR] A =  IF DROP DUP 1- MENUID @ +   ELSE 
+         [CHAR] B =  IF  MENUID @ 1+   ELSE 
+             MENUID @
+      THEN  THEN OVER MOD MENUID !
+   THEN
+ THEN   
+   0 DO  CURUP LOOP
+;
+\ EOF 
+
+: mmmemu
+ MENUW< ." CAN"  >MENU
+ MENUW< ." FORTH (rest)"  >MENU
+ MENUW< ." FORTH (original)"  >MENU
+ MENUS< ." SAVE"  >MENU
+ MENU< ." START"  >MENU
+
+;
+: MMENU
+ 7 TTTIME !
+ MESAID 0!
+ BEGIN  0
+  mmmemu
+   DUP >R
+ KEYW
+ dup   $D  =
+ over  $a  = OR DUP
+ if   MENUID @ 3 U< IF MENUID @ MEID ! THEN
+   MENUID @ 3 = IF
+    SAVE
+     -1 MESAID !
+      THEN
+ 	 
+ then   
+ 0=
+
+ MENUID @ R> 1- <> OR
+
+ TTTIME @
+ 9 EMIT DUP .
+ DUP 1- TTTIME !   
+ 0<> AND
+
+ WHILE  CHMEHU
+ REPEAT 2DROP
+;
+
+

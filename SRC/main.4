@@ -1,0 +1,58 @@
+: VAR_ORIG_SET
+     SP@ SP0 !
+   CONTEXT CELL+ 0!
+ \ ['] SERIAL-EMIT HOOK-EMIT !
+ \ ['] SERIAL-KEY HOOK-KEY !
+ \ ['] serial-key? hook-key? !
+   +USB  
+  [ DHERE $10 + LIT, ] DP_ ! 
+   DECIMAL_
+   GetForthWords FORTH-WORDLIST_ !
+   FORTH_ DEFINITIONS_
+ ;
+ 
+: FMAIN
+
+    $f000f8df \	ldr.w	pc, [pc]
+    V_DOVAR !
+    ['] DOCREATE V_DOVAR CELL+ !
+
+    $f000f8df \	ldr.w	pc, [pc]
+    V_DOCONST !
+    ['] DOCONST V_DOCONST CELL+ !
+
+	stm32f107_usb_init
+
+	VAR_ORIG_SET
+
+     MEID
+       VAR_BIG - 
+      RAMIMG +  @ MEID !
+	
+0 \  	MMENU   MEID  @    0= 
+       IF
+        SLCAN_LOOP
+        THEN
+
+     MEID  @ 1 =
+     IF	REST
+     THEN
+
+   HELLO
+   
+ BEGIN  [_ DECIMAL 
+ 	['] QUIT
+ 	 CATCH
+ 	  ." ERR=" .   $D EMIT $A EMIT SP0 @ SP!
+ AGAIN
+;
+
+: FFMAIN
+[ ASMARM_BIG
+	MOVS	DSTK,R0
+ASM_END ]
+
+ \ PPP \
+  FMAIN
+;
+

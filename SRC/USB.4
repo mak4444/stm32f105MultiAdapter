@@ -1,0 +1,52 @@
+
+: usb-emit? 1 ;
+
+: usb-io ( -- )  \ start up USB and switch console I/O to it
+\  23 bit RCC-APB1ENR bis!  \ USBEN
+\  $0001 USB-CNTR h! ( 10 us ) $0000 USB-CNTR h!  \ FRES
+\  usb-flush
+  ['] usb-key? hook-key? !
+  ['] usb-key hook-key !
+\  1000000 0 do usb-poll loop
+  ['] usb-emit? hook-emit? !
+  ['] usb-emit hook-emit !
+  \ ['] usb-poll hook-pause !
+;
+
+\ -----------------------------------------------------------------------------
+\  USB connect and disconnect, board specific !
+\ -----------------------------------------------------------------------------
+
+: +usb ( -- )  \ Init USB hardware and switch to USB terminal
+ \ tx.pend 0!
+ \ usb.ticks 0!
+ \ 0 0 usb-pend 2!
+\  72MHz \ This is required for USB use
+
+\   stm32f107_USBdInit
+   stm32f107_usb_init
+   
+   usb-io
+ \  BEGIN usb-key? WHILE usb-key H. REPEAT
+;
+
+: -usb ( -- )  \ Deinit USB hardware, switch back to serial terminal
+\  1 23 lshift RCC-APB1ENR bic!  \ USBEN
+\  1 12 lshift $4001080C ( PORTA_ODR ) bic!
+
+  ['] serial-key? hook-key? !
+  ['] serial-key hook-key !
+  ['] serial-emit? hook-emit? !
+  ['] serial-emit hook-emit !
+  \ ['] nop hook-pause !
+;
+
+: TRANS
+  BEGIN
+        SERIAL-KEY? IF  SERIAL-KEY USB-EMIT THEN
+        USB-KEY? IF  USB-KEY SERIAL-EMIT THEN
+  AGAIN
+;
+
+
+

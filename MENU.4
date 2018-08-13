@@ -1,0 +1,43 @@
+VARIABLE MENUID
+
+2 MENUID !
+
+: MENU<
+ $D EMIT $A EMIT \ CR
+ DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
+;
+
+: >MENU
+ DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+
+;
+
+: CURUP $1B EMIT ." [A" ;
+
+: KEY0 KEY ;
+\  KEY? DUP IF DROP KEY THEN ;
+: CHMEHUA
+;
+
+: CHMEHU
+  $1B =
+ IF  KEY0 [CHAR] [  =
+   IF KEY0 \ CHMEHUA
+      DUP [CHAR] A =  IF DROP DUP 1- MENUID @ +   ELSE 
+         [CHAR] B =  IF  MENUID @ 1+   ELSE 
+             MENUID @
+      THEN  THEN OVER MOD MENUID !
+   THEN
+ THEN   
+   0 DO  CURUP LOOP
+;
+
+: MENU
+ BEGIN  0
+ MENU< ." ZZZZZZZZZ" >MENU
+ MENU< ." QWERTY"  >MENU
+ MENU< ." FORTH"  >MENU
+ MENU< ." ZZZZZZZZZ"  >MENU
+ KEY DUP $D  <> OVER $A <> AND
+ WHILE  CHMEHU
+ REPEAT 2DROP
+;

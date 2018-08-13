@@ -1,0 +1,169 @@
+
+\
+\ tetris.4th Tetris for terminals, redone in ANSI-Forth.
+\  Written 05Apr94 by Dirk Uwe Zoller, e-mail:
+\   duz@roxi.rz.fht-mannheim.de.
+\  Look&feel stolen from Mike Taylor's "TETRIS FOR TERMINALS"
+\
+\  Please copy and share this program, modify it for your system
+\  and improve it as you like. But don't remove this notice.
+\
+\  Thank you.
+\
+\  Changes:
+\
+\
+
+
+DECIMAL
+
+$20 CONSTANT BL
+: VALUE CONSTANT ;
+
+\ : CHAR ( "<spaces>name" -- char ) \ 94
+\  PARSE-NAME DROP C@ ;
+\ : [CHAR] CHAR LIT, ; immediate
+
+: D- ( d1 d2 --- d3) 
+  DNEGATE D+ ; 
+
+\ : D0=   OR 0= ;
+
+: D= 
+  D- D0= ;
+
+
+: SPACES 0 ?DO SPACE LOOP ;
+	
+: D.R ( d n --- )
+\ Print double number d right-justified in a field of width n. 
+  >R SWAP OVER DABS <# #S ROT SIGN #> R> OVER - 0 MAX SPACES TYPE ;
+
+: U.R ( u n --- )
+\ Print unsigned number u right-justified in a field of width n. 
+  >R 0 R> D.R ;
+
+: .R ( n1 n2 --- )
+\ Print number n1 right-justified in a field of width n2. 
+ >R S>D R> D.R ;
+
+VARIABLE CSP ( --- a-addr )
+\ This variable is used for stack checking between : and ; 
+
+: CASE 
+  CSP @ SP@ CSP ! ; IMMEDIATE
+: OF 
+  POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP ; IMMEDIATE
+: ENDOF 
+  POSTPONE ELSE ; IMMEDIATE
+: DUPENDCASE 
+  BEGIN SP@ CSP @ - WHILE POSTPONE THEN REPEAT
+  CSP ! ; IMMEDIATE
+
+: ENDCASE 
+  POSTPONE DROP POSTPONE DUPENDCASE ; IMMEDIATE
+
+\ http://www.termsys.demon.co.uk/vtansi.htm
+
+: ANSI_ESCAPE ( -- | output escape code )
+        27 EMIT [CHAR] [ EMIT ;
+
+: AT-XY ( x y --- )
+\ Put screen cursor at location (x,y) (0,0) is upper left corner.
+  BASE @ >R DECIMAL
+  ANSI_ESCAPE SWAP 1+  SWAP 0 .R [CHAR] ; EMIT
+   1+ 0 .R [CHAR] H EMIT
+   R> BASE ! ;
+
+
+: PAGE 
+\ Clear the screen.
+  27 EMIT ." [2J" 0 0 AT-XY ;
+
+: (DOES>)
+ R>	HERE >R
+	LAST @ NAME> 1+ \ 2+ PUSH {R14}  1-
+	DP !
+	NCOMPILE,
+ R>	DUP H.
+ DP !
+;
+
+: DOES>
+ ['] (DOES>)	COMPILE,
+	NEST,	\ PUSH	{R14}
+ ['] R>		COMPILE,
+ ['] 1-		COMPILE,
+;  IMMEDIATE
+
+
+\ Variables, constants
+: EMPTY  BL BL ;
+\ BL BL 2CONSTANT EMPTY  \ an empty position
+VARIABLE WIPING			\ if true: wipe brick, else draw brick
+2 CONSTANT COL0			\ position of the pit on screen
+0 CONSTANT ROW0
+
+10 CONSTANT WIDE		\ size of pit in brick positions
+20 CONSTANT DEEP
+
+CHAR J	VALUE LEFT-KEY		\ customize if you don't like them
+CHAR K	VALUE ROT-KEY
+CHAR L	VALUE RIGHT-KEY
+BL	VALUE DROP-KEY
+CHAR P	VALUE PAUSE-KEY
+12	VALUE REFRESH-KEY
+CHAR Q	VALUE QUIT-KEY
+
+VARIABLE SCORE 
+VARIABLE PIECES 
+VARIABLE LEVELS 
+VARIABLE DELAY 
+
+VARIABLE BROW			\ where the brick is
+VARIABLE BCOL
+
+
+\ stupid random number generator
+
+VARIABLE SEED
+
+: RANDOMIZE	0 ." Press any key." CR BEGIN 1+ KEY? UNTIL KEY DROP SEED ! ;
+
+: RANDOM	\ max --- n ; return random number < max
+		SEED @ 1103515245 * 12345 + [ HEX ] 07FFF [ DECIMAL ] AND
+		DUP SEED !  SWAP MOD ;
+
+
+\ Access pairs of characters in memory:
+
+: 2C@		DUP 1+ C@ SWAP C@ ;
+: 2C!		DUP >R C! R> 1+ C! ;
+
+
+: <=		> INVERT ;
+: >=		< INVERT ;
+: D<>		D= INVERT ;
+
+
+\ Drawing primitives:
+
+: 2EMIT		EMIT EMIT ;
+
+: POSITION	\ row col --- ; cursor to the position in the pit
+		2* COL0 + SWAP ROW0 + AT-XY ;
+
+: STONE		\ c1 c2 --- ; draw or undraw these two characters
+		WIPING @ IF  2DROP 2 SPACES  ELSE  2EMIT  THEN ;
+
+
+\ Define the pit where bricks fall into:
+
+: DEF-PIT	CREATE	WIDE DEEP * 2* ALLOT
+		DOES>	ROT WIDE * ROT + 2*  + ;
+
+DEF-PIT PIT
+
+: EMPTY-PIT	DEEP 0 DO WIDE 0 DO  EMPTY J I PIT 2C!
+		LOOP LOOP ;
+

@@ -1,0 +1,35 @@
+\                                            Максимов М.О. 
+
+$FF CONSTANT MAX$@   \ maximum length of contents of a counted string
+
+
+: "CLIP"        ( a1 n1 -- a1 n1' )   \ clip a string to between 0 and MAXCOUNTED
+                0 MAX MAX$@ AND ( UMIN ) ;
+
+
+S" $!" SFIND NIP 0=
+[IF]
+ 
+: $!         ( addr len dest -- )
+        SWAP "CLIP" SWAP
+	2DUP C! 1+ SWAP CMOVE ;
+
+[THEN]
+
+: PLACE $! ;
+: $+!       ( addr len dest -- ) \ append string addr,len to counted
+                                     \ string dest
+\                >R "CLIP" MAX$@  R@ C@ -  MIN R>
+                                        \ clip total to MAXCOUNTED string
+                2DUP >R >R
+                COUNT + SWAP CMOVE
+                R> R> +! ;
+: +PLACE $+! ;
+
+: $C+!       ( c1 a1 -- )    \ append char c1 to the counted string at a1
+               1 OVER +! COUNT + 1- C! ;
+
+: C+PLACE $C+! ;
+
+: +NULL         ( a1 -- )       \ append a NULL just beyond the counted chars
+                COUNT + 0 SWAP C! ;

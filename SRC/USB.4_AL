@@ -1,0 +1,279 @@
+	.file 4 "SRC/USB.4"
+	.loc 4 1 0
+	.loc 4 1 0
+//
+
+	.loc 4 2 0
+	.loc 4 2 0
+//: usb-emit? 1 ;
+	.inst.n	0xFFFF @ ?????
+
+	.global usbsubemitque
+usbsubemitque:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x2601		//MOVS	R6, #1
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 4 3 0
+	.loc 4 3 0
+//
+
+	.loc 4 4 0
+	.loc 4 4 0
+//: usb-io ( -- )  \ start up USB and switch console I/O to it
+	.inst.n	0xFFFF @ ?????
+
+	.global usbsubio
+usbsubio:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 4 5 0
+	.loc 4 5 0
+//\  23 bit RCC-APB1ENR bis!  \ USBEN
+	.loc 4 6 0
+	.loc 4 6 0
+//\  $0001 USB-CNTR h! ( 10 us ) $0000 USB-CNTR h!  \ FRES
+	.loc 4 7 0
+	.loc 4 7 0
+//\  usb-flush
+	.loc 4 8 0
+	.loc 4 8 0
+//  ['] usb-key? hook-key? !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:usbsubkeyque+1
+	MOVT R6, #:upper16:usbsubkeyque
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+12 @ 0xC
+	MOVT	R6, #:upper16:sp_buff+12 @ 0xC
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 9 0
+	.loc 4 9 0
+//  ['] usb-key hook-key !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:usbsubkey+1
+	MOVT R6, #:upper16:usbsubkey
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+4 
+	MOVT	R6, #:upper16:sp_buff+4 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 10 0
+	.loc 4 10 0
+//\  1000000 0 do usb-poll loop
+	.loc 4 11 0
+	.loc 4 11 0
+//  ['] usb-emit? hook-emit? !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:usbsubemitque+1
+	MOVT R6, #:upper16:usbsubemitque
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+8 
+	MOVT	R6, #:upper16:sp_buff+8 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 12 0
+	.loc 4 12 0
+//  ['] usb-emit hook-emit !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:usbsubemit+1
+	MOVT R6, #:upper16:usbsubemit
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 13 0
+	.loc 4 13 0
+//  \ ['] usb-poll hook-pause !
+	.loc 4 14 0
+	.loc 4 14 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 4 15 0
+	.loc 4 15 0
+//
+
+	.loc 4 16 0
+	.loc 4 16 0
+//\ -----------------------------------------------------------------------------
+	.loc 4 17 0
+	.loc 4 17 0
+//\  USB connect and disconnect, board specific !
+	.loc 4 18 0
+	.loc 4 18 0
+//\ -----------------------------------------------------------------------------
+	.loc 4 19 0
+	.loc 4 19 0
+//
+
+	.loc 4 20 0
+	.loc 4 20 0
+//: +usb ( -- )  \ Init USB hardware and switch to USB terminal
+
+	.global addusb
+addusb:		PUSH	{R14}
+	.loc 4 21 0
+	.loc 4 21 0
+// \ tx.pend 0!
+	.loc 4 22 0
+	.loc 4 22 0
+// \ usb.ticks 0!
+	.loc 4 23 0
+	.loc 4 23 0
+// \ 0 0 usb-pend 2!
+	.loc 4 24 0
+	.loc 4 24 0
+//\  72MHz \ This is required for USB use
+	.loc 4 25 0
+	.loc 4 25 0
+//
+
+	.loc 4 26 0
+	.loc 4 26 0
+//\   stm32f107_USBdInit
+	.loc 4 27 0
+	.loc 4 27 0
+//   stm32f107_usb_init
+	BL	stm32f107_usb_init
+	.loc 4 28 0
+	.loc 4 28 0
+//   
+	.loc 4 29 0
+	.loc 4 29 0
+//   usb-io
+	.inst.n	0xF7FF,0xFFC5	//BL	usbsubio
+	.loc 4 30 0
+	.loc 4 30 0
+// \  BEGIN usb-key? WHILE usb-key H. REPEAT
+	.loc 4 31 0
+	.loc 4 31 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 4 32 0
+	.loc 4 32 0
+//
+
+	.loc 4 33 0
+	.loc 4 33 0
+//: -usb ( -- )  \ Deinit USB hardware, switch back to serial terminal
+
+	.global subusb
+subusb:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 4 34 0
+	.loc 4 34 0
+//\  1 23 lshift RCC-APB1ENR bic!  \ USBEN
+	.loc 4 35 0
+	.loc 4 35 0
+//\  1 12 lshift $4001080C ( PORTA_ODR ) bic!
+	.loc 4 36 0
+	.loc 4 36 0
+//
+
+	.loc 4 37 0
+	.loc 4 37 0
+//  ['] serial-key? hook-key? !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:SERIALsubKEYque+1
+	MOVT R6, #:upper16:SERIALsubKEYque
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+12 @ 0xC
+	MOVT	R6, #:upper16:sp_buff+12 @ 0xC
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 38 0
+	.loc 4 38 0
+//  ['] serial-key hook-key !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:SERIALsubKEY+1
+	MOVT R6, #:upper16:SERIALsubKEY
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+4 
+	MOVT	R6, #:upper16:sp_buff+4 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 39 0
+	.loc 4 39 0
+//  ['] serial-emit? hook-emit? !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:SERIALsubEMITque+1
+	MOVT R6, #:upper16:SERIALsubEMITque
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+8 
+	MOVT	R6, #:upper16:sp_buff+8 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 40 0
+	.loc 4 40 0
+//  ['] serial-emit hook-emit !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+
+	MOVW R6, #:lower16:SERIALsubEMIT+1
+	MOVT R6, #:upper16:SERIALsubEMIT
+		MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 4 41 0
+	.loc 4 41 0
+//  \ ['] nop hook-pause !
+	.loc 4 42 0
+	.loc 4 42 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 4 43 0
+	.loc 4 43 0
+//
+
+	.loc 4 44 0
+	.loc 4 44 0
+//: TRANS
+
+	.global TRANS
+TRANS:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 4 45 0
+	.loc 4 45 0
+//  BEGIN
+	.loc 4 46 0
+	.loc 4 46 0
+//        SERIAL-KEY? IF  SERIAL-KEY USB-EMIT THEN
+	.inst.n	0xF7FE,0xF826	//BL	SERIALsubKEYque
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+16 
+	.inst.n	0xF7FE,0xF827	//BL	SERIALsubKEY
+	.inst.n	0xF7FE,0xF82C	//BL	usbsubemit
+	.loc 4 47 0
+	.loc 4 47 0
+//        USB-KEY? IF  USB-KEY SERIAL-EMIT THEN
+	.inst.n	0xF7FE,0xF830	//BL	usbsubkeyque
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+2A 
+	.inst.n	0xF7FE,0xF831	//BL	usbsubkey
+	.inst.n	0xF7FE,0xF805	//BL	SERIALsubEMIT
+	.loc 4 48 0
+	.loc 4 48 0
+//  AGAIN
+	.inst.n	0xE7EA		//B.N	100051AA
+	.loc 4 49 0
+	.loc 4 49 0
+//;
+		POP	{R15}
+	.loc 4 50 0
+	.loc 4 50 0
+//
+
+	.loc 4 51 0
+	.loc 4 51 0
+//
+
+	.loc 4 52 0
+	.loc 4 52 0
+//
+

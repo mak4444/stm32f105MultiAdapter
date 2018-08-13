@@ -1,0 +1,11 @@
+#!/bin/bash
+
+n=0
+
+case $1 in
+    -[1-9]*)
+	n=${1#-}
+	;;
+esac
+
+e4thcom-0.6.3 -t mecrisp -d ttyUSB0 -b B115200 

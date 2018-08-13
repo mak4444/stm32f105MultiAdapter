@@ -1,0 +1,92 @@
+
+
+
+\  get the current index of the innermost loop				
+CODE I ( -- n ) ( R: x1 x2 -- x1 x2 )
+	STR	TOS, [DSTK, #-4]!		\ DUP
+	LDMIA	RSTK, {r1,TOS}
+	ADDS	TOS,TOS,R1
+	NEXT
+END-CODE
+
+\  Get the index of the second most inner loop.				
+CODE J ( -- n )
+	STR	TOS, [DSTK, #-4]!		\ DUP
+\	ADD	R1,RSTK,#8	LDMIA	R1, {r0,TOS}
+  	LDR	TOS,[RSTK,#8]
+  	LDR	R1,[RSTK,#0xC]
+	ADDS	TOS,TOS,R1
+	NEXT
+END-CODE
+
+\  Get the index of the third most inner loop.				
+CODE K ( -- n )
+	STR	TOS, [DSTK, #-4]!		\ DUP
+\	ADD	TOS,RSTK,#0x10	LDMIA	R1, {r0,TOS}
+  	LDR	TOS,[RSTK,#0x10]
+  	LDR	R1,[RSTK,#0x14]
+	ADDS	TOS,TOS,R1
+	NEXT
+END-CODE
+
+CODE (DO)  ( limit,index -- ) ( R: -- limit1, index1 )
+	movs	R0, tos			\ index --> R0 
+	LDMIA	DSTK!, { R1 , tos }	\ tmp=index, r1=limit
+	eors	R1 , # 0x80000000       \ limit eors 0x80000000
+	subs 	R0 , R0 , R1		\ R0=index - limit eors 0x80000000
+	push	{ R0, R1 }		\ limit1, index1 --> Rstack
+	NEXT
+END-CODE
+
+CODE (?DO) ( n1|u1 n2|u2 -- ) ( R: -- x1 x2 )
+	movs	R0, tos
+	LDMIA	DSTK!, { R1 , tos }	\ tmp=index, r1=limit
+	CMP	R0, R1
+	BEQ	LL0
+	eors	R1 , # 0x80000000
+	subs 	R0 , R0 , R1
+	push	{ R0, R1 }
+
+	ADD	LR, LR, #2
+	NEXT
+LL0:
+	LDRH	R0, [LR,#-1]
+	ADD	LR, R0
+	NEXT
+
+END-CODE
+
+
+\ Primitive form of LOOP
+CODE (LOOP)  ( -- ) ( R: x1 x2 -- x3 x2 | )
+	pop	{ R0 }		\ index-n from return stack to R0
+	adds	R0, #1		\ index-n + 1
+	push	{ R0 }		\ index-n + 1 --> return stack
+	itee	vc
+ 	ldrvc	ip, [ip]	\ jump
+ 	addvs	ip, #4          \ get addres next word after loop
+	ADDvs	SP, #8		\ rdrop, rdrop 
+	NEXT
+END-CODE
+
+\ Primitive form of +LOOP				
+CODE (+LOOP) ( n -- ) ( R: x1 x2 -- x3 x2 | ) 
+	pop	{ R0 }		\ index-n --> R0
+	adds	R0, TOS		\ index-n + n
+	push	{ R0 }		\ index-n + n --> return stack
+	DROP,
+	itee	vc
+ 	ldrvc	ip, [ip]
+ 	addvs	ip, #4		\ get address next word after loop
+	ADDvs	SP, #8		\ rdrop, rdrop 
+	ldr	pc, [IP], #4
+END-CODE
+
+CODE (LEAVE)
+	LDRH	R0, [LR,#-1]
+	ADD	RSTK, #8
+	ADD	LR, R0
+	NEXT
+
+END-CODE
+

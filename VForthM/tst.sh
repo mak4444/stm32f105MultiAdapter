@@ -1,0 +1,1 @@
+./LinuxSPF32VM "autoexec fload tetris.4"

@@ -1,0 +1,357 @@
+.( load ansi.4) CR
+
+: HERE DP @ ;
+
+: NIP ( x1 x2 --- x2)
+\ Discard the second item on the stack.
+  SWAP DROP ;
+
+: CREATED 
+  SHEADER CREATE-CODE COMPILE,
+  LAST @ CURRENT @ ! ;
+
+: CREATE   PARSE-NAME CREATED ;
+  
+: VARIABLE CREATE 0 , ;
+
+
+: CONSTANT
+  PARSE-NAME SHEADER CONSTANT-CODE COMPILE, ,
+  LAST @ CURRENT @ ! ;
+
+0
+CONSTANT FALSE ( --- 0)
+\ Constant 0, indicates FALSE
+
+-1 
+CONSTANT TRUE ( --- -1)
+\ Constant -1, indicates TRUE
+
+32 CONSTANT BL
+
+\ : CELL+ 4 + ;
+\ : CELL- 4 - ;
+\ : CHAR+ 1+ ;
+
+: ABS DUP 0< IF NEGATE THEN ;
+
+: POSTPONE \ 94
+  PARSE-NAME SFIND DUP
+  0= IF -321 THROW THEN
+  1 = IF COMPILE,
+      ELSE LIT, ['] COMPILE, COMPILE, THEN
+; IMMEDIATE
+: (DO)   ( n1 n2 ---)
+\ Runtime part of DO.
+  R> ROT ROT SWAP >R >R >R ;
+: (?DO)  ( n1 n2 ---)
+\ Runtime part of ?DO
+   OVER OVER - IF R> ROT ROT SWAP >R >R 4 + >R 
+                  ELSE DROP DROP R> @ >R \ Jump to leave address if equal
+                  THEN ;
+: I ( --- n )
+\ Return the counter (index) of the innermost DO LOOP 
+   POSTPONE R@ ; IMMEDIATE
+
+: J  ( --- n)
+\ Return the counter (index) of the next loop outer to the innermost DO LOOP
+  RP@ 12 + @ ;
+
+VARIABLE 'LEAVE ( --- a-addr) \ This variable is  used  for  LEAVE address resolution.
+
+: (LEAVE)   ( --- )
+\ Runtime part of LEAVE
+  R> @ R> DROP R> DROP >R ; \ Remove loop parameters and replace top of ret
+                            \ stack by leave address.
+
+: UNLOOP ( --- )
+\ Remove one set of loop parameters from the return stack. 
+   R> R> DROP R> DROP >R ;
+
+: (LOOP) ( ---)
+\ Runtime part of LOOP
+  R> R> 1 + DUP R@ =   \ Add 1 to count and compare to limit.
+  IF 
+   R> DROP DROP 4 + >R \ Discard parameters and skip leave address.  
+  ELSE 
+   >R @ >R  \ Repush counter and jump to loop start address.  
+  THEN ;
+
+: (+LOOP) ( n ---)
+\ Runtime part of +LOOP 
+\ Very similar to (LOOP), but the compare condition is different.
+\  exit if ( oldcount - lim < 0) xor ( newcount - lim < 0).
+     R> SWAP R> DUP R@ - ROT ROT + DUP R@ - ROT XOR 0 < 
+     IF R> DROP DROP 4 + >R 
+     ELSE >R @ >R THEN ;
+
+: DO ( --- x)
+\ Start a DO LOOP.
+\ Runtime: ( n1 n2 --- ) start a loop with initial count n2 and 
+\ limit n1.
+  POSTPONE (DO) 'LEAVE @ HERE 0 'LEAVE ! ; IMMEDIATE
+
+: ?DO ( --- x )
+\ Start a ?DO LOOP.
+\ Runtime: ( n1 n2 --- ) start a loop with initial count n2 and
+\ limit n1. Exit immediately if n1 = n2.  
+  POSTPONE (?DO) 'LEAVE @ HERE 'LEAVE ! 0 , HERE ; IMMEDIATE
+
+: LEAVE ( --- )
+\ Runtime: leave the matching DO LOOP immediately.
+\ All places where a leave address for the loop is needed are in a linked
+\ list, starting with 'LEAVE variable, the other links in the cells where
+\ the leave addresses will come.
+  POSTPONE (LEAVE) HERE 'LEAVE @ , 'LEAVE ! ; IMMEDIATE
+
+: RESOLVE-LEAVE 
+\ Resolve the references to the leave addresses of the loop.
+          'LEAVE @ 
+          BEGIN DUP WHILE DUP @ HERE ROT ! REPEAT DROP ; 
+
+: LOOP  ( x --- )
+\ End a DO LOOP.
+\ Runtime: Add 1 to the count and if it is equal to the limit leave the loop.
+  POSTPONE (LOOP) , RESOLVE-LEAVE 'LEAVE ! ; IMMEDIATE
+
+: +LOOP ( x --- )
+\ End a DO +LOOP 
+\ Runtime: ( n ---) Add n to the count and exit if this crosses the 
+\ boundary between limit-1 and limit. 
+  POSTPONE (+LOOP) , RESOLVE-LEAVE 'LEAVE ! ; IMMEDIATE
+
+: RECURSE ( --- )
+\ Compile a call to the current (not yet finished) definition.
+  LAST @ NAME> COMPILE, ; IMMEDIATE
+
+: (;CODE) ( --- )
+\ Runtime for DOES>, exit calling definition and make last defined word
+\ execute the calling definition after (;CODE) 
+ R> LAST @ NAME> ! ;
+
+: DOES>  ( --- )
+\ Word that contains DOES> will change the behavior of the last created
+\ word such that it pushes its parameter field address onto the stack
+\ and then executes whatever comes after DOES> 
+  POSTPONE (;CODE)  
+  POSTPONE R> \ Compile the R> primitive, which is the first
+                   \ instruction that the defined word performs.                   
+; IMMEDIATE
+
+: SPACES 0 ?DO SPACE LOOP ;
+
+: CHAR ( "ccc" --- c)
+\ Return the first character of "ccc".
+  PARSE-NAME DROP C@ ;
+
+: [CHAR] ( "ccc" --- )
+\ Compile the first character of "ccc" as a literal.
+  CHAR LIT, ; IMMEDIATE
+
+: FILL ( c-addr u c ---)
+\ Fill a block of u bytes starting at c-addr with character c.
+  OVER IF >R 
+  BEGIN
+   R@ ROT C!A 1 + SWAP   
+   1 - DUP 0= 
+  UNTIL
+  R>
+  THEN
+  DROP DROP DROP
+;     
+
+: CMOVE ( c-addr1 c-addr2 u --- )
+\ Copy u bytes starting at c-addr1 to c-addr2, proceeding in ascending
+\ order.
+   DUP IF >R 
+   BEGIN
+    OVER C@ SWAP C!A 1+ SWAP 1+ SWAP 
+    R> 1- DUP >R 0=
+   UNTIL
+   R>
+   THEN
+   DROP DROP DROP
+;
+
+: CMOVE> ( c-addr1 c-addr2 u --- )
+\ Copy a block of u bytes starting at c-addr1 to c-addr2, proceeding in
+\ descending order.
+   DUP IF >R R@ + 1- SWAP R@ + 1- SWAP 
+   BEGIN
+    OVER C@ SWAP C!A 1- SWAP 1- SWAP
+    R> 1- DUP >R 0=     
+   UNTIL
+   R>
+   THEN
+   2DROP DROP 
+;
+
+: COMPARE ( addr1 u1 addr2 u2 --- diff ) 
+\ Compare two strings. diff is negative if addr1 u1 is smaller, 0 if it 
+\ is equal and positive if it is greater than addr2 u2.
+  ROT 2DUP - >R
+  MIN DUP IF
+   >R 
+   BEGIN   
+    OVER C@ OVER C@ - IF
+     SWAP C@ SWAP C@ - R> DROP R> DROP EXIT
+    THEN     
+    1+ SWAP 1+ SWAP
+    R> 1- DUP >R 0=
+   UNTIL R>
+  THEN DROP  
+  DROP DROP R> NEGATE
+;
+
+: CREATE-FILE ( c-addr u mode --- fid ior)
+\ Create a new file with the name starting at c-addr with length u. 
+\ Return the file-ID and the IO result. (ior=0 if success)
+   O_CREAT OR O_TRUNC OR OPEN-FILE ;
+
+CREATE VOC-LIST FORTH-WORDLIST 4 - ,
+
+: WORDLIST ( -- wid ) \ 94 SEARCH
+  HERE VOC-LIST  @ ,  VOC-LIST !
+  HERE 0 , 0 , ;
+
+: ALSO     CONTEXT CONTEXT CELL+ 16 CELLS CMOVE> ;
+: PREVIOUS CONTEXT CELL+ CONTEXT 16 CELLS CMOVE  ;
+: DEFINITIONS  CONTEXT @ CURRENT ! ;
+
+: FORTH FORTH-WORDLIST CONTEXT ! ;
+
+: [ELSE]
+    1
+    BEGIN
+      PARSE-NAME DUP
+      IF  
+         2DUP 3 MIN  S" [IF"  \ 
+                        COMPARE 0= IF 2DROP 1+                 ELSE 
+         2DUP S" [ELSE]" COMPARE 0= IF 2DROP 1- DUP  IF 1+ THEN ELSE 
+              S" [THEN]" COMPARE 0= IF       1-                 THEN
+                                    THEN  THEN   
+      ELSE 2DROP REFILL  AND \   SOURCE TYPE
+      THEN DUP 0=
+    UNTIL  DROP ;  IMMEDIATE
+
+: [IF] 0= IF POSTPONE [ELSE] THEN ;  IMMEDIATE
+
+: [THEN] ;  IMMEDIATE
+
+: D<   ROT 2DUP <> IF > NIP NIP ELSE 2DROP U< THEN ;
+: DU<  ROT 2DUP <> IF U> NIP NIP ELSE 2DROP U< THEN ;
+: D>   2SWAP D< ;       : D>=  D< 0= ;         : D<=  D> 0= ;
+
+: ?negate 0< if negate then ;
+: ?dnegate 0< if dnegate then ;
+
+: m* (   n1 n2 -- d  )
+  2dup xor >r
+  abs swap abs um*
+  r> ?dnegate
+;
+
+: sm/rem ( d1 n1 -- n2 n3 )
+  2dup xor >r
+  over >r
+  abs >r dabs r> um/mod
+  swap r> ?negate
+  swap r> ?negate
+;
+
+: fm/mod ( d1 n1 -- n2 n3 )
+  dup >r
+  2dup xor >r
+  >r
+  dabs r@ abs um/mod
+  swap r> ?negate swap
+  r> 0< if
+    negate
+    over if
+      r@ rot - swap 1-
+    then
+  then
+  r> drop
+;
+: /mod ( n1 n2 -- n3 n4 )
+  >r s>d r> sm/rem
+;
+: mod ( n1 n2 -- n3 )
+  /mod drop
+;
+: */mod ( n1 n2 n3 -- n4 n5 )
+  >r m* r> sm/rem
+;
+
+: */ ( n1 n2 n3 -- n4 )
+  >r m* r> sm/rem nip
+;
+
+: U/MOD 0 SWAP UM/MOD ;
+
+: U/ ( n1 n2 -- n1*n2 )
+ U/MOD  NIP ;
+
+: LITERAL \ 94 CORE
+  STATE @ IF LIT, THEN
+; IMMEDIATE
+
+CREATE ALIGN-BYTES 4 ,
+
+: ALIGNED ( addr -- a-addr ) \ 94
+  ALIGN-BYTES @ DUP 0= IF 1+ DUP ALIGN-BYTES ! THEN
+  2DUP
+  MOD DUP IF - + ELSE 2DROP THEN
+;
+
+: ALIGN ( -- ) \ 94
+  HERE ALIGNED HERE - ALLOT ;
+
+: FIND ( c-addr -- c-addr 0 | xt 1 | xt -1 ) \ 94 SEARCH
+  COUNT SFIND
+  DUP 0= IF 2DROP 1- 0 THEN ;
+
+: EVALUATE ( i*x c-addr u -- j*x ) \ 94
+ SID @ >R >IN @ >R ATIB @ >R #TIB @ >R RP@ C/L - RP!
+ -1 SID ! RP@ ATIB ! >IN 0!
+ SOURCE!
+ ['] INTERPRET CATCH
+ DUP IF CR SOURCE TYPE CR THEN
+ RP@ C/L + RP! R> #TIB ! R> ATIB ! R> >IN ! R> SID ! THROW ;
+
+
+: MOVE ( addr1 addr2 u -- ) \ 94
+  >R 2DUP SWAP R@ + U<
+  IF 2DUP U<
+     IF R> CMOVE> ELSE R> CMOVE THEN
+  ELSE R> CMOVE THEN ;
+
+: /STRING ( c-addr1 u n -- c-addr2 u2 ) \ 94 STRING
+  ( OVER MIN ) >R R@ - SWAP R> CHARS + SWAP
+;
+
+: (ABORT") ROT
+ IF TYPE 2 THROW THEN
+ 2DROP
+;
+
+: ABORT"	POSTPONE S" ['] (ABORT") COMPILE, ; IMMEDIATE
+
+: SET-CURRENT ( wid -- ) \ 94 SEARCH
+  CURRENT !
+;
+
+: GET-CURRENT ( -- wid ) \ 94 SEARCH
+  CURRENT @
+;
+
+: U>D 0 ;
+: D>S DROP ;
+
+: TUCK	( n1 n2 --- n2 n1 n2 )
+ SWAP OVER ;
+
+: SLITERAL  STATE @ IF SLIT, THEN   ; IMMEDIATE
+
+: ERASE 0 FILL ;
+: BYE 0 HALT ;

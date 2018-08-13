@@ -1,0 +1,292 @@
+: WORD ( char "<chars>ccc<char>" -- c-addr ) \ 94
+   PARSE PAD $! PAD  ;
+
+: PICK  ( u --- x)
+\ place a copy of stack cell number u on the stack. 0 PICK is DUP, 1 PICK
+\ is OVER etc.
+  1+ 2 LSHIFT SP@ + @ ;
+
+: <= ( n1 n2 --- f)
+\ f is true if and only if n1 is less than or equal to n2.
+  > 0= ;
+
+: 0<= ( n1 --- f)
+\ f is true if and only if n1 is less than zero.
+  0 <= ;
+
+: BOUNDS ( addr1 n --- addr2 addr1)
+\ Convert address and length to two bounds addresses for DO LOOP 
+  OVER + SWAP ;
+
+: WITHIN ( u1 u2  u3 --- f)
+\ f is true if u1 is greater or equal to u2 and less than u3
+  2 PICK U> ROT ROT U< 0= AND ;
+
+: -TRAILING ( c-addr1 u1 --- c-addr2 u2)
+\ Adjust the length of the string such that trailing spaces are excluded.
+  BEGIN
+   2DUP + 1- C@ BL = 
+  WHILE
+   1-
+  REPEAT
+;
+
+: NIP ( x1 x2 --- x2)
+\ Discard the second item on the stack.
+  SWAP DROP ;
+
+\ PART 3: SOME UTILITIES, DUMP .S WORDS
+ 
+: DL ( addr1 --- addr2 )
+\ hex/ascii dump in one line of 16 bytes at addr1 addr2 is addr1+16
+  BASE @ >R 16 BASE ! CR
+  DUP 0 <# # # # # # # # # #> TYPE ." : "
+  16 0 DO
+   DUP I + C@ 0 <# # # #> TYPE SPACE 
+  LOOP 
+  16 0 DO
+   DUP I + C@
+  DUP 31 < IF DROP ." ." ELSE
+  DUP 192 AND 192 = IF DROP ." ." ELSE
+ EMIT THEN THEN
+  LOOP 
+  16 + R> BASE ! ;
+
+: ABORT -1 THROW ;
+
+: DUMP ( addr len --- )
+\ Show a hex/ascii dump of the memory block of len bytes at addr  
+  15 + 4 RSHIFT 0 DO
+   DL
+  LOOP DROP ; 
+
+: .S ( --- )
+\ Show the contents of the stack.
+     DEPTH IF
+      0 DEPTH 2 - DO I PICK . -1 +LOOP 
+     ELSE ." Empty " THEN ;
+
+: ID. ( nfa --- )
+\ Show the name of the word with name field address nfa.
+  COUNT 31 AND TYPE SPACE ;
+
+: 2CONSTANT  ( d --- )
+\ Create a new definition that has the following runtime behavior.
+\ Runtime: ( --- d) push the constant double number on the stack. 
+  CREATE HERE 2! 8 ALLOT DOES> 2@ ;
+
+: D.R ( d n --- )
+\ Print double number d right-justified in a field of width n. 
+  >R SWAP OVER DABS <# #S ROT SIGN #> R> OVER - 0 MAX SPACES TYPE ;
+
+: U.R ( u n --- )
+\ Print unsigned number u right-justified in a field of width n. 
+  >R 0 R> D.R ;
+
+: .R ( n1 n2 --- )
+\ Print number n1 right-justified in a field of width n2. 
+ >R S>D R> D.R ;
+
+: UD.  <# #S #> TYPE SPACE ;
+
+\ http://www.termsys.demon.co.uk/vtansi.htm
+
+: ANSI_ESCAPE ( -- | output escape code )
+        27 EMIT [CHAR] [ EMIT ;
+
+: AT-XY ( x y --- )
+\ Put screen cursor at location (x,y) (0,0) is upper left corner.
+  BASE @ >R DECIMAL
+  ANSI_ESCAPE SWAP 1+  SWAP 0 .R [CHAR] ; EMIT
+   1+ 0 .R [CHAR] H EMIT
+   R> BASE ! ;
+
+: READ-CDNUMBER  ( c - n | read a numeric entry delimited by character c)
+        >R 0 BEGIN
+                KEY DUP R@ - WHILE
+                SWAP 10 * SWAP [CHAR] 0 - +
+        REPEAT
+        R> 2DROP ;
+
+: AT-XY?  ( -- x y | return the current cursor coordinates)
+        ANSI_ESCAPE ." 6n"
+        KEY DROP KEY DROP  \ <ESC> [
+        [CHAR] ; READ-CDNUMBER [CHAR] R READ-CDNUMBER
+ 2- SWAP 
+;
+
+: GETXY AT-XY? ;
+
+: PAGE 
+\ Clear the screen.
+  27 EMIT ." [2J" 0 0 AT-XY ;
+
+: VALUE ( n --- ) 
+  CREATE , DOES> @ ;
+
+: VECT ( n --- ) 
+  CREATE ['] ABORT , DOES> PERFORM ;
+
+: TO 
+  ' >BODY STATE @ IF
+       LIT, POSTPONE ! 
+  ELSE  !
+  THEN
+; IMMEDIATE
+
+: D- ( d1 d2 --- d3) 
+  DNEGATE D+ ; 
+
+: D0= 
+  OR 0= ;
+
+: D= 
+  D- D0= ;
+
+: BLANK 
+  32 FILL ;
+
+VARIABLE CSP ( --- a-addr )
+\ This variable is used for stack checking between : and ; 
+
+: CASE 
+  CSP @ SP@ CSP ! ; IMMEDIATE
+: OF 
+  POSTPONE OVER POSTPONE = POSTPONE IF POSTPONE DROP ; IMMEDIATE
+: ENDOF 
+  POSTPONE ELSE ; IMMEDIATE
+: DUPENDCASE 
+  BEGIN SP@ CSP @ - WHILE POSTPONE THEN REPEAT
+  CSP ! ; IMMEDIATE
+
+: ENDCASE 
+  POSTPONE DROP POSTPONE DUPENDCASE ; IMMEDIATE
+
+: SAVE-SYSTEM ( "ccc" --- )
+\ Save the Forth system to a file.
+  W/O CREATE-FILE THROW \ ABORT" Can't open"
+  0 HERE 2 PICK WRITE-FILE DROP
+  CLOSE-FILE DROP ;
+
+: LATEST ( -> NFA )
+  CURRENT @ @ ;
+
+: VOCABULARY ( "<spaces>name" -- )
+  WORDLIST
+  CREATE DUP ,
+  LATEST SWAP CELL+ !
+  DOES> @ CONTEXT ! ;
+
+\ : VOCABULARY ( "<spaces>name" -- )
+\ WORDLIST CREATE , DOES>  @ CONTEXT ! ;
+
+: CDR  ( nfa1-- nfa2 )
+	CELL- @
+;
+
+: WORDS
+ CONTEXT @ @
+ BEGIN	DUP
+ WHILE  DUP COUNT $7F AND TYPE SPACE
+        CDR
+ REPEAT DROP
+;
+
+: SAVESYSTEM ( "ccc" --- )
+  PARSE-NAME SAVE-SYSTEM ; 
+
+: [DEFINED] ( -- f ) \ "name"
+  PARSE-NAME  SFIND  IF DROP TRUE ELSE 2DROP FALSE THEN
+; IMMEDIATE
+
+: \+  POSTPONE  [DEFINED] 0= IF POSTPONE \ THEN ; IMMEDIATE
+: \-  POSTPONE  [DEFINED]    IF POSTPONE \ THEN ; IMMEDIATE
+
+: TT S" tt.4" INCLUDED ;
+
+\- WARNING  VARIABLE WARNING
+
+ HERE $20000 + CONSTANT YDP0 
+CREATE YDP  YDP0 ,
+: YDP><DP
+  YDP @ DP @
+  YDP ! DP ! ;
+
+VARIABLE LAST-CFA
+
+VECT YALIGN
+
+: 2ALIGNED  1+ -2 AND ;
+
+' 2ALIGNED TO YALIGN
+
+: YSHEADER R> DROP 
+  YDP0 HERE - 99  U< ABORT" HERE overflow"
+  HERE YALIGN DUP DP ! -ROT DUP LAST-CFA !
+  YDP><DP
+\ cr ." YSHEADER=<"  2dup type ." |" 
+ [ ' SHEADER @ , ] $7FF , ( dup h. ." >" ) , 
+  YDP><DP
+ ;
+
+: PLUG  HERE  ' DP ! SWAP COMPILE,  DP ! ;
+
+' YSHEADER PLUG SHEADER
+
+: PERR^ R> DROP 
+  SOURCE >IN @ 2- UMIN 0
+  DO COUNT 9 = IF 9 ELSE BL THEN EMIT 
+  LOOP DROP ." ^ "
+;
+'  PERR^ PLUG  FERR^
+
+: PNUMBER? ( c-addr n ---- d f)
+ RDROP
+ \ Convert the counted string at c-addr to a double binary number.
+ \ f is true if and only if the conversion was successful. DPL contains
+ \ -1 if there was no point in the number, else the position of the point
+ \ from the right. Special prefixes: # means decimal, $ means hex.
+  -1 DPL !
+  BASE @ >R 
+  OVER C@ 45 = DUP >R IF 1 - SWAP 1 + SWAP THEN \ Get any - sign
+  OVER C@ 36 = IF HEX	  1 /STRING ELSE   \ $ sign for hex.
+  OVER C@ 35 = IF decimal 1 /STRING ELSE   \ # sign for decimal
+  OVER C@ 37 = IF 2 BASE ! 1 /STRING ELSE   \ 5 sign for decimal
+  OVER W@ $7830  = IF HEX 2 /STRING ELSE   \ 0x sign for hex.
+  2DUP + 1- C@ $20 OR [CHAR] h = IF HEX 1- ELSE
+  2DUP + 1- C@ $20 OR [CHAR] b =  BASE @ $10 <> AND IF 2 BASE ! 1- ELSE
+  2DUP swap @ $ff00ff and + $27002A =
+	IF DROP W@ 8 rshift  0 RDROP R>  BASE ! -1 exit
+
+   THEN	 THEN   THEN  THEN  THEN  THEN THEN
+
+  DUP  0 > 0= IF  R> DROP R> BASE ! 0 EXIT THEN   \ Length 0 or less?
+  2>R 0 0 2R>
+  BEGIN
+   >NUMBER
+   DUP IF OVER C@ 46 = IF 1 - DUP DPL ! SWAP 1 + SWAP ELSE \ handle point.
+         RDROP R> BASE ! 0 EXIT THEN   \ Error if anything but point
+       THEN
+  DUP 0= UNTIL DROP DROP R> IF DNEGATE THEN
+  R> BASE ! -1
+;
+' PNUMBER? PLUG NUMBER?
+
+\- S", : S", ( addr u -- ) 	DUP C,	HERE SWAP DUP ALLOT	CMOVE here 1 and if 0 c, then ;
+
+: ''::DO  ' EXECUTE ' STATE @ IF COMPILE, ELSE EXECUTE THEN ;
+
+: '':: also ['] ''::DO CATCH  PREVIOUS  THROW ; IMMEDIATE
+
+: REPLACE ( by-xt what-xt ) 
+    BRANCH-CODE OVER ! CELL+ ! ;
+
+: [COMPILE] ' COMPILE, ; IMMEDIATE
+
+: ?COMP ( -> )
+  STATE @ 0= IF -312 THROW THEN
+; IMMEDIATE
+
+: DIGIT DIGIT? ;
+
+

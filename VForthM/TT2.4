@@ -1,0 +1,89 @@
+: INSERT-BRICK	\ row col --- flag ; introduce a new brick
+		2DUP TEST-BRICK
+		IF  2DUP BCOL ! BROW !
+		    2DUP PUT-BRICK  DRAW-BRICK  TRUE
+		ELSE  2DROP FALSE  THEN ;
+
+: DROP-BRICK	\ --- ; move brick down fast
+		BEGIN  1 0 MOVE-BRICK 0=  UNTIL ;
+
+: MOVE-LINE	\ from to ---
+		OVER 0 PIT  OVER 0 PIT  WIDE 2*  CMOVE  DRAW-LINE
+		DUP 0 PIT  WIDE 2*  BLANK  DRAW-LINE ;
+
+: LINE-FULL	\ line-no --- flag
+		TRUE  WIDE 0
+		DO  OVER I PIT 2C@ EMPTY D=
+		    IF  DROP FALSE  LEAVE  THEN
+		LOOP NIP ;
+
+: REMOVE-LINES	\ ---
+		DEEP DEEP
+		BEGIN
+		    SWAP
+		    BEGIN  1- DUP 0< IF  2DROP EXIT  THEN  DUP LINE-FULL
+		    WHILE  1 LEVELS +!  10 SCORE +!  REPEAT
+		    SWAP 1-
+		    2DUP <> IF  2DUP MOVE-LINE  THEN
+		AGAIN ;
+
+
+: TO-UPPER	\ char --- char ; convert to upper case
+		DUP [CHAR] a >= OVER [CHAR] z <= AND
+		IF  [ CHAR A CHAR a - LIT, ] +  THEN ;
+
+: DISPATCH	\ key --- flag
+		CASE  TO-UPPER
+		    LEFT-KEY	OF  0 -1 MOVE-BRICK DROP  ENDOF
+		    RIGHT-KEY	OF  0  1 MOVE-BRICK DROP  ENDOF
+		    ROT-KEY	OF  0 ROTATE-BRICK DROP  ENDOF
+		    DROP-KEY	OF  DROP-BRICK  ENDOF
+		    PAUSE-KEY	OF  S"  Paused " BOTTOM-MSG  KEY DROP
+				    DRAW-BOTTOM  ENDOF
+		    REFRESH-KEY	OF  REFRESH  ENDOF
+		    QUIT-KEY	OF  FALSE EXIT  ENDOF
+		ENDCASE  TRUE ;
+
+: INITIALIZE	\ --- ; prepare for playing
+		RANDOMIZE EMPTY-PIT REFRESH
+		0 SCORE !  0 PIECES !  0 LEVELS !  100 DELAY ! ;
+
+: ADJUST-DELAY	\ --- ; make it faster with increasing score
+		LEVELS @
+		DUP  50 < IF  100 OVER -  ELSE
+		DUP 100 < IF   62 OVER 4 / -  ELSE
+		DUP 500 < IF   31 OVER 16 / -  ELSE  0  THEN THEN THEN
+		DELAY !  DROP ;
+
+: PLAY-GAME	\ --- ; play one tetris game
+		BEGIN
+		    NEW-BRICK
+		    -1 3 INSERT-BRICK
+		WHILE
+		    BEGIN  4 0
+			DO  35 13 AT-XY I .
+			    DELAY @ MS KEY?
+			    IF  BEGIN  KEY KEY? WHILE  DROP  REPEAT
+				DISPATCH 0=
+				IF  UNLOOP EXIT  THEN
+			    THEN
+			LOOP
+			1 0 MOVE-BRICK  0=
+		    UNTIL
+		    REMOVE-LINES
+		    UPDATE-SCORE
+		    ADJUST-DELAY
+		REPEAT ;
+
+
+: TT		\ --- ; play the tetris game
+		INITIALIZE
+		S"  Press any key " BOTTOM-MSG KEY DROP DRAW-BOTTOM
+		BEGIN
+		    PLAY-GAME
+		    S"  Again? " BOTTOM-MSG KEY TO-UPPER [CHAR] Y =
+		WHILE  INITIALIZE  REPEAT
+		0 23 AT-XY CR ;
+
+CR .( TT - tetris start) CR
+

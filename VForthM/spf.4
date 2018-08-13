@@ -1,0 +1,122 @@
+
+: REQUIRED ( waddr wu laddr lu -- )
+  2SWAP SFIND
+  IF DROP 2DROP EXIT
+  ELSE 2DROP INCLUDED EXIT THEN
+;
+
+\- PARSE-WORD : PARSE-WORD PARSE-NAME ; 
+
+: REQUIRE ( "word" "libpath" -- )
+  PARSE-WORD PARSE-WORD 2DUP + 0 SWAP C!
+  REQUIRED
+;
+
+\- HEADER : HEADER ( "name" -- )  PARSE-WORD SHEADER ;
+
+
+: CharAddr ( -- c-addr )
+  SOURCE DROP >IN @  + ;
+
+: PeekChar ( -- char )
+  CharAddr C@ ;
+
+: EndOfChunk ( -- flag )
+  >IN @ SOURCE NIP < 0=
+;
+
+: //  SOURCE NIP >IN ! ; IMMEDIATE
+
+: \EOF  ( -- )
+\ Ends the current stream
+  BEGIN REFILL 0= UNTIL
+  POSTPONE //
+;
+REQUIRE [IFNDEF] _nn/lib/ifdef.f
+
+: WL_NEAR_NFA_N ( addr nfa - addr nfa | addr 0 )
+   BEGIN 2DUP DUP IF NAME> THEN U<
+   WHILE CDR
+   REPEAT
+;
+
+: N_UMAX ( nfa nfa1 -- nfa|nfa1 )
+ OVER DUP IF NAME> THEN
+ OVER DUP IF NAME> THEN U< IF NIP EXIT THEN DROP ;
+
+: WL_NEAR_NFA_M (  addr wid - nfa2 addr | 0 addr )
+   0 -ROT
+   CELL+ @
+   BEGIN  DUP
+   WHILE  WL_NEAR_NFA_N  \  nfa addr nfa1
+       SWAP >R 
+       DUP  >R  N_UMAX 
+       R>  DUP  IF CDR THEN
+       R>  SWAP
+   REPEAT DROP
+;
+
+: NEAR_NFA ( addr - nfa addr | 0 addr )
+   0 SWAP 
+   VOC-LIST
+   BEGIN  @ DUP
+   WHILE  DUP  >R   WL_NEAR_NFA_M
+   >R  N_UMAX  R>  R>
+   REPEAT DROP
+;
+
+: >NAME    ( CFA -- NFA  )
+ NEAR_NFA DROP ;
+
+: VOC-NAME. ( wid -- )
+  DUP FORTH-WORDLIST = IF DROP ." FORTH" EXIT THEN
+  DUP CELL+ @ DUP IF ID. DROP ELSE DROP ." <NONAME>:" U. THEN
+;
+
+: GET-ORDER ( -- widn ... wid1 n ) \ 94 SEARCH
+  SP@ >R 0 >R
+  CONTEXT
+  BEGIN DUP @ ?DUP
+  WHILE >R CELL+
+  REPEAT  DROP
+  BEGIN R> DUP 0=
+  UNTIL DROP
+  R> SP@ - 4 / 1-
+;
+
+: ORDER ( -- ) \ 94 SEARCH EXT
+  GET-ORDER ." Context: "
+  0 ?DO ( DUP .) VOC-NAME. SPACE LOOP CR
+  ." Current: " GET-CURRENT VOC-NAME. CR
+;
+
+VECT <PRE>
+
+' NOOP TO <PRE>
+
+' <PRE> ' FORPRE  REPLACE
+
+ CREATE ERRTIB  C/L 1+ ALLOT
+
+VARIABLE ER>IN
+VARIABLE ERCURSTR
+
+: PSAVEERR   R> DROP 
+	DUP SAVEERR? @ AND
+	IF \ DBG	
+	  SOURCE ERRTIB $! >IN @ ER>IN ! SAVEERR? 0!
+             SID @ 0 <> \ 999 HERE WITHIN 
+		IF  SID @  FILE2ERR CURSTR @ ERCURSTR ! 
+		THEN 
+	THEN ;
+
+'  PSAVEERR PLUG SAVEERR
+
+: PPERR R> DROP 
+ DUP 0= IF BYE THEN
+2 STDOUT !   DECIMAL 
+ CR FE-TYPE ." :" ERCURSTR @  0 (D.) TYPE ." :11:  error: N " . CR
+ 1 HALT \ 1 STDOUT !
+;
+
+

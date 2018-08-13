@@ -1,0 +1,3573 @@
+	.file 1 "SRC/PRIMITIVES.4"
+	.loc 1 1 0
+	.loc 1 1 0
+//
+	.loc 1 2 0
+	.loc 1 2 0
+//[IFDEF]  T-RP0
+	.loc 1 3 0
+	.loc 1 3 0
+//T-RP0	CONSTANT	NRP0
+	.loc 1 4 0
+	.loc 1 4 0
+//T-SP0	CONSTANT	NSP0
+	.loc 1 5 0
+	.loc 1 5 0
+//[THEN]
+	.loc 1 6 0
+	.loc 1 6 0
+//
+	.loc 1 7 0
+	.loc 1 7 0
+//CODE RP@	( -- N )
+	.loc 1 8 0
+	.loc 1 8 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global RPload
+RPload:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 9 0
+	.loc 1 9 0
+//	MOV	TOS, RSTK
+	.inst.n	0x466E		//MOV	R6, R13
+	.loc 1 10 0
+	.loc 1 10 0
+//CODL	NOOP
+	.loc 1 11 0
+	.loc 1 11 0
+//	NEXT
+
+	.global NOOP
+NOOP:	.inst.n	0x4770		//BX	R14
+	.loc 1 12 0
+	.loc 1 12 0
+//END-CODE
+	.loc 1 13 0
+	.loc 1 13 0
+//
+	.loc 1 14 0
+	.loc 1 14 0
+//
+	.loc 1 15 0
+	.loc 1 15 0
+//CODE RP!	( N -- )
+	.loc 1 16 0
+	.loc 1 16 0
+//	MOV	RSTK, TOS
+
+	.global RPsave
+RPsave:	.inst.n	0x46B5		//MOV	R13, R6
+	.loc 1 17 0
+	.loc 1 17 0
+//CODL	DROP
+	.loc 1 18 0
+	.loc 1 18 0
+//CODL	D>S
+	.loc 1 19 0
+	.loc 1 19 0
+//	DROP,
+
+	.global DgreatS
+DgreatS:	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 20 0
+	.loc 1 20 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 21 0
+	.loc 1 21 0
+//END-CODE
+	.loc 1 22 0
+	.loc 1 22 0
+//
+	.loc 1 23 0
+	.loc 1 23 0
+//' DROP TO 'DROP
+	.loc 1 24 0
+	.loc 1 24 0
+//
+	.loc 1 25 0
+	.loc 1 25 0
+//CODE R@		( -- addr )
+	.loc 1 26 0
+	.loc 1 26 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global Rload
+Rload:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 27 0
+	.loc 1 27 0
+//CODL DROPR@	( a -- b )
+	.loc 1 28 0
+	.loc 1 28 0
+//	LDR	TOS, [RSTK]	\ TOS <- [RSTK]
+
+	.global DROPRload
+DROPRload:	.inst.n	0x9E00		//LDR	R6, [SP, #0]
+	.loc 1 29 0
+	.loc 1 29 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 30 0
+	.loc 1 30 0
+//END-CODE
+	.loc 1 31 0
+	.loc 1 31 0
+//
+	.loc 1 32 0
+	.loc 1 32 0
+//CODE 2RDROP
+	.loc 1 33 0
+	.loc 1 33 0
+//CODL UNLOOP
+	.loc 1 34 0
+	.loc 1 34 0
+//	add	RSTK, RSTK, #4
+
+	.global UNLOOP
+UNLOOP:	.inst.n	0xB001		//ADD	SP, #4
+	.loc 1 35 0
+	.loc 1 35 0
+//CODL RDROP	( -- )
+	.loc 1 36 0
+	.loc 1 36 0
+//CODL R>DROP	( -- )
+	.loc 1 37 0
+	.loc 1 37 0
+//	ADD	RSTK, #4
+
+	.global RgreatDROP
+RgreatDROP:	.inst.n	0xB001		//ADD	SP, #4
+	.loc 1 38 0
+	.loc 1 38 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 39 0
+	.loc 1 39 0
+//END-CODE
+	.loc 1 40 0
+	.loc 1 40 0
+//
+	.loc 1 41 0
+	.loc 1 41 0
+//
+	.loc 1 42 0
+	.loc 1 42 0
+//CODE DUP>R	( N -- N )
+	.loc 1 43 0
+	.loc 1 43 0
+//	PUSH	{TOS}		\ TOS -> [RSTK - 4], RSTK -= 4
+
+	.global DUPgreatR
+DUPgreatR:	.inst.n	0xB440		//PUSH	{R6}
+	.loc 1 44 0
+	.loc 1 44 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 45 0
+	.loc 1 45 0
+//END-CODE
+	.loc 1 46 0
+	.loc 1 46 0
+//
+	.loc 1 47 0
+	.loc 1 47 0
+//CODE >R		( a -- )
+	.loc 1 48 0
+	.loc 1 48 0
+//	PUSH	{TOS}	\ TOS -> [RSTK - 4], RSTK -= 4	store TOS to incremented return srack pointer
+
+	.global greatR
+greatR:	.inst.n	0xB440		//PUSH	{R6}
+	.loc 1 49 0
+	.loc 1 49 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 50 0
+	.loc 1 50 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 51 0
+	.loc 1 51 0
+//END-CODE
+	.loc 1 52 0
+	.loc 1 52 0
+//
+	.loc 1 53 0
+	.loc 1 53 0
+//CODE R>		( -- N )
+	.loc 1 54 0
+	.loc 1 54 0
+//	STR	TOS, [DSTK, #-4]!	\ DUP
+
+	.global Rgreat
+Rgreat:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 55 0
+	.loc 1 55 0
+//	POP	{TOS}		\ TOS <- [RSTK], RSTK += 4
+	.inst.n	0xBC40		//POP	{R6}
+	.loc 1 56 0
+	.loc 1 56 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 57 0
+	.loc 1 57 0
+//END-CODE
+	.loc 1 58 0
+	.loc 1 58 0
+//
+	.loc 1 59 0
+	.loc 1 59 0
+//CODE 2R>	( -- D.lo D.hi )
+	.loc 1 60 0
+	.loc 1 60 0
+//	POP	{r0,r1}
+
+	.global _2Rgreat
+_2Rgreat:	.inst.n	0xBC03		//POP	{R0, R1}
+	.loc 1 61 0
+	.loc 1 61 0
+//	STMDB	DSTK!,  {R1,TOS}
+	.inst.n	0xE927,0x0042	//STMDB	R7!, {R1, R6}
+	.loc 1 62 0
+	.loc 1 62 0
+//	mov	TOS, r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 63 0
+	.loc 1 63 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 64 0
+	.loc 1 64 0
+//END-CODE
+	.loc 1 65 0
+	.loc 1 65 0
+//
+	.loc 1 66 0
+	.loc 1 66 0
+//CODE 2R@	( -- D.lo D.hi )
+	.loc 1 67 0
+	.loc 1 67 0
+//	LDMIA	RSTK, {r0,r1}
+
+	.global _2Rload
+_2Rload:	.inst.n	0xE89D,0x0003	//LDMIA.W	R13, {R0, R1}
+	.loc 1 68 0
+	.loc 1 68 0
+//	STMDB	DSTK!,  {R1,TOS}
+	.inst.n	0xE927,0x0042	//STMDB	R7!, {R1, R6}
+	.loc 1 69 0
+	.loc 1 69 0
+//	mov	TOS, r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 70 0
+	.loc 1 70 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 71 0
+	.loc 1 71 0
+//END-CODE
+	.loc 1 72 0
+	.loc 1 72 0
+//
+	.loc 1 73 0
+	.loc 1 73 0
+//CODE 2>R	( D -- )
+	.loc 1 74 0
+	.loc 1 74 0
+//	mov	R0, TOS
+
+	.global _2greatR
+_2greatR:	.inst.n	0x4630		//MOV	R0, R6
+	.loc 1 75 0
+	.loc 1 75 0
+//	LDMIA	DSTK!, {R1,TOS}
+	.inst.n	0xCF42		//LDMIA	R7!, {R1, R6}
+	.loc 1 76 0
+	.loc 1 76 0
+//	PUSH	{R0,R1}
+	.inst.n	0xB403		//PUSH	{R0, R1}
+	.loc 1 77 0
+	.loc 1 77 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 78 0
+	.loc 1 78 0
+//END-CODE
+	.loc 1 79 0
+	.loc 1 79 0
+//
+	.loc 1 80 0
+	.loc 1 80 0
+//\ move 2 top values from data stack to return stack
+	.loc 1 81 0
+	.loc 1 81 0
+//CODE >R>R	( a b -- )
+	.loc 1 82 0
+	.loc 1 82 0
+//	LDMIA	DSTK!, {R0,R1}
+
+	.global greatRgreatR
+greatRgreatR:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
+	.loc 1 83 0
+	.loc 1 83 0
+//	PUSH	{R0,TOS}
+	.inst.n	0xB441		//PUSH	{R0, R6}
+	.loc 1 84 0
+	.loc 1 84 0
+//	mov	TOS, R1
+	.inst.n	0x460E		//MOV	R6, R1
+	.loc 1 85 0
+	.loc 1 85 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 86 0
+	.loc 1 86 0
+//END-CODE
+	.loc 1 87 0
+	.loc 1 87 0
+//
+	.loc 1 88 0
+	.loc 1 88 0
+//CODE SP@	( -- N )
+	.loc 1 89 0
+	.loc 1 89 0
+//	STR	TOS, [DSTK, #-4]!		\ TOS -> [DSTK - 4], DSTK -=4			DUP
+
+	.global SPload
+SPload:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 90 0
+	.loc 1 90 0
+//	MOV	TOS, DSTK		\ TOS = addr of second value of data stack
+	.inst.n	0x463E		//MOV	R6, R7
+	.loc 1 91 0
+	.loc 1 91 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 92 0
+	.loc 1 92 0
+//END-CODE
+	.loc 1 93 0
+	.loc 1 93 0
+//
+	.loc 1 94 0
+	.loc 1 94 0
+//CODE SP!	( N -- )
+	.loc 1 95 0
+	.loc 1 95 0
+//	MOV	DSTK, TOS	\ addr of second value of data stack = a
+
+	.global SPsave
+SPsave:	.inst.n	0x4637		//MOV	R7, R6
+	.loc 1 96 0
+	.loc 1 96 0
+//	DROP,			\ TOS <- [DSTK + 4], DSTK+=4
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 97 0
+	.loc 1 97 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 98 0
+	.loc 1 98 0
+//END-CODE
+	.loc 1 99 0
+	.loc 1 99 0
+//
+	.loc 1 100 0
+	.loc 1 100 0
+//CODE PERFORM	( ... [tx] -- ...' )
+	.loc 1 101 0
+	.loc 1 101 0
+//CODL @EXECUTE
+	.loc 1 102 0
+	.loc 1 102 0
+//	        ldr	TOS, [TOS]
+
+	.global loadEXECUTE
+loadEXECUTE:	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 1 103 0
+	.loc 1 103 0
+//
+	.loc 1 104 0
+	.loc 1 104 0
+//CODL EXECUTE	( ... tx -- ...' )
+	.loc 1 105 0
+	.loc 1 105 0
+//	mov	r0, TOS
+
+	.global EXECUTE
+EXECUTE:	.inst.n	0x4630		//MOV	R0, R6
+	.loc 1 106 0
+	.loc 1 106 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 107 0
+	.loc 1 107 0
+//	bx	r0
+	.inst.n	0x4700		//BX	R0
+	.loc 1 108 0
+	.loc 1 108 0
+//END-CODE
+	.loc 1 109 0
+	.loc 1 109 0
+//
+	.loc 1 110 0
+	.loc 1 110 0
+//
+	.loc 1 111 0
+	.loc 1 111 0
+//CODE C@		( A -- N )
+	.loc 1 112 0
+	.loc 1 112 0
+//	ldrB	TOS,	[TOS]
+
+	.global Cload
+Cload:	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 1 113 0
+	.loc 1 113 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 114 0
+	.loc 1 114 0
+//END-CODE
+	.loc 1 115 0
+	.loc 1 115 0
+//
+	.loc 1 116 0
+	.loc 1 116 0
+//CODE WREG@	( A -- N )
+	.loc 1 117 0
+	.loc 1 117 0
+//CODL H@		( A -- N )
+	.loc 1 118 0
+	.loc 1 118 0
+//CODL W@		( A -- N )
+	.loc 1 119 0
+	.loc 1 119 0
+//	ldrh	TOS,	[TOS]
+
+	.global Wload
+Wload:	.inst.n	0x8836		//LDRH	R6, [R6, #0]
+	.loc 1 120 0
+	.loc 1 120 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 121 0
+	.loc 1 121 0
+//END-CODE
+	.loc 1 122 0
+	.loc 1 122 0
+//
+	.loc 1 123 0
+	.loc 1 123 0
+//CODE 2C@	( A -- N )
+	.loc 1 124 0
+	.loc 1 124 0
+//	ldrB	R0,	[TOS, #1]
+
+	.global _2Cload
+_2Cload:	.inst.n	0x7870		//LDRB	R0, [R6, #1]
+	.loc 1 125 0
+	.loc 1 125 0
+//	ldrB	TOS,	[TOS]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 1 126 0
+	.loc 1 126 0
+//	orr	TOS,	TOS,  R0, LSL # 8
+	.inst.n	0xEA46,0x2600	//ORR.W	R6, R6, R0, lsl #8
+	.loc 1 127 0
+	.loc 1 127 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 128 0
+	.loc 1 128 0
+//END-CODE
+	.loc 1 129 0
+	.loc 1 129 0
+//
+	.loc 1 130 0
+	.loc 1 130 0
+//CODE REG@	( A -- N )
+	.loc 1 131 0
+	.loc 1 131 0
+//CODL @		( A -- N )
+	.loc 1 132 0
+	.loc 1 132 0
+//	ldr	TOS,	[TOS]
+
+	.global load
+load:	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 1 133 0
+	.loc 1 133 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 134 0
+	.loc 1 134 0
+//END-CODE
+	.loc 1 135 0
+	.loc 1 135 0
+//
+	.loc 1 136 0
+	.loc 1 136 0
+//CODE 4C@	( A -- N )
+	.loc 1 137 0
+	.loc 1 137 0
+//	ldrB	R2,	[TOS, #3]
+
+	.global _4Cload
+_4Cload:	.inst.n	0x78F2		//LDRB	R2, [R6, #3]
+	.loc 1 138 0
+	.loc 1 138 0
+//	ldrB	R1,	[TOS, #2]
+	.inst.n	0x78B1		//LDRB	R1, [R6, #2]
+	.loc 1 139 0
+	.loc 1 139 0
+//	ldrB	R0,	[TOS, #1]
+	.inst.n	0x7870		//LDRB	R0, [R6, #1]
+	.loc 1 140 0
+	.loc 1 140 0
+//	ldrB	TOS,	[TOS]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 1 141 0
+	.loc 1 141 0
+//	orr	TOS,	TOS,  R0, LSL # 8
+	.inst.n	0xEA46,0x2600	//ORR.W	R6, R6, R0, lsl #8
+	.loc 1 142 0
+	.loc 1 142 0
+//	orr	TOS,	TOS,  R1, LSL # 16
+	.inst.n	0xEA46,0x4601	//ORR.W	R6, R6, R1, lsl #16
+	.loc 1 143 0
+	.loc 1 143 0
+//	orr	TOS,	TOS,  R2, LSL # 24
+	.inst.n	0xEA46,0x6602	//ORR.W	R6, R6, R2, lsl #24
+	.loc 1 144 0
+	.loc 1 144 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 145 0
+	.loc 1 145 0
+//END-CODE
+	.loc 1 146 0
+	.loc 1 146 0
+//
+	.loc 1 147 0
+	.loc 1 147 0
+//
+	.loc 1 148 0
+	.loc 1 148 0
+//CODE C!		( N,A -- )
+	.loc 1 149 0
+	.loc 1 149 0
+//	LDMIA	DSTK!, {r0}		\ r0, <- N, DSTK += 4 
+
+	.global Csave
+Csave:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 150 0
+	.loc 1 150 0
+//	strB	r0,	[TOS]		\ N->[A]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 151 0
+	.loc 1 151 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 152 0
+	.loc 1 152 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 153 0
+	.loc 1 153 0
+//END-CODE
+	.loc 1 154 0
+	.loc 1 154 0
+//
+	.loc 1 155 0
+	.loc 1 155 0
+//CODE WREG!	( N,A -- )
+	.loc 1 156 0
+	.loc 1 156 0
+//CODL H!		( N,A -- )
+	.loc 1 157 0
+	.loc 1 157 0
+//CODL W!		( N,A -- )
+	.loc 1 158 0
+	.loc 1 158 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+
+	.global Wsave
+Wsave:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 159 0
+	.loc 1 159 0
+//	strh	r0,	[TOS]
+	.inst.n	0x8030		//STRH	R0, [R6, #0]
+	.loc 1 160 0
+	.loc 1 160 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 161 0
+	.loc 1 161 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 162 0
+	.loc 1 162 0
+//END-CODE
+	.loc 1 163 0
+	.loc 1 163 0
+//
+	.loc 1 164 0
+	.loc 1 164 0
+//CODE 2C!	( N,A -- )
+	.loc 1 165 0
+	.loc 1 165 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+
+	.global _2Csave
+_2Csave:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 166 0
+	.loc 1 166 0
+//	strB	r0,	[TOS]		\ 0
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 167 0
+	.loc 1 167 0
+//	LSRS	r0,	r0, #8
+	.inst.n	0x0A00		//LSRS	R0, R0, #8
+	.loc 1 168 0
+	.loc 1 168 0
+//	strB	r0,	[TOS, #1]	\ 1
+	.inst.n	0x7070		//STRB	R0, [R6, #1]
+	.loc 1 169 0
+	.loc 1 169 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 170 0
+	.loc 1 170 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 171 0
+	.loc 1 171 0
+//END-CODE
+	.loc 1 172 0
+	.loc 1 172 0
+//
+	.loc 1 173 0
+	.loc 1 173 0
+//CODE REG!	( N,A -- )
+	.loc 1 174 0
+	.loc 1 174 0
+//CODL !		( N,A -- )
+	.loc 1 175 0
+	.loc 1 175 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+
+	.global save
+save:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 176 0
+	.loc 1 176 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 177 0
+	.loc 1 177 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 178 0
+	.loc 1 178 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 179 0
+	.loc 1 179 0
+//END-CODE
+	.loc 1 180 0
+	.loc 1 180 0
+//
+	.loc 1 181 0
+	.loc 1 181 0
+//CODE 4C!		( N,A -- )
+	.loc 1 182 0
+	.loc 1 182 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+
+	.global _4Csave
+_4Csave:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 183 0
+	.loc 1 183 0
+//	strB	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 184 0
+	.loc 1 184 0
+//	LSRS	r0,	r0, #8
+	.inst.n	0x0A00		//LSRS	R0, R0, #8
+	.loc 1 185 0
+	.loc 1 185 0
+//	strB	r0,	[TOS, #1]
+	.inst.n	0x7070		//STRB	R0, [R6, #1]
+	.loc 1 186 0
+	.loc 1 186 0
+//	LSRS	r0,	r0, #8
+	.inst.n	0x0A00		//LSRS	R0, R0, #8
+	.loc 1 187 0
+	.loc 1 187 0
+//	strB	r0,	[TOS, #2]
+	.inst.n	0x70B0		//STRB	R0, [R6, #2]
+	.loc 1 188 0
+	.loc 1 188 0
+//	LSRS	r0,	r0, #8
+	.inst.n	0x0A00		//LSRS	R0, R0, #8
+	.loc 1 189 0
+	.loc 1 189 0
+//	strB	r0,	[TOS, #3]
+	.inst.n	0x70F0		//STRB	R0, [R6, #3]
+	.loc 1 190 0
+	.loc 1 190 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 191 0
+	.loc 1 191 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 192 0
+	.loc 1 192 0
+//END-CODE
+	.loc 1 193 0
+	.loc 1 193 0
+//
+	.loc 1 194 0
+	.loc 1 194 0
+//\ [A] = 0
+	.loc 1 195 0
+	.loc 1 195 0
+//CODE 0!		( A -- )
+	.loc 1 196 0
+	.loc 1 196 0
+//CODL OFF		( A -- )
+	.loc 1 197 0
+	.loc 1 197 0
+//	MOVS	R0,	# 0
+
+	.global OFF
+OFF:	.inst.n	0x2000		//MOVS	R0, #0
+	.loc 1 198 0
+	.loc 1 198 0
+//	STR	R0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 199 0
+	.loc 1 199 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 200 0
+	.loc 1 200 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 201 0
+	.loc 1 201 0
+//END-CODE
+	.loc 1 202 0
+	.loc 1 202 0
+//
+	.loc 1 203 0
+	.loc 1 203 0
+//CODE ON		( A -- )
+	.loc 1 204 0
+	.loc 1 204 0
+//	MOV	R0,	# -1
+
+	.global ON
+ON:	.inst.n	0xF04F,0x30FF	//MOV.W	R0, #4294967295 @ 0xFFFFFFFF
+	.loc 1 205 0
+	.loc 1 205 0
+//	STR	R0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 206 0
+	.loc 1 206 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 207 0
+	.loc 1 207 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 208 0
+	.loc 1 208 0
+//END-CODE
+	.loc 1 209 0
+	.loc 1 209 0
+//
+	.loc 1 210 0
+	.loc 1 210 0
+//
+	.loc 1 211 0
+	.loc 1 211 0
+//CODE 2!		( D A -- )
+	.loc 1 212 0
+	.loc 1 212 0
+//	LDMIA	DSTK!,	{R0,r2}
+
+	.global _2save
+_2save:	.inst.n	0xCF05		//LDMIA	R7!, {R0, R2}
+	.loc 1 213 0
+	.loc 1 213 0
+//	strd	r0, r2, [TOS]
+	.inst.n	0xE9C6,0x0200	//STRD	R0, R2, [R6]
+	.loc 1 214 0
+	.loc 1 214 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 215 0
+	.loc 1 215 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 216 0
+	.loc 1 216 0
+//END-CODE
+	.loc 1 217 0
+	.loc 1 217 0
+//
+	.loc 1 218 0
+	.loc 1 218 0
+//CODE 2@		( A -- D )
+	.loc 1 219 0
+	.loc 1 219 0
+//	ldrd	TOS, r0, [TOS]
+
+	.global _2load
+_2load:	.inst.n	0xE9D6,0x6000	//LDRD	R6, R0, [R6]
+	.loc 1 220 0
+	.loc 1 220 0
+//	STR	R0, [DSTK, #-4]!
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.loc 1 221 0
+	.loc 1 221 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 222 0
+	.loc 1 222 0
+//END-CODE
+	.loc 1 223 0
+	.loc 1 223 0
+//
+	.loc 1 224 0
+	.loc 1 224 0
+//
+	.loc 1 225 0
+	.loc 1 225 0
+//CODE +!	( N A -- )
+	.loc 1 226 0
+	.loc 1 226 0
+//	ldr	r1,	[TOS]
+
+	.global addsave
+addsave:	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.loc 1 227 0
+	.loc 1 227 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 228 0
+	.loc 1 228 0
+//	ADDS	r0,r0, r1
+	.inst.n	0x1840		//ADDS	R0, R0, R1
+	.loc 1 229 0
+	.loc 1 229 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 230 0
+	.loc 1 230 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 231 0
+	.loc 1 231 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 232 0
+	.loc 1 232 0
+//END-CODE
+	.loc 1 233 0
+	.loc 1 233 0
+//
+	.loc 1 234 0
+	.loc 1 234 0
+//CODE C+!	( N A -- )
+	.loc 1 235 0
+	.loc 1 235 0
+//	ldrb	r1,	[TOS]
+
+	.global Caddsave
+Caddsave:	.inst.n	0x7831		//LDRB	R1, [R6, #0]
+	.loc 1 236 0
+	.loc 1 236 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- N
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 237 0
+	.loc 1 237 0
+//	ADDS	r0,r0, r1
+	.inst.n	0x1840		//ADDS	R0, R0, R1
+	.loc 1 238 0
+	.loc 1 238 0
+//	strb	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 239 0
+	.loc 1 239 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 240 0
+	.loc 1 240 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 241 0
+	.loc 1 241 0
+//END-CODE
+	.loc 1 242 0
+	.loc 1 242 0
+//
+	.loc 1 243 0
+	.loc 1 243 0
+//
+	.loc 1 244 0
+	.loc 1 244 0
+//CODE 1+!	( N A -- )
+	.loc 1 245 0
+	.loc 1 245 0
+//	ldr	r0,	[TOS]
+
+	.global _1addsave
+_1addsave:	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.loc 1 246 0
+	.loc 1 246 0
+//	ADDS	r0,#1
+	.inst.n	0x3001		//ADDS	R0, #1
+	.loc 1 247 0
+	.loc 1 247 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 248 0
+	.loc 1 248 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 249 0
+	.loc 1 249 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 250 0
+	.loc 1 250 0
+//END-CODE
+	.loc 1 251 0
+	.loc 1 251 0
+//
+	.loc 1 252 0
+	.loc 1 252 0
+//CODE 1-!	( N A -- )
+	.loc 1 253 0
+	.loc 1 253 0
+//	ldr	r0,	[TOS]
+
+	.global _1subsave
+_1subsave:	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.loc 1 254 0
+	.loc 1 254 0
+//	SUBS	r0,#1
+	.inst.n	0x3801		//SUBS	R0, #1
+	.loc 1 255 0
+	.loc 1 255 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 256 0
+	.loc 1 256 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 257 0
+	.loc 1 257 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 258 0
+	.loc 1 258 0
+//END-CODE
+	.loc 1 259 0
+	.loc 1 259 0
+//
+	.loc 1 260 0
+	.loc 1 260 0
+//CODE MIN	( N1,N2 -- MIN )
+	.loc 1 261 0
+	.loc 1 261 0
+//	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+
+	.global MIN
+MIN:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 262 0
+	.loc 1 262 0
+//	CMP	TOS,	r0		\ ALU.flags( N2 - N1 )
+	.inst.n	0x4286		//CMP	R6, R0
+	.loc 1 263 0
+	.loc 1 263 0
+//	IT	GT
+	.inst.n	0xBFC8		//IT	GT
+	.loc 1 264 0
+	.loc 1 264 0
+//	MOVGT	TOS,	r0
+	.inst.n	0x4606		//MOVGT	R6, R0
+	.loc 1 265 0
+	.loc 1 265 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 266 0
+	.loc 1 266 0
+//END-CODE
+	.loc 1 267 0
+	.loc 1 267 0
+//
+	.loc 1 268 0
+	.loc 1 268 0
+//CODE ABS	( n -- +n )
+	.loc 1 269 0
+	.loc 1 269 0
+//	cmp	TOS, #0
+
+	.global ABS
+ABS:	.inst.n	0x2E00		//CMP	R6, #0
+	.loc 1 270 0
+	.loc 1 270 0
+//	IT	LT
+	.inst.n	0xBFB8		//IT	LT
+	.loc 1 271 0
+	.loc 1 271 0
+//	neglt	TOS, TOS
+	.inst.n	0x4276		//NEGLT	R6, R6
+	.loc 1 272 0
+	.loc 1 272 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 273 0
+	.loc 1 273 0
+//ASM_END
+	.loc 1 274 0
+	.loc 1 274 0
+//
+	.loc 1 275 0
+	.loc 1 275 0
+//CODE UMIN	( N1,N2 -- MIN )
+	.loc 1 276 0
+	.loc 1 276 0
+//	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+
+	.global UMIN
+UMIN:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 277 0
+	.loc 1 277 0
+//	CMP	r0,	TOS		\ ALU.flags( N1 - N2 )
+	.inst.n	0x42B0		//CMP	R0, R6
+	.loc 1 278 0
+	.loc 1 278 0
+//	IT	CC
+	.inst.n	0xBF38		//IT	CC
+	.loc 1 279 0
+	.loc 1 279 0
+//	MOVCC	TOS, r0
+	.inst.n	0x4606		//MOVCC	R6, R0
+	.loc 1 280 0
+	.loc 1 280 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 281 0
+	.loc 1 281 0
+//END-CODE
+	.loc 1 282 0
+	.loc 1 282 0
+//
+	.loc 1 283 0
+	.loc 1 283 0
+//
+	.loc 1 284 0
+	.loc 1 284 0
+//CODE MAX	( N1,N2 -- MAX )
+	.loc 1 285 0
+	.loc 1 285 0
+//	LDMIA	DSTK!, {r0}		\ r0 = N1, DSTK += 4
+
+	.global MAX
+MAX:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 286 0
+	.loc 1 286 0
+//	CMP	TOS,	r0		\ ALU.flags( N2 - N1 )
+	.inst.n	0x4286		//CMP	R6, R0
+	.loc 1 287 0
+	.loc 1 287 0
+//	IT	LT
+	.inst.n	0xBFB8		//IT	LT
+	.loc 1 288 0
+	.loc 1 288 0
+//	MOVLT	TOS, r0
+	.inst.n	0x4606		//MOVLT	R6, R0
+	.loc 1 289 0
+	.loc 1 289 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 290 0
+	.loc 1 290 0
+//END-CODE
+	.loc 1 291 0
+	.loc 1 291 0
+//
+	.loc 1 292 0
+	.loc 1 292 0
+//
+	.loc 1 293 0
+	.loc 1 293 0
+//\ ÌÀÊÑÈÌÓÌ
+	.loc 1 294 0
+	.loc 1 294 0
+//CODE UMAX	( N1,N2 -- MAX )
+	.loc 1 295 0
+	.loc 1 295 0
+//	LDMIA	DSTK!, {r0}
+
+	.global UMAX
+UMAX:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 296 0
+	.loc 1 296 0
+//	CMP	TOS,	r0	\ ALU.flags( N2 - N1 )
+	.inst.n	0x4286		//CMP	R6, R0
+	.loc 1 297 0
+	.loc 1 297 0
+//	IT	CC
+	.inst.n	0xBF38		//IT	CC
+	.loc 1 298 0
+	.loc 1 298 0
+//	MOVCC	TOS, r0
+	.inst.n	0x4606		//MOVCC	R6, R0
+	.loc 1 299 0
+	.loc 1 299 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 300 0
+	.loc 1 300 0
+//END-CODE
+	.loc 1 301 0
+	.loc 1 301 0
+//
+	.loc 1 302 0
+	.loc 1 302 0
+//CODE 0MAX	( N -- MAX )
+	.loc 1 303 0
+	.loc 1 303 0
+//	CMP	TOS, # 0
+
+	.global _0MAX
+_0MAX:	.inst.n	0x2E00		//CMP	R6, #0
+	.loc 1 304 0
+	.loc 1 304 0
+//	IT	LT
+	.inst.n	0xBFB8		//IT	LT
+	.loc 1 305 0
+	.loc 1 305 0
+//	MOVLT	TOS, # 0
+	.inst.n	0x2600		//MOVLT	R6, #0
+	.loc 1 306 0
+	.loc 1 306 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 307 0
+	.loc 1 307 0
+//END-CODE
+	.loc 1 308 0
+	.loc 1 308 0
+//
+	.loc 1 309 0
+	.loc 1 309 0
+//CODE =		( a b -- f )
+	.loc 1 310 0
+	.loc 1 310 0
+//	LDMIA	DSTK!, {r0}
+
+	.global equ
+equ:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 311 0
+	.loc 1 311 0
+//	EORS	TOS,	r0	\ TOS = a ^ b (XOR)
+	.inst.n	0x4046		//EORS	R6, R0
+	.loc 1 312 0
+	.loc 1 312 0
+//CODL 0=		( a -- f )
+	.loc 1 313 0
+	.loc 1 313 0
+//	SUBS	TOS,	#1	\ TOS = ( a ^ b ) - 1, set ALU flags
+
+	.global _0equ
+_0equ:	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 1 314 0
+	.loc 1 314 0
+//	SBCS	TOS,	TOS	\ TOS = ( ( a ^ b ) - 1 ) - ( ( a ^ b ) - 1 ) - ALU.carry = -ALU.carry
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 1 315 0
+	.loc 1 315 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 316 0
+	.loc 1 316 0
+//END-CODE
+	.loc 1 317 0
+	.loc 1 317 0
+//
+	.loc 1 318 0
+	.loc 1 318 0
+//' =	TO '=
+	.loc 1 319 0
+	.loc 1 319 0
+//
+	.loc 1 320 0
+	.loc 1 320 0
+//CODE <>		( a b -- f )
+	.loc 1 321 0
+	.loc 1 321 0
+//	LDMIA	DSTK!, {r0}
+
+	.global lessgreat
+lessgreat:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 322 0
+	.loc 1 322 0
+//	EORS	TOS,	r0
+	.inst.n	0x4046		//EORS	R6, R0
+	.loc 1 323 0
+	.loc 1 323 0
+//CODL 0<>	( a -- F )
+	.loc 1 324 0
+	.loc 1 324 0
+//	negs	TOS,	TOS	\ TOS = 0 - ( a ^ b ) , set ALU flags
+
+	.global _0lessgreat
+_0lessgreat:	.inst.n	0x4276		//NEGS	R6, R6
+	.loc 1 325 0
+	.loc 1 325 0
+//	SBCS	TOS,	TOS	\ TOS = ( tos - tos ) - ALU.carry = -ALU.carry
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 1 326 0
+	.loc 1 326 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 327 0
+	.loc 1 327 0
+//END-CODE
+	.loc 1 328 0
+	.loc 1 328 0
+//
+	.loc 1 329 0
+	.loc 1 329 0
+//CODE >		( a b -- f )
+	.loc 1 330 0
+	.loc 1 330 0
+//	LDMIA	DSTK!, {r0}
+
+	.global great
+great:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 331 0
+	.loc 1 331 0
+//	cmp	r0, TOS
+	.inst.n	0x42B0		//CMP	R0, R6
+	.loc 1 332 0
+	.loc 1 332 0
+//	ite	le
+	.inst.n	0xBFD4		//ITE	LE
+	.loc 1 333 0
+	.loc 1 333 0
+//	movle	TOS, #0
+	.inst.n	0x2600		//MOVLE	R6, #0
+	.loc 1 334 0
+	.loc 1 334 0
+//	mvngt	TOS, #0
+	.inst.n	0xF06F,0x0600	//MVNGT.W	R6, #0 
+	.loc 1 335 0
+	.loc 1 335 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 336 0
+	.loc 1 336 0
+//END-CODE
+	.loc 1 337 0
+	.loc 1 337 0
+//
+	.loc 1 338 0
+	.loc 1 338 0
+//CODE <		( a b -- f )
+	.loc 1 339 0
+	.loc 1 339 0
+//	LDMIA	DSTK!, {r0}
+
+	.global less
+less:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 340 0
+	.loc 1 340 0
+//	cmp	r0, TOS
+	.inst.n	0x42B0		//CMP	R0, R6
+	.loc 1 341 0
+	.loc 1 341 0
+//	ite	ge
+	.inst.n	0xBFAC		//ITT	GE
+	.loc 1 342 0
+	.loc 1 342 0
+//	movge	TOS, #0
+	.inst.n	0x2600		//MOVGE	R6, #0
+	.loc 1 343 0
+	.loc 1 343 0
+//	mvnlt	TOS, #0
+	.inst.n	0xF06F,0x0600	//MVNLT.W	R6, #0 
+	.loc 1 344 0
+	.loc 1 344 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 345 0
+	.loc 1 345 0
+//END-CODE
+	.loc 1 346 0
+	.loc 1 346 0
+//
+	.loc 1 347 0
+	.loc 1 347 0
+//CODE 0<		( a -- f )
+	.loc 1 348 0
+	.loc 1 348 0
+//	ASRS	TOS, TOS, # 31		\ if( TOS == 0 ) then TOS = 0 else TOS = 0xFFFFFFFF
+
+	.global _0less
+_0less:	.inst.n	0x17F6		//ASRS	R6, R6, #31
+	.loc 1 349 0
+	.loc 1 349 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 350 0
+	.loc 1 350 0
+//END-CODE
+	.loc 1 351 0
+	.loc 1 351 0
+//
+	.loc 1 352 0
+	.loc 1 352 0
+//
+	.loc 1 353 0
+	.loc 1 353 0
+//CODE U>		( a b -- f )
+	.loc 1 354 0
+	.loc 1 354 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4	r0 = second value of return stack, data stack dec
+
+	.global Ugreat
+Ugreat:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 355 0
+	.loc 1 355 0
+//	SUBS	TOS,	TOS,	r0	\ TOS = b - a, set ALU flags
+	.inst.n	0x1A36		//SUBS	R6, R6, R0
+	.loc 1 356 0
+	.loc 1 356 0
+//	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 1 357 0
+	.loc 1 357 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 358 0
+	.loc 1 358 0
+//END-CODE
+	.loc 1 359 0
+	.loc 1 359 0
+//
+	.loc 1 360 0
+	.loc 1 360 0
+//CODE U< ( a b -- f )
+	.loc 1 361 0
+	.loc 1 361 0
+//	LDMIA	DSTK!, {r0}		\ TOS = a, DSTK += 4	TOS = second value of return stack, data stack dec
+
+	.global Uless
+Uless:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 362 0
+	.loc 1 362 0
+//	SUBS	r0,	r0,	TOS	\ TOS = a - b, set ALU flags
+	.inst.n	0x1B80		//SUBS	R0, R0, R6
+	.loc 1 363 0
+	.loc 1 363 0
+//	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 1 364 0
+	.loc 1 364 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 365 0
+	.loc 1 365 0
+//END-CODE
+	.loc 1 366 0
+	.loc 1 366 0
+//
+	.loc 1 367 0
+	.loc 1 367 0
+//
+	.loc 1 368 0
+	.loc 1 368 0
+//\ N1 AND N2 = N
+	.loc 1 369 0
+	.loc 1 369 0
+//CODE AND	( N1,N2 -- N )
+	.loc 1 370 0
+	.loc 1 370 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+
+	.global AND
+AND:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 371 0
+	.loc 1 371 0
+//	ANDS	TOS,	r0		\ TOS = a & b
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 1 372 0
+	.loc 1 372 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 373 0
+	.loc 1 373 0
+//END-CODE
+	.loc 1 374 0
+	.loc 1 374 0
+//
+	.loc 1 375 0
+	.loc 1 375 0
+//CODE ANDC	( N1,N2 -- N )
+	.loc 1 376 0
+	.loc 1 376 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+
+	.global ANDC
+ANDC:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 377 0
+	.loc 1 377 0
+//	bic	TOS, r0, TOS		\ TOS = a & !b
+	.inst.n	0xEA20,0x0606	//BIC.W	R6, R0, R6
+	.loc 1 378 0
+	.loc 1 378 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 379 0
+	.loc 1 379 0
+//END-CODE
+	.loc 1 380 0
+	.loc 1 380 0
+//
+	.loc 1 381 0
+	.loc 1 381 0
+//CODE BIC!		( N1,N2 -- )
+	.loc 1 382 0
+	.loc 1 382 0
+//CODL ANDC!
+	.loc 1 383 0
+	.loc 1 383 0
+//	ldr	r1,	[TOS]		\ r1	<- [addr]
+
+	.global ANDCsave
+ANDCsave:	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.loc 1 384 0
+	.loc 1 384 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 385 0
+	.loc 1 385 0
+//	bic	r0,r1, r0
+	.inst.n	0xEA21,0x0000	//BIC.W	R0, R1, R0
+	.loc 1 386 0
+	.loc 1 386 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 387 0
+	.loc 1 387 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 388 0
+	.loc 1 388 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 389 0
+	.loc 1 389 0
+//END-CODE
+	.loc 1 390 0
+	.loc 1 390 0
+//
+	.loc 1 391 0
+	.loc 1 391 0
+//CODE WANDC!		( N1,N2 -- )
+	.loc 1 392 0
+	.loc 1 392 0
+//CODL HBIC!
+	.loc 1 393 0
+	.loc 1 393 0
+//	ldrh	r1,	[TOS]		\ r1	<- [addr]
+
+	.global HBICsave
+HBICsave:	.inst.n	0x8831		//LDRH	R1, [R6, #0]
+	.loc 1 394 0
+	.loc 1 394 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 395 0
+	.loc 1 395 0
+//	bic	r0,r1, r0
+	.inst.n	0xEA21,0x0000	//BIC.W	R0, R1, R0
+	.loc 1 396 0
+	.loc 1 396 0
+//	strh	r0,	[TOS]
+	.inst.n	0x8030		//STRH	R0, [R6, #0]
+	.loc 1 397 0
+	.loc 1 397 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 398 0
+	.loc 1 398 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 399 0
+	.loc 1 399 0
+//END-CODE
+	.loc 1 400 0
+	.loc 1 400 0
+//
+	.loc 1 401 0
+	.loc 1 401 0
+//CODE CANDC!		( N1,N2 -- )
+	.loc 1 402 0
+	.loc 1 402 0
+//	ldrb	r1,	[TOS]		\ r1	<- [addr]
+
+	.global CANDCsave
+CANDCsave:	.inst.n	0x7831		//LDRB	R1, [R6, #0]
+	.loc 1 403 0
+	.loc 1 403 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 404 0
+	.loc 1 404 0
+//	bic	r0,r1, r0
+	.inst.n	0xEA21,0x0000	//BIC.W	R0, R1, R0
+	.loc 1 405 0
+	.loc 1 405 0
+//	strb	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 406 0
+	.loc 1 406 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 407 0
+	.loc 1 407 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 408 0
+	.loc 1 408 0
+//END-CODE
+	.loc 1 409 0
+	.loc 1 409 0
+//
+	.loc 1 410 0
+	.loc 1 410 0
+//CODE AND!		( N1,N2 -- N )
+	.loc 1 411 0
+	.loc 1 411 0
+//	ldr	r1,	[TOS]		\ r1	<- [addr]
+
+	.global ANDsave
+ANDsave:	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.loc 1 412 0
+	.loc 1 412 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 413 0
+	.loc 1 413 0
+//	and	r0,r1, r0
+	.inst.n	0xEA01,0x0000	//AND.W	R0, R1, R0
+	.loc 1 414 0
+	.loc 1 414 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 415 0
+	.loc 1 415 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 416 0
+	.loc 1 416 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 417 0
+	.loc 1 417 0
+//END-CODE
+	.loc 1 418 0
+	.loc 1 418 0
+//
+	.loc 1 419 0
+	.loc 1 419 0
+//\ N1 OR N2 = N
+	.loc 1 420 0
+	.loc 1 420 0
+//CODE OR		( N1,N2 -- N )
+	.loc 1 421 0
+	.loc 1 421 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+
+	.global OR
+OR:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 422 0
+	.loc 1 422 0
+//	ORRS	TOS,	r0		\ TOS = a | b
+	.inst.n	0x4306		//ORRS	R6, R0
+	.loc 1 423 0
+	.loc 1 423 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 424 0
+	.loc 1 424 0
+//END-CODE
+	.loc 1 425 0
+	.loc 1 425 0
+//
+	.loc 1 426 0
+	.loc 1 426 0
+//\ N1 XOR N2 = N
+	.loc 1 427 0
+	.loc 1 427 0
+//CODE XOR	( N1,N2 -- N )
+	.loc 1 428 0
+	.loc 1 428 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4
+
+	.global XOR
+XOR:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 429 0
+	.loc 1 429 0
+//	EORS	TOS,	r0		\ TOS = a ^ b
+	.inst.n	0x4046		//EORS	R6, R0
+	.loc 1 430 0
+	.loc 1 430 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 431 0
+	.loc 1 431 0
+//END-CODE
+	.loc 1 432 0
+	.loc 1 432 0
+//
+	.loc 1 433 0
+	.loc 1 433 0
+//
+	.loc 1 434 0
+	.loc 1 434 0
+//CODE BIS!		( N1,N2 -- )  \ Set bits
+	.loc 1 435 0
+	.loc 1 435 0
+//CODL OR!
+	.loc 1 436 0
+	.loc 1 436 0
+//	ldr	r1,	[TOS]		\ r1	<- [addr]
+
+	.global ORsave
+ORsave:	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.loc 1 437 0
+	.loc 1 437 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 438 0
+	.loc 1 438 0
+//	ORRS	r0, r1
+	.inst.n	0x4308		//ORRS	R0, R1
+	.loc 1 439 0
+	.loc 1 439 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 440 0
+	.loc 1 440 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 441 0
+	.loc 1 441 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 442 0
+	.loc 1 442 0
+//END-CODE
+	.loc 1 443 0
+	.loc 1 443 0
+//
+	.loc 1 444 0
+	.loc 1 444 0
+//CODE WOR!		( N1,N2 --  )
+	.loc 1 445 0
+	.loc 1 445 0
+//CODL HBIS!
+	.loc 1 446 0
+	.loc 1 446 0
+//	ldrh	r1,	[TOS]		\ r1	<- [addr]
+
+	.global HBISsave
+HBISsave:	.inst.n	0x8831		//LDRH	R1, [R6, #0]
+	.loc 1 447 0
+	.loc 1 447 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 448 0
+	.loc 1 448 0
+//	ORRS	r0, r1
+	.inst.n	0x4308		//ORRS	R0, R1
+	.loc 1 449 0
+	.loc 1 449 0
+//	strb	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 450 0
+	.loc 1 450 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 451 0
+	.loc 1 451 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 452 0
+	.loc 1 452 0
+//END-CODE
+	.loc 1 453 0
+	.loc 1 453 0
+//
+	.loc 1 454 0
+	.loc 1 454 0
+//CODE COR!		( N1,N2 --  )
+	.loc 1 455 0
+	.loc 1 455 0
+//	ldrb	r1,	[TOS]		\ r1	<- [addr]
+
+	.global CORsave
+CORsave:	.inst.n	0x7831		//LDRB	R1, [R6, #0]
+	.loc 1 456 0
+	.loc 1 456 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 457 0
+	.loc 1 457 0
+//	ORRS	r0, r1
+	.inst.n	0x4308		//ORRS	R0, R1
+	.loc 1 458 0
+	.loc 1 458 0
+//	strb	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 459 0
+	.loc 1 459 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 460 0
+	.loc 1 460 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 461 0
+	.loc 1 461 0
+//END-CODE
+	.loc 1 462 0
+	.loc 1 462 0
+//
+	.loc 1 463 0
+	.loc 1 463 0
+//\ N1 XOR N2 = N
+	.loc 1 464 0
+	.loc 1 464 0
+//CODE XOR!	( n addr -- )
+	.loc 1 465 0
+	.loc 1 465 0
+//	ldr	r1,	[TOS]		\ r1	<- [addr]
+
+	.global XORsave
+XORsave:	.inst.n	0x6831		//LDR	R1, [R6, #0]
+	.loc 1 466 0
+	.loc 1 466 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 467 0
+	.loc 1 467 0
+//	EORS	r0, r1
+	.inst.n	0x4048		//EORS	R0, R1
+	.loc 1 468 0
+	.loc 1 468 0
+//	str	r0,	[TOS]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.loc 1 469 0
+	.loc 1 469 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 470 0
+	.loc 1 470 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 471 0
+	.loc 1 471 0
+//END-CODE
+	.loc 1 472 0
+	.loc 1 472 0
+//
+	.loc 1 473 0
+	.loc 1 473 0
+//CODE CXOR!	( N1,N2 -- N )
+	.loc 1 474 0
+	.loc 1 474 0
+//	ldrb	r1,	[TOS]		\ r1	<- [addr]
+
+	.global CXORsave
+CXORsave:	.inst.n	0x7831		//LDRB	R1, [R6, #0]
+	.loc 1 475 0
+	.loc 1 475 0
+//	LDMIA	DSTK!,	{r0}		\ r0, <- n
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 476 0
+	.loc 1 476 0
+//	EORS	r0, r1
+	.inst.n	0x4048		//EORS	R0, R1
+	.loc 1 477 0
+	.loc 1 477 0
+//	strb	r0,	[TOS]
+	.inst.n	0x7030		//STRB	R0, [R6, #0]
+	.loc 1 478 0
+	.loc 1 478 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 479 0
+	.loc 1 479 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 480 0
+	.loc 1 480 0
+//END-CODE
+	.loc 1 481 0
+	.loc 1 481 0
+//
+	.loc 1 482 0
+	.loc 1 482 0
+//CODE BIT@ ( x 32-addr -- Flag ) \ Check bits
+	.loc 1 483 0
+	.loc 1 483 0
+//  LDMIA	DSTK!, {r0} \ Bitmaske holen
+
+	.global BITload
+BITload:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 484 0
+	.loc 1 484 0
+//  ldr tos, [tos]
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 1 485 0
+	.loc 1 485 0
+//  ands tos, r0
+	.inst.n	0x4006		//ANDS	R6, R0
+	.loc 1 486 0
+	.loc 1 486 0
+//  it ne
+	.inst.n	0xBF18		//IT	NE
+	.loc 1 487 0
+	.loc 1 487 0
+//  movne tos, #-1
+	.inst.n	0xF04F,0x36FF	//MOVNE.W	R6, #4294967295 @ 0xFFFFFFFF
+	.loc 1 488 0
+	.loc 1 488 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 489 0
+	.loc 1 489 0
+//END-CODE
+	.loc 1 490 0
+	.loc 1 490 0
+//
+	.loc 1 491 0
+	.loc 1 491 0
+//CODE INVERT	( N -- N1 )
+	.loc 1 492 0
+	.loc 1 492 0
+//CODL NOT	( N -- N1 )
+	.loc 1 493 0
+	.loc 1 493 0
+//	mvns	TOS, TOS
+
+	.global NOT
+NOT:	.inst.n	0x43F6		//MVNS	R6, R6
+	.loc 1 494 0
+	.loc 1 494 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 495 0
+	.loc 1 495 0
+//ASM_END
+	.loc 1 496 0
+	.loc 1 496 0
+//
+	.loc 1 497 0
+	.loc 1 497 0
+//CODE NEGATE	( n - -n)
+	.loc 1 498 0
+	.loc 1 498 0
+//	negs	TOS, TOS \ TOS := 0 - TOS (i.e. two's  complement)
+
+	.global NEGATE
+NEGATE:	.inst.n	0x4276		//NEGS	R6, R6
+	.loc 1 499 0
+	.loc 1 499 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 500 0
+	.loc 1 500 0
+//ASM_END
+	.loc 1 501 0
+	.loc 1 501 0
+//
+	.loc 1 502 0
+	.loc 1 502 0
+//CODE DNEGATE ( n - -n)
+	.loc 1 503 0
+	.loc 1 503 0
+//	dpop	r0
+
+	.global DNEGATE
+DNEGATE:	.inst.n	0xF857,0x0B04	//LDR.W	R0, [R7], #4
+	.loc 1 504 0
+	.loc 1 504 0
+//	negs	r0, r0
+	.inst.n	0x4240		//NEGS	R0, R0
+	.loc 1 505 0
+	.loc 1 505 0
+//	sbc.w	TOS, TOS, TOS, lsl #1
+	.inst.n	0xEB66,0x0646	//SBC.W	R6, R6, R6, lsl #1
+	.loc 1 506 0
+	.loc 1 506 0
+//	dpush	r0
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.loc 1 507 0
+	.loc 1 507 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 508 0
+	.loc 1 508 0
+//ASM_END
+	.loc 1 509 0
+	.loc 1 509 0
+//
+	.loc 1 510 0
+	.loc 1 510 0
+//CODE +		( N1 N2 -- N1+N2 )
+	.loc 1 511 0
+	.loc 1 511 0
+//	LDMIA	DSTK!, {r0}		\ r0 <- N1, DSTK+=4
+
+	.global add
+add:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 512 0
+	.loc 1 512 0
+//	ADDS	TOS, r0, TOS	\ TOS = a + b
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.loc 1 513 0
+	.loc 1 513 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 514 0
+	.loc 1 514 0
+//END-CODE
+	.loc 1 515 0
+	.loc 1 515 0
+//
+	.loc 1 516 0
+	.loc 1 516 0
+//CODE D+
+	.loc 1 517 0
+	.loc 1 517 0
+//        ldmia	DSTK!, {r0, r1,r3}
+
+	.global Dadd
+Dadd:	.inst.n	0xCF0B		//LDMIA	R7!, {R0, R1, R3}
+	.loc 1 518 0
+	.loc 1 518 0
+//        adds	r0,r0,r3
+	.inst.n	0x18C0		//ADDS	R0, R0, R3
+	.loc 1 519 0
+	.loc 1 519 0
+//        adc	TOS,TOS,r1
+	.inst.n	0xEB46,0x0601	//ADC.W	R6, R6, R1
+	.loc 1 520 0
+	.loc 1 520 0
+//	str	r0, [DSTK,#-4]!
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.loc 1 521 0
+	.loc 1 521 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 522 0
+	.loc 1 522 0
+//ASM_END
+	.loc 1 523 0
+	.loc 1 523 0
+//
+	.loc 1 524 0
+	.loc 1 524 0
+//CODE -		( N1,N2 -- N1-N2 )
+	.loc 1 525 0
+	.loc 1 525 0
+//	LDMIA	DSTK!, {r0}	\ r0 <- N1, DSTK+=4
+
+	.global sub
+sub:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 526 0
+	.loc 1 526 0
+//	SUBS	TOS, r0, TOS		\ TOS = a - b
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 1 527 0
+	.loc 1 527 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 528 0
+	.loc 1 528 0
+//END-CODE
+	.loc 1 529 0
+	.loc 1 529 0
+//
+	.loc 1 530 0
+	.loc 1 530 0
+//CODE D-
+	.loc 1 531 0
+	.loc 1 531 0
+//        ldmia	DSTK!, {r0, r1,r3}
+
+	.global Dsub
+Dsub:	.inst.n	0xCF0B		//LDMIA	R7!, {R0, R1, R3}
+	.loc 1 532 0
+	.loc 1 532 0
+//        subs	r3,r3,r0
+	.inst.n	0x1A1B		//SUBS	R3, R3, R0
+	.loc 1 533 0
+	.loc 1 533 0
+//        sbc	TOS,r1,TOS
+	.inst.n	0xEB61,0x0606	//SBC.W	R6, R1, R6
+	.loc 1 534 0
+	.loc 1 534 0
+//	str	r3, [DSTK,#-4]!
+	.inst.n	0xF847,0x3D04	//STR.W	R3, [R7, #-4]!
+	.loc 1 535 0
+	.loc 1 535 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 536 0
+	.loc 1 536 0
+//ASM_END
+	.loc 1 537 0
+	.loc 1 537 0
+//
+	.loc 1 538 0
+	.loc 1 538 0
+//CODE DU<
+	.loc 1 539 0
+	.loc 1 539 0
+//        ldmia	DSTK!, {r0, r1,r3}
+
+	.global DUless
+DUless:	.inst.n	0xCF0B		//LDMIA	R7!, {R0, R1, R3}
+	.loc 1 540 0
+	.loc 1 540 0
+//        subs	r3,r3,r0
+	.inst.n	0x1A1B		//SUBS	R3, R3, R0
+	.loc 1 541 0
+	.loc 1 541 0
+//        sbc	TOS,r1,TOS
+	.inst.n	0xEB61,0x0606	//SBC.W	R6, R1, R6
+	.loc 1 542 0
+	.loc 1 542 0
+//	SBCS	TOS,	TOS		\ TOS = ( a - b ) - ( a - b ) - ALU.carry = -ALU.carry
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.loc 1 543 0
+	.loc 1 543 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 544 0
+	.loc 1 544 0
+//ASM_END
+	.loc 1 545 0
+	.loc 1 545 0
+//
+	.loc 1 546 0
+	.loc 1 546 0
+//CODE CELL+	( N -- N+4 )
+	.loc 1 547 0
+	.loc 1 547 0
+//	ADDS	TOS, #2
+
+	.global CELLadd
+CELLadd:	.inst.n	0x3602		//ADDS	R6, #2
+	.loc 1 548 0
+	.loc 1 548 0
+//CODL 2+		( N -- N+2 )
+	.loc 1 549 0
+	.loc 1 549 0
+//	ADDS	TOS, #1
+
+	.global _2add
+_2add:	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 1 550 0
+	.loc 1 550 0
+//CODL 1+		( N -- N+1 )
+	.loc 1 551 0
+	.loc 1 551 0
+//CODL CHAR+		( N -- N+1 )
+	.loc 1 552 0
+	.loc 1 552 0
+//	ADDS	TOS, #1
+
+	.global CHARadd
+CHARadd:	.inst.n	0x3601		//ADDS	R6, #1
+	.loc 1 553 0
+	.loc 1 553 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 554 0
+	.loc 1 554 0
+//END-CODE
+	.loc 1 555 0
+	.loc 1 555 0
+//
+	.loc 1 556 0
+	.loc 1 556 0
+//CODE CELL-	( N -- N-4 )
+	.loc 1 557 0
+	.loc 1 557 0
+//	SUBS	TOS, #2
+
+	.global CELLsub
+CELLsub:	.inst.n	0x3E02		//SUBS	R6, #2
+	.loc 1 558 0
+	.loc 1 558 0
+//CODL 2-		( N -- N-1 )
+	.loc 1 559 0
+	.loc 1 559 0
+//	SUBS	TOS, #1
+
+	.global _2sub
+_2sub:	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 1 560 0
+	.loc 1 560 0
+//CODL 1-		( N -- N-1 )
+	.loc 1 561 0
+	.loc 1 561 0
+//	SUBS	TOS, #1
+
+	.global _1sub
+_1sub:	.inst.n	0x3E01		//SUBS	R6, #1
+	.loc 1 562 0
+	.loc 1 562 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 563 0
+	.loc 1 563 0
+//END-CODE
+	.loc 1 564 0
+	.loc 1 564 0
+//
+	.loc 1 565 0
+	.loc 1 565 0
+//CODE CELLS	( N -- 4*N )
+	.loc 1 566 0
+	.loc 1 566 0
+//	LSLS	TOS, TOS, # 1	\ TOS = TOS * 4
+
+	.global CELLS
+CELLS:	.inst.n	0x0076		//LSLS	R6, R6, #1
+	.loc 1 567 0
+	.loc 1 567 0
+//CODL 2*		( N -- 2*N )
+	.loc 1 568 0
+	.loc 1 568 0
+//	LSLS	TOS, TOS, # 1	\ TOS = TOS * 2
+
+	.global _2mul
+_2mul:	.inst.n	0x0076		//LSLS	R6, R6, #1
+	.loc 1 569 0
+	.loc 1 569 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 570 0
+	.loc 1 570 0
+//END-CODE
+	.loc 1 571 0
+	.loc 1 571 0
+//
+	.loc 1 572 0
+	.loc 1 572 0
+//CODE 2/		( N -- N/2 )
+	.loc 1 573 0
+	.loc 1 573 0
+//	ASRS	TOS, TOS, # 1	\ TOS = TOS / 4
+
+	.global _2rsl
+_2rsl:	.inst.n	0x1076		//ASRS	R6, R6, #1
+	.loc 1 574 0
+	.loc 1 574 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 575 0
+	.loc 1 575 0
+//END-CODE
+	.loc 1 576 0
+	.loc 1 576 0
+//
+	.loc 1 577 0
+	.loc 1 577 0
+//CODE EVEN ( x -- x' )
+	.loc 1 578 0
+	.loc 1 578 0
+//  movs r0, #1
+
+	.global EVEN
+EVEN:	.inst.n	0x2001		//MOVS	R0, #1
+	.loc 1 579 0
+	.loc 1 579 0
+//  ands r0, tos
+	.inst.n	0x4030		//ANDS	R0, R6
+	.loc 1 580 0
+	.loc 1 580 0
+//  adds tos, r0
+	.inst.n	0xEB16,0x0600	//ADDS.W	R6, R6, R0
+	.loc 1 581 0
+	.loc 1 581 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 582 0
+	.loc 1 582 0
+//END-CODE
+	.loc 1 583 0
+	.loc 1 583 0
+//
+	.loc 1 584 0
+	.loc 1 584 0
+//
+	.loc 1 585 0
+	.loc 1 585 0
+//\ 32*32=lo(32)
+	.loc 1 586 0
+	.loc 1 586 0
+//CODE *		( a b -- a*b )
+	.loc 1 587 0
+	.loc 1 587 0
+//	LDMIA	DSTK!, {r0}	\ r0 = a, DSTK += 4	r0 = second value of return stack, data stack dec
+
+	.global mul
+mul:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 588 0
+	.loc 1 588 0
+//	MULS	TOS, r0		\ TOS = a *b
+	.inst.n	0x4346		//MULS	R6, R0
+	.loc 1 589 0
+	.loc 1 589 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 590 0
+	.loc 1 590 0
+//END-CODE
+	.loc 1 591 0
+	.loc 1 591 0
+//
+	.loc 1 592 0
+	.loc 1 592 0
+//CODE /
+	.loc 1 593 0
+	.loc 1 593 0
+//	LDMIA	DSTK!, {r0}
+
+	.global rsl
+rsl:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 594 0
+	.loc 1 594 0
+//	sdiv	TOS, r0, TOS
+	.inst.n	0xFB90,0xF6F6	//SDIV	R6, R0, R6
+	.loc 1 595 0
+	.loc 1 595 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 596 0
+	.loc 1 596 0
+//ASM_END
+	.loc 1 597 0
+	.loc 1 597 0
+//
+	.loc 1 598 0
+	.loc 1 598 0
+//CODE MOD
+	.loc 1 599 0
+	.loc 1 599 0
+//	LDMIA	DSTK!, {r0}
+
+	.global MOD
+MOD:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 600 0
+	.loc 1 600 0
+//	sdiv	r2, r0, TOS
+	.inst.n	0xFB90,0xF2F6	//SDIV	R2, R0, R6
+	.loc 1 601 0
+	.loc 1 601 0
+//	mls	TOS, TOS, r2, r0	\ tos=r0-r2*tos
+	.inst.n	0xFB06,0x0612	//MLS	R6, R6, R2, R0
+	.loc 1 602 0
+	.loc 1 602 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 603 0
+	.loc 1 603 0
+//ASM_END
+	.loc 1 604 0
+	.loc 1 604 0
+//
+	.loc 1 605 0
+	.loc 1 605 0
+//CODE /MOD
+	.loc 1 606 0
+	.loc 1 606 0
+//	LDR	r0, [DSTK]
+
+	.global rslMOD
+rslMOD:	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.loc 1 607 0
+	.loc 1 607 0
+//	sdiv	r2, r0, TOS
+	.inst.n	0xFB90,0xF2F6	//SDIV	R2, R0, R6
+	.loc 1 608 0
+	.loc 1 608 0
+//	mls	R0, TOS, r2, r0		\ R0=r0-r2*tos
+	.inst.n	0xFB06,0x0012	//MLS	R0, R6, R2, R0
+	.loc 1 609 0
+	.loc 1 609 0
+//	MOV	TOS,R2
+	.inst.n	0x4616		//MOV	R6, R2
+	.loc 1 610 0
+	.loc 1 610 0
+//	STR	r0, [DSTK]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 611 0
+	.loc 1 611 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 612 0
+	.loc 1 612 0
+//ASM_END
+	.loc 1 613 0
+	.loc 1 613 0
+//
+	.loc 1 614 0
+	.loc 1 614 0
+//CODE U/MOD
+	.loc 1 615 0
+	.loc 1 615 0
+//	LDR	r0, [DSTK]
+
+	.global UrslMOD
+UrslMOD:	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.loc 1 616 0
+	.loc 1 616 0
+//	udiv	r2, r0, TOS
+	.inst.n	0xFBB0,0xF2F6	//UDIV	R2, R0, R6
+	.loc 1 617 0
+	.loc 1 617 0
+//	mls	R0, TOS, r2, r0		\ R0=r0-r2*tos
+	.inst.n	0xFB06,0x0012	//MLS	R0, R6, R2, R0
+	.loc 1 618 0
+	.loc 1 618 0
+//	MOV	TOS,R2
+	.inst.n	0x4616		//MOV	R6, R2
+	.loc 1 619 0
+	.loc 1 619 0
+//	STR	r0, [DSTK]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 620 0
+	.loc 1 620 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 621 0
+	.loc 1 621 0
+//ASM_END
+	.loc 1 622 0
+	.loc 1 622 0
+//
+	.loc 1 623 0
+	.loc 1 623 0
+//CODE UM*	( u1 u2 - ud)
+	.loc 1 624 0
+	.loc 1 624 0
+//	ldr	r0, [DSTK, #0]
+
+	.global UMmul
+UMmul:	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.loc 1 625 0
+	.loc 1 625 0
+//	umull	r0, TOS, r0, TOS
+	.inst.n	0xFBA0,0x0606	//UMULL	R0, R6, R0, R6
+	.loc 1 626 0
+	.loc 1 626 0
+//	str	r0, [DSTK, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 627 0
+	.loc 1 627 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 628 0
+	.loc 1 628 0
+//ASM_END
+	.loc 1 629 0
+	.loc 1 629 0
+//
+	.loc 1 630 0
+	.loc 1 630 0
+//CODE M*		( n1 n2 - d) \ We probably want a 32x32-->64 signed multiply also
+	.loc 1 631 0
+	.loc 1 631 0
+//	ldr	r0, [DSTK, #0]
+
+	.global Mmul
+Mmul:	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.loc 1 632 0
+	.loc 1 632 0
+//	smull	r0, TOS, r0, TOS
+	.inst.n	0xFB80,0x0606	//SMULL	R0, R6, R0, R6
+	.loc 1 633 0
+	.loc 1 633 0
+//	str	r0, [DSTK, #0]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 634 0
+	.loc 1 634 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 635 0
+	.loc 1 635 0
+//ASM_END
+	.loc 1 636 0
+	.loc 1 636 0
+//
+	.loc 1 637 0
+	.loc 1 637 0
+//CODE ?DUP	( N -- N,N )  ( 0 -- 0 )
+	.loc 1 638 0
+	.loc 1 638 0
+//	cbz	TOS, LL0
+
+	.global queDUP
+queDUP:	.inst.n	0xB10E		//CBZ	R6, 100030D0
+	.loc 1 639 0
+	.loc 1 639 0
+// CODL DUP	( N -- N,N )  \ !!!
+	.loc 1 640 0
+	.loc 1 640 0
+//	STR	TOS, [DSTK, #-4]!	\ if( TOS != 0 ) then DUP
+
+	.global DUP
+DUP:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 641 0
+	.loc 1 641 0
+//LL0:
+	.loc 1 642 0
+	.loc 1 642 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 643 0
+	.loc 1 643 0
+//END-CODE
+	.loc 1 644 0
+	.loc 1 644 0
+//
+	.loc 1 645 0
+	.loc 1 645 0
+//CODE 2DUP	(  a b -- a b a b )
+	.loc 1 646 0
+	.loc 1 646 0
+//	LDR	r0, 	[DSTK]		\ r0 = a
+
+	.global _2DUP
+_2DUP:	.inst.n	0x6838		//LDR	R0, [R7, #0]
+	.loc 1 647 0
+	.loc 1 647 0
+//	STMDB	DSTK!,	{r0, TOS}	\ a -> [DSTK - 2*4], b -> [DSTK - 4], DSTK -= 2*4
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.loc 1 648 0
+	.loc 1 648 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 649 0
+	.loc 1 649 0
+//END-CODE
+	.loc 1 650 0
+	.loc 1 650 0
+//
+	.loc 1 651 0
+	.loc 1 651 0
+//
+	.loc 1 652 0
+	.loc 1 652 0
+//CODE SWAP	( N1,N2 -- N2,N1 )
+	.loc 1 653 0
+	.loc 1 653 0
+//	mov	r0,	TOS
+
+	.global SWAP
+SWAP:	.inst.n	0x4630		//MOV	R0, R6
+	.loc 1 654 0
+	.loc 1 654 0
+//	ldr	TOS,	[DSTK]
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 1 655 0
+	.loc 1 655 0
+//	str	r0,	[DSTK]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 656 0
+	.loc 1 656 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 657 0
+	.loc 1 657 0
+//END-CODE
+	.loc 1 658 0
+	.loc 1 658 0
+//
+	.loc 1 659 0
+	.loc 1 659 0
+//CODE 2SWAP	( a b c d - c d a b )
+	.loc 1 660 0
+	.loc 1 660 0
+//	mov	r1,	R6
+
+	.global _2SWAP
+_2SWAP:	.inst.n	0x4631		//MOV	R1, R6
+	.loc 1 661 0
+	.loc 1 661 0
+//	LDMIA	DSTK!, {r2,R6,r8}
+	.inst.n	0xE8B7,0x0144	//LDMIA.W	R7!, {R2, R6, R8}
+	.loc 1 662 0
+	.loc 1 662 0
+//	movs	r0,	r8
+	.inst.n	0xEA5F,0x0008	//MOVS.W	R0, R8
+	.loc 1 663 0
+	.loc 1 663 0
+//	STMDB	DSTK!, {r0,r1, R2}
+	.inst.n	0xE927,0x0007	//STMDB	R7!, {R0, R1, R2}
+	.loc 1 664 0
+	.loc 1 664 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 665 0
+	.loc 1 665 0
+//END-CODE
+	.loc 1 666 0
+	.loc 1 666 0
+//
+	.loc 1 667 0
+	.loc 1 667 0
+//
+	.loc 1 668 0
+	.loc 1 668 0
+//CODE 2DROP	( D -- )
+	.loc 1 669 0
+	.loc 1 669 0
+//	LDMIA	DSTK!,  {r0, TOS}	\ load 2 values from the top of data stack to r0 & TOS, DSTK += 2*4
+
+	.global _2DROP
+_2DROP:	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
+	.loc 1 670 0
+	.loc 1 670 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 671 0
+	.loc 1 671 0
+//END-CODE
+	.loc 1 672 0
+	.loc 1 672 0
+//
+	.loc 1 673 0
+	.loc 1 673 0
+//CODE 2DRRR	( D -- )
+	.loc 1 674 0
+	.loc 1 674 0
+//	LDR	TOS, [DSTK], #8
+
+	.global _2DRRR
+_2DRRR:	.inst.n	0xF857,0x6B08	//LDR.W	R6, [R7], #8
+	.loc 1 675 0
+	.loc 1 675 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 676 0
+	.loc 1 676 0
+//END-CODE
+	.loc 1 677 0
+	.loc 1 677 0
+//
+	.loc 1 678 0
+	.loc 1 678 0
+//CODE OVER	( N1 N2 -- N1 N2 N1 )
+	.loc 1 679 0
+	.loc 1 679 0
+//	STR	TOS,	[DSTK, #-4]!	\ DUP
+
+	.global OVER
+OVER:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 680 0
+	.loc 1 680 0
+//	LDR	TOS,	[DSTK, #4]	\ tos <- [DSTK + 4]
+	.inst.n	0x687E		//LDR	R6, [R7, #4]
+	.loc 1 681 0
+	.loc 1 681 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 682 0
+	.loc 1 682 0
+//END-CODE
+	.loc 1 683 0
+	.loc 1 683 0
+//
+	.loc 1 684 0
+	.loc 1 684 0
+//' OVER	TO 'OVER
+	.loc 1 685 0
+	.loc 1 685 0
+//
+	.loc 1 686 0
+	.loc 1 686 0
+//CODE 2OVER	( a b c d -- a b c d a b )
+	.loc 1 687 0
+	.loc 1 687 0
+//	ldr	r0,	[DSTK, # 8]	\ a -> r0
+
+	.global _2OVER
+_2OVER:	.inst.n	0x68B8		//LDR	R0, [R7, #8]
+	.loc 1 688 0
+	.loc 1 688 0
+//	STMDB	DSTK!,	{r0, TOS}	\ d a -> steck
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.loc 1 689 0
+	.loc 1 689 0
+//	ldr	TOS,	[DSTK, # 12]	\ b -> tos
+	.inst.n	0x68FE		//LDR	R6, [R7, #12]
+	.loc 1 690 0
+	.loc 1 690 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 691 0
+	.loc 1 691 0
+//END-CODE
+	.loc 1 692 0
+	.loc 1 692 0
+//
+	.loc 1 693 0
+	.loc 1 693 0
+//\ CODE PLUCK	( N1 N2 N3 -- N1 N2 N3 N1 ) 
+	.loc 1 694 0
+	.loc 1 694 0
+//
+	.loc 1 695 0
+	.loc 1 695 0
+//CODE TUCK	( N1 N2 -- N2 N1 N2 )
+	.loc 1 696 0
+	.loc 1 696 0
+//	ldr	r0,	[DSTK], #4	\ r0 <- N1 : r0 <- [DSTK], DSTK += 4 
+
+	.global TUCK
+TUCK:	.inst.n	0xF857,0x0B04	//LDR.W	R0, [R7], #4
+	.loc 1 697 0
+	.loc 1 697 0
+//	STMDB	DSTK!,	{r0, TOS}	\ [DTSK - 4*2] <- r0, [DTSK - 4] <- TOS, DSTK -= 2*4
+	.inst.n	0xE927,0x0041	//STMDB	R7!, {R0, R6}
+	.loc 1 698 0
+	.loc 1 698 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 699 0
+	.loc 1 699 0
+//END-CODE
+	.loc 1 700 0
+	.loc 1 700 0
+//
+	.loc 1 701 0
+	.loc 1 701 0
+//CODE NIP	( N1 N2 -- N2 )
+	.loc 1 702 0
+	.loc 1 702 0
+//	ADDS	DSTK,	#4
+
+	.global NIP
+NIP:	.inst.n	0x3704		//ADDS	R7, #4
+	.loc 1 703 0
+	.loc 1 703 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 704 0
+	.loc 1 704 0
+//END-CODE
+	.loc 1 705 0
+	.loc 1 705 0
+//
+	.loc 1 706 0
+	.loc 1 706 0
+//CODE ROT	( N1 N2 N3 -- N2 N3 N1 )
+	.loc 1 707 0
+	.loc 1 707 0
+//	MOV	 R2 , r6
+
+	.global ROT
+ROT:	.inst.n	0x4632		//MOV	R2, R6
+	.loc 1 708 0
+	.loc 1 708 0
+//	LDMIA	DSTK!,	  {R3, R6}
+	.inst.n	0xCF48		//LDMIA	R7!, {R3, R6}
+	.loc 1 709 0
+	.loc 1 709 0
+//	STMDB	DSTK!,	  {R2, R3}
+	.inst.n	0xE927,0x000C	//STMDB	R7!, {R2, R3}
+	.loc 1 710 0
+	.loc 1 710 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 711 0
+	.loc 1 711 0
+//END-CODE
+	.loc 1 712 0
+	.loc 1 712 0
+//
+	.loc 1 713 0
+	.loc 1 713 0
+//CODE -ROT	( N1 N2 N3 -- N3 N1 N2 )
+	.loc 1 714 0
+	.loc 1 714 0
+//	LDMIA	DSTK!,	  {R2, R3}
+
+	.global subROT
+subROT:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
+	.loc 1 715 0
+	.loc 1 715 0
+//	STMDB	DSTK!,	  {R3, R6}
+	.inst.n	0xE927,0x0048	//STMDB	R7!, {R3, R6}
+	.loc 1 716 0
+	.loc 1 716 0
+//	MOV	R6,	    R2
+	.inst.n	0x4616		//MOV	R6, R2
+	.loc 1 717 0
+	.loc 1 717 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 718 0
+	.loc 1 718 0
+//END-CODE
+	.loc 1 719 0
+	.loc 1 719 0
+//
+	.loc 1 720 0
+	.loc 1 720 0
+//CODE PICK	( Nm,...,N1,K -- Nm,...,N1,Nk )
+	.loc 1 721 0
+	.loc 1 721 0
+//	LDR	TOS, [DSTK, TOS, LSL #2]	\ TOS <- [DSTK + K*4]
+
+	.global PICK
+PICK:	.inst.n	0xF857,0x6026	//LDR.W	R6, [R7, R6, lsl #2]
+	.loc 1 722 0
+	.loc 1 722 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 723 0
+	.loc 1 723 0
+//END-CODE
+	.loc 1 724 0
+	.loc 1 724 0
+//
+	.loc 1 725 0
+	.loc 1 725 0
+//CODE ARSHIFT	( a b -- a>>b )
+	.loc 1 726 0
+	.loc 1 726 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+
+	.global ARSHIFT
+ARSHIFT:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 727 0
+	.loc 1 727 0
+//	ASR	TOS,	r0, TOS	\ TOS = a >> b (arithmetic shift)		n = a >> b
+	.inst.n	0xFA40,0xF606	//asr.w	R6, R0, R6
+	.loc 1 728 0
+	.loc 1 728 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 729 0
+	.loc 1 729 0
+//END-CODE
+	.loc 1 730 0
+	.loc 1 730 0
+//
+	.loc 1 731 0
+	.loc 1 731 0
+//CODE RSHIFT	( a b -- a>>b )
+	.loc 1 732 0
+	.loc 1 732 0
+//CODL >>
+	.loc 1 733 0
+	.loc 1 733 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+
+	.global greatgreat
+greatgreat:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 734 0
+	.loc 1 734 0
+//	LSR	TOS,	r0, TOS	\ TOS = a >> b (arithmetic shift)		n = a >> b
+	.inst.n	0xFA20,0xF606	//lsr.w	R6, R0, R6
+	.loc 1 735 0
+	.loc 1 735 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 736 0
+	.loc 1 736 0
+//END-CODE
+	.loc 1 737 0
+	.loc 1 737 0
+//
+	.loc 1 738 0
+	.loc 1 738 0
+//
+	.loc 1 739 0
+	.loc 1 739 0
+//CODE LSHIFT	( a b -- a<<b )
+	.loc 1 740 0
+	.loc 1 740 0
+//CODL <<
+	.loc 1 741 0
+	.loc 1 741 0
+//	LDMIA	DSTK!, {r0}		\ r0 = a, DSTK += 4					r0 = a
+
+	.global lessless
+lessless:	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.loc 1 742 0
+	.loc 1 742 0
+//	LSL	TOS,	r0,	TOS	\ TOS = a << b
+	.inst.n	0xFA00,0xF606	//LSL.W	R6, R0, R6
+	.loc 1 743 0
+	.loc 1 743 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 744 0
+	.loc 1 744 0
+//END-CODE
+	.loc 1 745 0
+	.loc 1 745 0
+//
+	.loc 1 746 0
+	.loc 1 746 0
+//CODE BIT	( bit# -- mask )
+	.loc 1 747 0
+	.loc 1 747 0
+//	mov	r0, #1
+
+	.global BIT
+BIT:	.inst.n	0xF04F,0x0001	//MOV.W	R0, #1 
+	.loc 1 748 0
+	.loc 1 748 0
+//	LSL	TOS, r0, TOS		\ mask = 1 << bit#
+	.inst.n	0xFA00,0xF606	//LSL.W	R6, R0, R6
+	.loc 1 749 0
+	.loc 1 749 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 750 0
+	.loc 1 750 0
+//END-CODE
+	.loc 1 751 0
+	.loc 1 751 0
+//
+	.loc 1 752 0
+	.loc 1 752 0
+//CODE COUNT	( a -- a+1 c ) 
+	.loc 1 753 0
+	.loc 1 753 0
+//	ADDS	r0,	TOS, # 1	\ a+1
+
+	.global COUNT
+COUNT:	.inst.n	0x1C70		//ADDS	R0, R6, #1
+	.loc 1 754 0
+	.loc 1 754 0
+//	str	r0,	[DSTK, #-4]!
+	.inst.n	0xF847,0x0D04	//STR.W	R0, [R7, #-4]!
+	.loc 1 755 0
+	.loc 1 755 0
+//	ldrB	TOS,	[TOS]		\ c = [a]
+	.inst.n	0x7836		//LDRB	R6, [R6, #0]
+	.loc 1 756 0
+	.loc 1 756 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 757 0
+	.loc 1 757 0
+//END-CODE
+	.loc 1 758 0
+	.loc 1 758 0
+//
+	.loc 1 759 0
+	.loc 1 759 0
+//CODE BOUNDS	( N1 N2 -- N1+N2 N1 )
+	.loc 1 760 0
+	.loc 1 760 0
+//	MOV	r0,	TOS		\ r0=N2
+
+	.global BOUNDS
+BOUNDS:	.inst.n	0x4630		//MOV	R0, R6
+	.loc 1 761 0
+	.loc 1 761 0
+//	ldr	TOS,	[DSTK]		\ TOS=N1
+	.inst.n	0x683E		//LDR	R6, [R7, #0]
+	.loc 1 762 0
+	.loc 1 762 0
+//	ADDS	r0,	r0,	TOS	\ r0=N1+N2
+	.inst.n	0x1980		//ADDS	R0, R0, R6
+	.loc 1 763 0
+	.loc 1 763 0
+//	str	r0,	[DSTK]		\ N1+N2->[DSTK]
+	.inst.n	0x6038		//STR	R0, [R7, #0]
+	.loc 1 764 0
+	.loc 1 764 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 765 0
+	.loc 1 765 0
+//END-CODE
+	.loc 1 766 0
+	.loc 1 766 0
+//
+	.loc 1 767 0
+	.loc 1 767 0
+//CODE FILL ( addr len c -- )
+	.loc 1 768 0
+	.loc 1 768 0
+//	LDMIA	DSTK!, {R2,R3}
+
+	.global FILL
+FILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
+	.loc 1 769 0
+	.loc 1 769 0
+//	cbz	r2, LL0
+	.inst.n	0xB122		//CBZ	R2, 1000317A
+	.loc 1 770 0
+	.loc 1 770 0
+//	add	r2, r3
+	.inst.n	0x441A		//ADD	R2, R3
+	.loc 1 771 0
+	.loc 1 771 0
+//LL1:	strb	TOS, [r3], #1
+	.inst.n	0xF803,0x6B01	//STRB.W	R6, [R3], #1
+	.loc 1 772 0
+	.loc 1 772 0
+//	cmp	r3, r2
+	.inst.n	0x4293		//CMP	R3, R2
+	.loc 1 773 0
+	.loc 1 773 0
+//	bne	LL1
+	.inst.n	0xD1FB		//BNE.N	10003172
+	.loc 1 774 0
+	.loc 1 774 0
+//LL0:	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 775 0
+	.loc 1 775 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 776 0
+	.loc 1 776 0
+//END-CODE
+	.loc 1 777 0
+	.loc 1 777 0
+//
+	.loc 1 778 0
+	.loc 1 778 0
+//CODE WFILL ( c-addr u char -- )
+	.loc 1 779 0
+	.loc 1 779 0
+//	ldmia	DSTK!, {r2, r3}
+
+	.global WFILL
+WFILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
+	.loc 1 780 0
+	.loc 1 780 0
+//	ADD	R2,R3, R2, lsl #1
+	.inst.n	0xEB03,0x0242	//ADD.W	R2, R3, R2, lsl #1
+	.loc 1 781 0
+	.loc 1 781 0
+//LL0:	strh	TOS, [R3],#2
+	.inst.n	0xF823,0x6B02	//STRH.W	R6, [R3], #2
+	.loc 1 782 0
+	.loc 1 782 0
+//	cmp	r3, r2
+	.inst.n	0x4293		//CMP	R3, R2
+	.loc 1 783 0
+	.loc 1 783 0
+//	BNE	LL0
+	.inst.n	0xD1FB		//BNE.N	10003184
+	.loc 1 784 0
+	.loc 1 784 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 785 0
+	.loc 1 785 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 786 0
+	.loc 1 786 0
+//ASM_END
+	.loc 1 787 0
+	.loc 1 787 0
+//
+	.loc 1 788 0
+	.loc 1 788 0
+//CODE CMOVE ( addr3 addr2 len -- )
+	.loc 1 789 0
+	.loc 1 789 0
+//	LDMIA	DSTK!, {R2,R3}
+
+	.global CMOVE
+CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
+	.loc 1 790 0
+	.loc 1 790 0
+//	cbz	TOS, LL0
+	.inst.n	0xB136		//CBZ	R6, 100031A2
+	.loc 1 791 0
+	.loc 1 791 0
+//	add	TOS, r2
+	.inst.n	0x4416		//ADD	R6, R2
+	.loc 1 792 0
+	.loc 1 792 0
+//LL1:	ldrb	r0, [r3], #1
+	.inst.n	0xF813,0x0B01	//LDRB.W	R0, [R3], #1
+	.loc 1 793 0
+	.loc 1 793 0
+//	strb	r0, [r2], #1
+	.inst.n	0xF802,0x0B01	//STRB.W	R0, [R2], #1
+	.loc 1 794 0
+	.loc 1 794 0
+//	cmp	TOS, r2
+	.inst.n	0x4296		//CMP	R6, R2
+	.loc 1 795 0
+	.loc 1 795 0
+//	bne	LL1
+	.inst.n	0xD1F9		//BNE.N	10003196
+	.loc 1 796 0
+	.loc 1 796 0
+//LL0:	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 797 0
+	.loc 1 797 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 798 0
+	.loc 1 798 0
+//END-CODE
+	.loc 1 799 0
+	.loc 1 799 0
+//
+	.loc 1 800 0
+	.loc 1 800 0
+//CODE W2CMOVE ( addr3 addr2 len -- )
+	.loc 1 801 0
+	.loc 1 801 0
+//	LDMIA	DSTK!, {R2,R3}
+
+	.global W2CMOVE
+W2CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
+	.loc 1 802 0
+	.loc 1 802 0
+//	cbz	TOS, LL0
+	.inst.n	0xB136		//CBZ	R6, 100031B8
+	.loc 1 803 0
+	.loc 1 803 0
+//	add	TOS, r2
+	.inst.n	0x4416		//ADD	R6, R2
+	.loc 1 804 0
+	.loc 1 804 0
+//LL1:	ldrh	r0, [r3], #2
+	.inst.n	0xF833,0x0B02	//LDRH.W	R0, [R3], #2
+	.loc 1 805 0
+	.loc 1 805 0
+//	strh	r0, [r2], #2
+	.inst.n	0xF822,0x0B02	//STRH.W	R0, [R2], #2
+	.loc 1 806 0
+	.loc 1 806 0
+//	cmp	TOS, r2
+	.inst.n	0x4296		//CMP	R6, R2
+	.loc 1 807 0
+	.loc 1 807 0
+//	bne	LL1
+	.inst.n	0xD1F9		//BNE.N	100031AC
+	.loc 1 808 0
+	.loc 1 808 0
+//LL0:	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 809 0
+	.loc 1 809 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 810 0
+	.loc 1 810 0
+//END-CODE
+	.loc 1 811 0
+	.loc 1 811 0
+//
+	.loc 1 812 0
+	.loc 1 812 0
+//CODE CMOVE> ( c-addr1 c-addr2 u -- ) \ 94 STRING
+	.loc 1 813 0
+	.loc 1 813 0
+//	ldmia	DSTK!, {r0, r1}
+
+	.global CMOVEgreat
+CMOVEgreat:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
+	.loc 1 814 0
+	.loc 1 814 0
+//	tst	TOS, TOS
+	.inst.n	0x4236		//TST	R6, R6
+	.loc 1 815 0
+	.loc 1 815 0
+//	BEQ	LL1
+	.inst.n	0xD009		//BEQ.N	100031D6
+	.loc 1 816 0
+	.loc 1 816 0
+//	ADD	R0,TOS, R0
+	.inst.n	0xEB06,0x0000	//ADD.W	R0, R6, R0
+	.loc 1 817 0
+	.loc 1 817 0
+//	ADD	TOS,TOS, R1
+	.inst.n	0xEB06,0x0601	//ADD.W	R6, R6, R1
+	.loc 1 818 0
+	.loc 1 818 0
+//LL0:	ldrb	R3, [TOS,#-1]!
+	.inst.n	0xF816,0x3D01	//LDRB.W	R3, [R6, #-1]!
+	.loc 1 819 0
+	.loc 1 819 0
+//	strb	R3, [R0,#-1]!
+	.inst.n	0xF800,0x3D01	//STRB.W	R3, [R0, #-1]!
+	.loc 1 820 0
+	.loc 1 820 0
+//	cmp	TOS,R1
+	.inst.n	0x428E		//CMP	R6, R1
+	.loc 1 821 0
+	.loc 1 821 0
+//	BNE	LL0
+	.inst.n	0xD1F9		//BNE.N	100031CA
+	.loc 1 822 0
+	.loc 1 822 0
+//LL1:
+	.loc 1 823 0
+	.loc 1 823 0
+//	ldr	TOS, [DSTK], #4
+	.inst.n	0xF857,0x6B04	//LDR.W	R6, [R7], #4
+	.loc 1 824 0
+	.loc 1 824 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 825 0
+	.loc 1 825 0
+//ASM_END
+	.loc 1 826 0
+	.loc 1 826 0
+//
+	.loc 1 827 0
+	.loc 1 827 0
+//CODE SERIAL-EMIT
+	.loc 1 828 0
+	.loc 1 828 0
+//	push {lr}
+
+	.global SERIALsubEMIT
+SERIALsubEMIT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 829 0
+	.loc 1 829 0
+//	MOV	r1,	TOS		\ r0=N2
+	.inst.n	0x4631		//MOV	R1, R6
+	.loc 1 830 0
+	.loc 1 830 0
+//	ldr	r0, = 0x40013800
+		LDR	R0, [PC, #8] @ [0x100031EC] 0x40013800
+	.loc 1 831 0
+	.loc 1 831 0
+//	bl ' usart_send_blocking
+	BL	usart_send_blocking
+	.loc 1 832 0
+	.loc 1 832 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 833 0
+	.loc 1 833 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 834 0
+	.loc 1 834 0
+//ASM_END
+	.inst.n	0xFFFF @ ?????
+	.inst.n	0x3800		//SUBS	R0, #0
+	.inst.n	0x4001		//ANDS	R1, R0
+	.loc 1 835 0
+	.loc 1 835 0
+//
+	.loc 1 836 0
+	.loc 1 836 0
+//CODE SERIAL-EMIT?
+	.loc 1 837 0
+	.loc 1 837 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+
+	.global SERIALsubEMITque
+SERIALsubEMITque:	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 838 0
+	.loc 1 838 0
+//	mov	TOS,#-1
+	.inst.n	0xF04F,0x36FF	//MOV.W	R6, #4294967295 @ 0xFFFFFFFF
+	.loc 1 839 0
+	.loc 1 839 0
+//	NEXT
+	.inst.n	0x4770		//BX	R14
+	.loc 1 840 0
+	.loc 1 840 0
+//ASM_END
+	.loc 1 841 0
+	.loc 1 841 0
+//
+	.loc 1 842 0
+	.loc 1 842 0
+//CODE SERIAL-KEY?
+	.loc 1 843 0
+	.loc 1 843 0
+//	push {lr}
+
+	.global SERIALsubKEYque
+SERIALsubKEYque:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 844 0
+	.loc 1 844 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 845 0
+	.loc 1 845 0
+//	bl '  ComCnt1
+	BL	ComCnt1
+	.loc 1 846 0
+	.loc 1 846 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 847 0
+	.loc 1 847 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 848 0
+	.loc 1 848 0
+//ASM_END
+	.loc 1 849 0
+	.loc 1 849 0
+//
+	.loc 1 850 0
+	.loc 1 850 0
+//CODE SERIAL-KEY
+	.loc 1 851 0
+	.loc 1 851 0
+//	push {lr}
+
+	.global SERIALsubKEY
+SERIALsubKEY:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 852 0
+	.loc 1 852 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 853 0
+	.loc 1 853 0
+//	bl '  WGetPort1 
+	BL	WGetPort1
+	.loc 1 854 0
+	.loc 1 854 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 855 0
+	.loc 1 855 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 856 0
+	.loc 1 856 0
+//ASM_END
+	.loc 1 857 0
+	.loc 1 857 0
+//
+	.loc 1 858 0
+	.loc 1 858 0
+//CODE usb-emit
+	.loc 1 859 0
+	.loc 1 859 0
+//	push {lr}
+
+	.global usbsubemit
+usbsubemit:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 860 0
+	.loc 1 860 0
+//	MOV	r0,	TOS		\ r0=N2
+		MOV	R0, R6
+	.loc 1 861 0
+	.loc 1 861 0
+//	bl ' USB_PUT
+	BL	USB_PUT
+	.loc 1 862 0
+	.loc 1 862 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 863 0
+	.loc 1 863 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 864 0
+	.loc 1 864 0
+//ASM_END
+	.loc 1 865 0
+	.loc 1 865 0
+//
+	.loc 1 866 0
+	.loc 1 866 0
+//CODE usb-key?
+	.loc 1 867 0
+	.loc 1 867 0
+//	push {lr}
+
+	.global usbsubkeyque
+usbsubkeyque:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 868 0
+	.loc 1 868 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 869 0
+	.loc 1 869 0
+//	bl '  ttkbhit
+	BL	ttkbhit
+	.loc 1 870 0
+	.loc 1 870 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 871 0
+	.loc 1 871 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 872 0
+	.loc 1 872 0
+//ASM_END
+	.loc 1 873 0
+	.loc 1 873 0
+//
+	.loc 1 874 0
+	.loc 1 874 0
+//CODE usb-key
+	.loc 1 875 0
+	.loc 1 875 0
+//	push {lr}
+
+	.global usbsubkey
+usbsubkey:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 876 0
+	.loc 1 876 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 877 0
+	.loc 1 877 0
+//	bl '  ttgetch 
+	BL	ttgetch
+	.loc 1 878 0
+	.loc 1 878 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 879 0
+	.loc 1 879 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 880 0
+	.loc 1 880 0
+//ASM_END
+	.loc 1 881 0
+	.loc 1 881 0
+//
+	.loc 1 882 0
+	.loc 1 882 0
+//CODE HHP
+	.loc 1 883 0
+	.loc 1 883 0
+//	push {lr}
+
+	.global HHP
+HHP:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 884 0
+	.loc 1 884 0
+//	MOV	r0,	TOS		\ r0=N2
+		MOV	R0, R6
+	.loc 1 885 0
+	.loc 1 885 0
+//	bl ' hht
+	BL	hht
+	.loc 1 886 0
+	.loc 1 886 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 887 0
+	.loc 1 887 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 888 0
+	.loc 1 888 0
+//ASM_END
+	.loc 1 889 0
+	.loc 1 889 0
+//
+	.loc 1 890 0
+	.loc 1 890 0
+//
+	.loc 1 891 0
+	.loc 1 891 0
+//CODE FLASH! ( w adr --  )
+	.loc 1 892 0
+	.loc 1 892 0
+//	push {lr}
+
+	.global FLASHsave
+FLASHsave:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 893 0
+	.loc 1 893 0
+//	LDMIA	DSTK!, {R1}
+	.inst.n	0xCF02		//LDMIA	R7!, {R1}
+	.loc 1 894 0
+	.loc 1 894 0
+//	MOV	r0,	TOS		\ r0=N2
+		MOV	R0, R6
+	.loc 1 895 0
+	.loc 1 895 0
+//	bl ' flash_program_half_word
+	BL	flash_program_half_word
+	.loc 1 896 0
+	.loc 1 896 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 897 0
+	.loc 1 897 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 898 0
+	.loc 1 898 0
+//ASM_END
+	.loc 1 899 0
+	.loc 1 899 0
+//
+	.loc 1 900 0
+	.loc 1 900 0
+//CODE FLASH-ERASE ( adr -- )
+	.loc 1 901 0
+	.loc 1 901 0
+//	push {lr}
+
+	.global FLASHsubERASE
+FLASHsubERASE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 902 0
+	.loc 1 902 0
+//	MOV	r0,	TOS		\ r0=N2
+		MOV	R0, R6
+	.loc 1 903 0
+	.loc 1 903 0
+//	bl ' flash_erase_page
+	BL	flash_erase_page
+	.loc 1 904 0
+	.loc 1 904 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 905 0
+	.loc 1 905 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 906 0
+	.loc 1 906 0
+//ASM_END
+	.loc 1 907 0
+	.loc 1 907 0
+//
+	.loc 1 908 0
+	.loc 1 908 0
+//
+	.loc 1 909 0
+	.loc 1 909 0
+//CODE SLCAN_RXSPIN
+	.loc 1 910 0
+	.loc 1 910 0
+//	push {lr}
+
+	.global SLCAN_RXSPIN
+SLCAN_RXSPIN:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 911 0
+	.loc 1 911 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 912 0
+	.loc 1 912 0
+//	bl ' slcan_rx_spin_rx 
+	BL	slcan_rx_spin_rx
+	.loc 1 913 0
+	.loc 1 913 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 914 0
+	.loc 1 914 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 915 0
+	.loc 1 915 0
+//ASM_END
+	.loc 1 916 0
+	.loc 1 916 0
+//
+	.loc 1 917 0
+	.loc 1 917 0
+//
+	.loc 1 918 0
+	.loc 1 918 0
+//CODE CAN_CNT
+	.loc 1 919 0
+	.loc 1 919 0
+//	push {lr}
+
+	.global CAN_CNT
+CAN_CNT:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 920 0
+	.loc 1 920 0
+//	STR	TOS, [DSTK, #-4]!		\ DUP
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.loc 1 921 0
+	.loc 1 921 0
+//	bl ' CanCnt 
+	BL	CanCnt
+	.loc 1 922 0
+	.loc 1 922 0
+//	mov	TOS,r0
+	.inst.n	0x4606		//MOV	R6, R0
+	.loc 1 923 0
+	.loc 1 923 0
+//	pop  {pc}
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 924 0
+	.loc 1 924 0
+//ASM_END
+	.loc 1 925 0
+	.loc 1 925 0
+//
+	.loc 1 926 0
+	.loc 1 926 0
+//
+	.loc 1 927 0
+	.loc 1 927 0
+//CODE SLCAN_DECODE ( adr -- )
+	.loc 1 928 0
+	.loc 1 928 0
+//	push {lr}
+
+	.global SLCAN_DECODE
+SLCAN_DECODE:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 1 929 0
+	.loc 1 929 0
+//	MOV	r0,	TOS		\ r0=N2
+		MOV	R0, R6
+	.loc 1 930 0
+	.loc 1 930 0
+//	bl ' slcan_decode_line
+	BL	slcan_decode_line
+	.loc 1 931 0
+	.loc 1 931 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 932 0
+	.loc 1 932 0
+//	pop  {pc}
+		POP	{R15}
+	.loc 1 933 0
+	.loc 1 933 0
+//ASM_END
+	.loc 1 934 0
+	.loc 1 934 0
+//
