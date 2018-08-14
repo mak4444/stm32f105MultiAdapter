@@ -45,6 +45,11 @@
 	B FMAIN
 	Wortbirne6 0 "VAR_ORIG_SET"
 	B VAR_ORIG_SET
+	Wortbirne6 0 "&MAIN"
+	push {lr};BL DOCONST
+	.word 0x200084B0 
+	Wortbirne6 0 "<MAIN>"
+	B lessMAINgreat
 	Wortbirne6 0 "MMENU"
 	B MMENU
 	Wortbirne6 0 "mmmemu"

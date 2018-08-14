@@ -51,7 +51,7 @@ SAVE:		PUSH	{R14}
 	.inst.n	0xEB10,0x0006	//ADDS.W	R0, R0, R6
 	.inst.n	0xB401		//PUSH	{R0}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD7E9		//BVC.N	10005212
+	.inst.n	0xD7E9		//BVC.N	1000523E
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 8 0
 	.loc 5 8 0
@@ -226,7 +226,7 @@ SLCANGETLINE:		PUSH	{R14}
 	.loc 5 35 0
 	.loc 5 35 0
 //   ELSE
-	.inst.n	0xE031		//B.N	10005392
+	.inst.n	0xE031		//B.N	100053BE
 	.loc 5 36 0
 	.loc 5 36 0
 //\ [ ' DoTDTST TO TDTST ]
@@ -400,7 +400,7 @@ SLCAN_LOOP:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 72 0
 	.loc 5 72 0
 //  AGAIN
-	.inst.n	0xE7F0		//B.N	100053BA
+	.inst.n	0xE7F0		//B.N	100053E6
 	.loc 5 73 0
 	.loc 5 73 0
 //;
@@ -517,7 +517,7 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FE,0xF82D	//BL	TYPE
-	.inst.n	0xE005		//B.N	10005480
+	.inst.n	0xE005		//B.N	100054AC
 	.inst.n	0xF7FE,0xF816	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -578,7 +578,7 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FD,0xFFF0	//BL	TYPE
-	.inst.n	0xE005		//B.N	100054FA
+	.inst.n	0xE005		//B.N	10005526
 	.inst.n	0xF7FD,0xFFD9	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -708,7 +708,7 @@ KEYW:	.inst.n	0xB500		//PUSH	{R14}
 // UNTIL DROP 7 TTTIME !
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F1		//BEQ.N	1000559A
+	.inst.n	0xD0F1		//BEQ.N	100055C6
 		MOVS	R0, #7
 	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
 	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
@@ -773,7 +773,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
-	.inst.n	0xE017		//B.N	1000564E
+	.inst.n	0xE017		//B.N	1000567A
 	.loc 5 120 0
 	.loc 5 120 0
 //         [CHAR] B =  IF  MENUID @ 1+   ELSE 
@@ -789,7 +789,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
-	.inst.n	0xE006		//B.N	1000564E
+	.inst.n	0xE006		//B.N	1000567A
 	.loc 5 121 0
 	.loc 5 121 0
 //             MENUID @
@@ -824,7 +824,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F9		//BVC.N	10005670
+	.inst.n	0xD7F9		//BVC.N	1000569C
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 126 0
 	.loc 5 126 0
@@ -849,7 +849,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFED7	//BL	MENUWless
 	.inst.n	0xF7FD,0xFF0D	//BL	cSdticcend
 	.inst.n	0x4303		//ORRS	R3, R0
-	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005794] 0xCF406030
+	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x100057C0] 0xCF406030
 	.inst.n	0xF7FD,0xFF1D	//BL	TYPE
 	.inst.n	0xF7FF,0xFF4D	//BL	greatMENU
 	.loc 5 131 0
@@ -859,7 +859,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFF03	//BL	cSdticcend
 	.inst.n	0x460C		//MOV	R4, R1
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100057F4] 0xF2486D04
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005820] 0xF2486D04
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x6572		//STR	R2, [R6, #84]
 	.inst.n	0x7473		//STRB	R3, [R6, #17]
@@ -873,7 +873,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFEF4	//BL	cSdticcend
 	.inst.n	0x4610		//MOV	R0, R2
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005814] 0x3E016D04
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005840] 0x3E016D04
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x726F		//STRB	R7, [R5, #9]
 	.inst.n	0x6769		//STR	R1, [R5, #116]
@@ -1104,7 +1104,7 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 163 0
 	.loc 5 163 0
 // REPEAT 2DROP
-	.inst.n	0xE774		//B.N	10005724
+	.inst.n	0xE774		//B.N	10005750
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.loc 5 164 0
 	.loc 5 164 0

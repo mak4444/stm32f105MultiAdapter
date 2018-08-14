@@ -1,6 +1,21 @@
+
+: <MAIN>
+   HELLO
+   
+ BEGIN  [_ DECIMAL 
+ 	['] QUIT
+ 	 CATCH
+ 	  ." ERR=" .   $D EMIT $A EMIT SP0 @ SP!
+ AGAIN
+
+;
+
+VARIABLE &MAIN 
+
 : VAR_ORIG_SET
      SP@ SP0 !
    CONTEXT CELL+ 0!
+   [']  <MAIN> &MAIN ! 
  \ ['] SERIAL-EMIT HOOK-EMIT !
  \ ['] SERIAL-KEY HOOK-KEY !
  \ ['] serial-key? hook-key? !
@@ -9,7 +24,7 @@
    DECIMAL_
    GetForthWords FORTH-WORDLIST_ !
    FORTH_ DEFINITIONS_
- ;
+;
  
 : FMAIN
 
@@ -36,14 +51,7 @@
      MEID  @ 1 =
      IF	REST
      THEN
-
-   HELLO
-   
- BEGIN  [_ DECIMAL 
- 	['] QUIT
- 	 CATCH
- 	  ." ERR=" .   $D EMIT $A EMIT SP0 @ SP!
- AGAIN
+    &MAIN PERFORM
 ;
 
 : FFMAIN

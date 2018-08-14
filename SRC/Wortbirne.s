@@ -144,6 +144,8 @@ PForthWords:
 	B FFMAIN
 	Wortbirne6 0 "FMAIN"
 	B FMAIN
+	Wortbirne6 0 "<MAIN>"
+	B lessMAINgreat
 	Wortbirne6 0 "TRANS"
 	B TRANS
 	Wortbirne6 0 "-usb"
