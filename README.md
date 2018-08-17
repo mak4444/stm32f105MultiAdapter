@@ -24,7 +24,7 @@ TDIS-OPT - отключить оптимизацию
 Пункт меню "FORTH (rest)" при старте - запуск Форт системы с восстановлением 
 образа ОЗУ.
 
-Пункт меню "CAN" - запуск CAN адаптера (lscan).
+Пункт меню "CAN" - запуск CAN адаптера (serial can).
 
 Download: https://github.com/mak4444/stm32f105MultiAdapter
 
