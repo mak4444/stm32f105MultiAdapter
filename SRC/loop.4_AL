@@ -167,7 +167,7 @@ cqueDOcend:	.inst.n	0x0030		//MOVS	R0, R6
 	.loc 2 45 0
 	.loc 2 45 0
 //	BEQ	LL0
-	.inst.n	0xD006		//BEQ.N	10003310
+	.inst.n	0xD006		//BEQ.N	10003374
 	.loc 2 46 0
 	.loc 2 46 0
 //	eors	R1 , # 0x80000000
@@ -334,7 +334,7 @@ cLEAVEcend:	.inst.n	0xF83E,0x0C01	//LDRH.W	R0, [R14, #-1]
 	.loc 2 89 0
 	.loc 2 89 0
 //	NEXT
-		BX	R14
+	.inst.n	0x4770		//BX	R14
 	.loc 2 90 0
 	.loc 2 90 0
 //

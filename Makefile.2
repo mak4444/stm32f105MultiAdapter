@@ -71,10 +71,8 @@ ifeq ($(strip $(OPENCM3_DIR)),)
 #LIBPATHS := $(LIBS_DIR)-st/libopencm3 $(LIBS_DIR) 
 LIBPATHS := ../libopencm3 $(LIBS_DIR) ../libopencm3/include
 
-OPENCM3_DIR := ../libopencm3
-
-#OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
-#OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
+OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
+OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
 
 ifeq ($(strip $(OPENCM3_DIR)),)
 $(warning Cannot find libopencm3 library in the standard search paths.)

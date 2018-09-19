@@ -3,7 +3,10 @@ BINARY = stm32f105cbt6_debug_forth
 #LDSCRIPT = ../stm32-h105.ld
 #LIBS_DIR = /home/mak/workspace/libopencm3
 LIBS_DIR = ../libopencm3
+#.mod
 #LDSCRIPT = $(LIBS_DIR)-st/examples/stm32/f1/stm32-h107/stm32-h107.ld 
+#LDSCRIPT = $(LIBS_DIR)-st/examples/stm32/f1/stm32-h103/stm32-h103.ld
+#LDSCRIPT = $(LIBS_DIR)/lib/stm32/f1/stm32f103x8.ld 
 LDSCRIPT = stm32-h107.ld 
 
 LIBNAME		= opencm3_stm32f1
@@ -62,19 +65,15 @@ OBJS		+= main.o amain.o uart1.o SRC/Wortbirne.o iovfm.o cdcacm.o
 # iovfm.o forth.o
 OBJS		+= slcan/slcan.o slcan/can_driver.o 
 
-
 ifeq ($(strip $(OPENCM3_DIR)),)
 # user has not specified the library path, so we try to detect it
 
 # where we search for the library
 #LIBPATHS := ./libopencm3 ../../../../libopencm3 ../../../../../libopencm3
-#LIBPATHS := $(LIBS_DIR)-st/libopencm3 $(LIBS_DIR) 
-LIBPATHS := ../libopencm3 $(LIBS_DIR) ../libopencm3/include
+LIBPATHS := $(LIBS_DIR)-st/libopencm3 $(LIBS_DIR) 
 
-OPENCM3_DIR := ../libopencm3
-
-#OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
-#OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
+OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
+OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
 
 ifeq ($(strip $(OPENCM3_DIR)),)
 $(warning Cannot find libopencm3 library in the standard search paths.)
@@ -96,7 +95,6 @@ endef
 ifeq ($(strip $(DEVICE)),)
 # Old style, assume LDSCRIPT exists
 DEFS		+= -I$(OPENCM3_DIR)/include
-DEFS		+= -I../libopencm3/include 
 LDFLAGS		+= -L$(OPENCM3_DIR)/lib
 LDLIBS		+= -l$(LIBNAME)
 LDSCRIPT	?= $(BINARY).ld
@@ -225,6 +223,7 @@ print-%:
 	@#printf "  CXX     $(*).cpp\n"
 	$(Q)$(CXX) $(TGT_CXXFLAGS) $(CXXFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).cpp
 
+
 amain.o:  amain.s SRC/HPROC.4_AL SRC/main.4_AL SRC/PRIMITIVES.4_AL \
  SRC/USB.4_AL SRC/getvar.4_AL SRC/loop.4_AL SRC/menu.4_AL
 	$(CC) $(CFLAGS) -o amain.o -c amain.s
@@ -234,6 +233,7 @@ SRC/Wortbirne.o:  SRC/Wortbirne.s
 
 SRC/%.4_AL: SRC/%.4 VForthM/LinuxSPF32VM
 	./ss.sh
+
 
 clean:
 	@#printf "  CLEAN\n"

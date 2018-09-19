@@ -1,4 +1,6 @@
 
+	Wortbirne6 0 "GET_MEID"
+	B GET_MEID
 	Wortbirne6 0 "GET_MENUID"
 	B GET_MENUID
 	Wortbirne6 0 "GET_VAR_BIG"
@@ -43,6 +45,8 @@
 	B FFMAIN
 	Wortbirne6 0 "FMAIN"
 	B FMAIN
+	Wortbirne6 0 "MEID."
+	B MEIDdot
 	Wortbirne6 0 "VAR_ORIG_SET"
 	B VAR_ORIG_SET
 	Wortbirne6 0 "&MAIN"

@@ -45,6 +45,13 @@ PForthWords:
 	Wortbirne6 0 "SAVE"
 	B SAVE
 
+	Wortbirne6 0 "RAMIMG"
+	push {lr};BL DOCONST
+	.word 0x8007000
+
+	Wortbirne6 0 "MEID"
+	B GET_MEID
+
 	Wortbirne6 0 "VAR_ORIG_SET"
 	B VAR_ORIG_SET
 

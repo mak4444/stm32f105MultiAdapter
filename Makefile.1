@@ -69,12 +69,10 @@ ifeq ($(strip $(OPENCM3_DIR)),)
 # where we search for the library
 #LIBPATHS := ./libopencm3 ../../../../libopencm3 ../../../../../libopencm3
 #LIBPATHS := $(LIBS_DIR)-st/libopencm3 $(LIBS_DIR) 
-LIBPATHS := ../libopencm3 $(LIBS_DIR) ../libopencm3/include
+LIBPATHS := ../libopencm3 $(LIBS_DIR) 
 
-OPENCM3_DIR := ../libopencm3
-
-#OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
-#OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
+OPENCM3_DIR := $(wildcard $(LIBPATHS:=/locm3.sublime-project))
+OPENCM3_DIR := $(firstword $(dir $(OPENCM3_DIR)))
 
 ifeq ($(strip $(OPENCM3_DIR)),)
 $(warning Cannot find libopencm3 library in the standard search paths.)
@@ -96,7 +94,6 @@ endef
 ifeq ($(strip $(DEVICE)),)
 # Old style, assume LDSCRIPT exists
 DEFS		+= -I$(OPENCM3_DIR)/include
-DEFS		+= -I../libopencm3/include 
 LDFLAGS		+= -L$(OPENCM3_DIR)/lib
 LDLIBS		+= -l$(LIBNAME)
 LDSCRIPT	?= $(BINARY).ld

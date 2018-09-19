@@ -33,6 +33,7 @@ VARIABLE LPOS
      DROP 0 LINEBUF LPOS @ + C!  LPOS 0!
        LINEBUF  
    ELSE
+\ !!	  	nndeb
 \ [ ' DoTDTST TO TDTST ]
      500
        LPOS @
@@ -137,9 +138,9 @@ VARIABLE TTTIME
 : MMENU
  7 TTTIME !
  MESAID 0!
+ MEID @ 3 MOD MENUID ! 
  BEGIN  0
-  mmmemu
-   DUP >R
+  mmmemu   DUP >R
  KEYW
  dup   $D  =
  over  $a  = OR DUP
@@ -147,8 +148,7 @@ VARIABLE TTTIME
    MENUID @ 3 = IF
     SAVE
      -1 MESAID !
-      THEN
- 	 
+      THEN	 
  then   
  0=
 
@@ -158,9 +158,7 @@ VARIABLE TTTIME
  9 EMIT DUP .
  DUP 1- TTTIME !   
  0<> AND
-
  WHILE  CHMEHU
  REPEAT 2DROP
 ;
-
 

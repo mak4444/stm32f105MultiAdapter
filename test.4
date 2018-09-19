@@ -1,0 +1,11 @@
+
+: uart-test
+ begin $55 serial-emit  key? 
+ until
+;
+
+: uart-tst
+ 0
+ do $55 serial-emit
+ loop
+;

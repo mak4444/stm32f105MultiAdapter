@@ -13,16 +13,16 @@ lessMAINgreat:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 3 0
 	.loc 6 3 0
 //   HELLO
-	.inst.n	0xF7FE,0xFD8B	//BL	HELLO
+	.inst.n	0xF7FE,0xFD7B	//BL	HELLO
 	.loc 6 4 0
 	.loc 6 4 0
 //   
 	.loc 6 5 0
 	.loc 6 5 0
 // BEGIN  [_ DECIMAL 
-	.inst.n	0xF7FE,0xFF27	//BL	x_
+	.inst.n	0xF7FE,0xFF17	//BL	x_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-		MOVS	R0, #10
+	.inst.n	0x200A		//MOVS	R0, #10
 	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
 	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -37,22 +37,22 @@ lessMAINgreat:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 7 0
 	.loc 6 7 0
 // 	 CATCH
-	.inst.n	0xF7FE,0xFBF2	//BL	CATCH
+	.inst.n	0xF7FE,0xFBE2	//BL	CATCH
 	.loc 6 8 0
 	.loc 6 8 0
-// 	  ." ERR=" .   $D EMIT $A EMIT SP0 @ SP!
-	.inst.n	0xF7FD,0xFE1A	//BL	cSdticcend
+// 	  ." ERR=" .  $D EMIT $A EMIT SP0 @ SP!
+	.inst.n	0xF7FD,0xFE0A	//BL	cSdticcend
 	.inst.n	0x4504		//CMP	R4, R0
 	.inst.n	0x5252		//STRH	R2, [R2, R1]
 	.inst.n	0xFF3D @ ?????
-	.inst.n	0xF7FD,0xFE29	//BL	TYPE
-	.inst.n	0xF7FD,0xFF19	//BL	dot
+	.inst.n	0xF7FD,0xFE19	//BL	TYPE
+	.inst.n	0xF7FD,0xFF09	//BL	dot
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260D		//MOVS	R6, #13
-	.inst.n	0xF7FD,0xFDD0	//BL	EMIT
+	.inst.n	0xF7FD,0xFDC0	//BL	EMIT
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260A		//MOVS	R6, #10
-	.inst.n	0xF7FD,0xFDCB	//BL	EMIT
+	.inst.n	0xF7FD,0xFDBB	//BL	EMIT
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
 	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
@@ -62,7 +62,7 @@ lessMAINgreat:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 9 0
 	.loc 6 9 0
 // AGAIN
-	.inst.n	0xE7CF		//B.N	10005872
+	.inst.n	0xE7CF		//B.N	100058F6
 	.loc 6 10 0
 	.loc 6 10 0
 //
@@ -93,10 +93,10 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 //     SP@ SP0 !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x463E		//MOV	R6, R7
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
 	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
-		STR	R0, [R6, #0]
+	.inst.n	0x6030		//STR	R0, [R6, #0]
 	MOVW	R6, #:lower16:sp_buff+344 @ 0x158
 	MOVT	R6, #:upper16:sp_buff+344 @ 0x158
 	.loc 6 17 0
@@ -115,7 +115,7 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:lessMAINgreat+1
 	MOVT R6, #:upper16:lessMAINgreat
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
 	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -132,14 +132,14 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 22 0
 	.loc 6 22 0
 //   +USB  
-	.inst.n	0xF7FF,0xFC29	//BL	addusb
+	.inst.n	0xF7FF,0xFC19	//BL	addusb
 	.loc 6 23 0
 	.loc 6 23 0
 //  [ DHERE $10 + LIT, ] DP_ ! 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1220 @ 0x4C4
 	MOVT	R6, #:upper16:sp_buff+1220 @ 0x4C4
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
 	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -147,12 +147,12 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 24 0
 	.loc 6 24 0
 //   DECIMAL_
-	.inst.n	0xF7FD,0xFE10	//BL	DECIMAL_
+	.inst.n	0xF7FD,0xFE00	//BL	DECIMAL_
 	.loc 6 25 0
 	.loc 6 25 0
 //   GetForthWords FORTH-WORDLIST_ !
 	BL	GetForthWords
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+412 @ 0x19C
 	MOVT	R6, #:upper16:sp_buff+412 @ 0x19C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -160,41 +160,65 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 6 26 0
 	.loc 6 26 0
 //   FORTH_ DEFINITIONS_
-	.inst.n	0xF7FD,0xFEF3	//BL	FORTH_
-	.inst.n	0xF7FD,0xFF01	//BL	DEFINITIONS_
+	.inst.n	0xF7FD,0xFEE3	//BL	FORTH_
+	.inst.n	0xF7FD,0xFEF1	//BL	DEFINITIONS_
 	.loc 6 27 0
 	.loc 6 27 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 6 28 0
 	.loc 6 28 0
+//
+
+	.loc 6 29 0
+	.loc 6 29 0
+//: MEID.
+
+	.global MEIDdot
+MEIDdot:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 6 30 0
+	.loc 6 30 0
+//  -USB  CR  S" MEID=" 
+	.inst.n	0xF7FF,0xFBFD	//BL	subusb
+	.inst.n	0xF7FD,0xFED3	//BL	CR
+	.inst.n	0xF7FD,0xFDA7	//BL	cSdticcend
+	.inst.n	0x4D05		//LDR	R5, [PC, #20] @ [0x100059FC] 0x46300600
+	.inst.n	0x4945		//LDR	R1, [PC, #276] @ [0x10005B00] 0x600F2C2
+	.inst.n	0x3D44		//SUBS	R5, #68
+	.loc 6 31 0
+	.loc 6 31 0
+//   ;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 6 32 0
+	.loc 6 32 0
 // 
-	.loc 6 29 0
-	.loc 6 29 0
+	.loc 6 33 0
+	.loc 6 33 0
 //: FMAIN
+	.inst.n	0xFFFF @ ?????
 
 	.global FMAIN
 FMAIN:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 6 30 0
-	.loc 6 30 0
+	.loc 6 34 0
+	.loc 6 34 0
 //
 
-	.loc 6 31 0
-	.loc 6 31 0
+	.loc 6 35 0
+	.loc 6 35 0
 //    $f000f8df \	ldr.w	pc, [pc]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF64F,0x06DF	//MOVW	R6, #:lower16:4026595551 @ 0xF000F8DF
 	.inst.n	0xF2CF,0x0600	//MOVT	R6, #:upper16:4026595551 @ 0xF000F8DF
-	.loc 6 32 0
-	.loc 6 32 0
+	.loc 6 36 0
+	.loc 6 36 0
 //    V_DOVAR !
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
 	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 6 33 0
-	.loc 6 33 0
+	.loc 6 37 0
+	.loc 6 37 0
 //    ['] DOCREATE V_DOVAR CELL+ !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 
@@ -210,23 +234,23 @@ FMAIN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xF64F,0x06DF	//MOVW	R6, #:lower16:4026595551 @ 0xF000F8DF
 	.inst.n	0xF2CF,0x0600	//MOVT	R6, #:upper16:4026595551 @ 0xF000F8DF
-	.loc 6 34 0
-	.loc 6 34 0
+	.loc 6 38 0
+	.loc 6 38 0
 //
 
-	.loc 6 35 0
-	.loc 6 35 0
+	.loc 6 39 0
+	.loc 6 39 0
 //    $f000f8df \	ldr.w	pc, [pc]
-	.loc 6 36 0
-	.loc 6 36 0
+	.loc 6 40 0
+	.loc 6 40 0
 //    V_DOCONST !
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+672 @ 0x2A0
 	MOVT	R6, #:upper16:sp_buff+672 @ 0x2A0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 6 37 0
-	.loc 6 37 0
+	.loc 6 41 0
+	.loc 6 41 0
 //    ['] DOCONST V_DOCONST CELL+ !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 
@@ -240,80 +264,94 @@ FMAIN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-		LDMIA	R7!, {R6}
-	.loc 6 38 0
-	.loc 6 38 0
-//
-
-	.loc 6 39 0
-	.loc 6 39 0
-//	stm32f107_usb_init
-	BL	stm32f107_usb_init
-	.loc 6 40 0
-	.loc 6 40 0
-//
-
-	.loc 6 41 0
-	.loc 6 41 0
-//	VAR_ORIG_SET
-	.inst.n	0xF7FF,0xFF80	//BL	VAR_ORIG_SET
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 6 42 0
 	.loc 6 42 0
-//     MEID
+//
+
+	.loc 6 43 0
+	.loc 6 43 0
+//\	stm32f107_usb_init
+	.loc 6 44 0
+	.loc 6 44 0
+//	
+	.loc 6 45 0
+	.loc 6 45 0
+//	 	VAR_ORIG_SET  MEID VAR_BIG - RAMIMG +  @ MEID !
+	.inst.n	0xF7FF,0xFF76	//BL	VAR_ORIG_SET
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
 	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
-	.loc 6 43 0
-	.loc 6 43 0
-//       VAR_BIG - 
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
 	.inst.n	0x1B86		//SUBS	R6, R0, R6
-	.loc 6 44 0
-	.loc 6 44 0
-//      RAMIMG +  @ MEID !
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0xF247,0x0600	//MOVW	R6, #:lower16:134246400 @ 0x8007000
 	.inst.n	0xF6C0,0x0600	//MOVT	R6, #:upper16:134246400 @ 0x8007000
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
 	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 6 45 0
-	.loc 6 45 0
+	.loc 6 46 0
+	.loc 6 46 0
 //	
-	.loc 6 46 0
-	.loc 6 46 0
-//  	MMENU   MEID  @    0= 
-	.inst.n	0xF7FF,0xFE92	//BL	MMENU
+	.loc 6 47 0
+	.loc 6 47 0
+//\  '$' SERIAL-EMIT
+	.loc 6 48 0
+	.loc 6 48 0
+// \ '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT
+	.loc 6 49 0
+	.loc 6 49 0
+// \ MEID.  TYPE   MEID @ . CR
+	.loc 6 50 0
+	.loc 6 50 0
+//  
+	.loc 6 51 0
+	.loc 6 51 0
+//\   -USB   cr ." MEID=" MEID @ .  cr   +USB
+	.loc 6 52 0
+	.loc 6 52 0
+//  	MMENU   MEID  @
+	.inst.n	0xF7FF,0xFE78	//BL	MMENU
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
 	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.loc 6 53 0
+	.loc 6 53 0
+//  	  cr ." me=" dup . 0= 
+	.inst.n	0xF7FD,0xFE69	//BL	CR
+	.inst.n	0xF7FD,0xFD3D	//BL	cSdticcend
+	.inst.n	0x6D03		//LDR	R3, [R0, #80]
+	.inst.n	0x3D65		//SUBS	R5, #101
+	.inst.n	0xF7FD,0xFD4D	//BL	TYPE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF7FD,0xFE3B	//BL	dot
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 6 47 0
-	.loc 6 47 0
+	.loc 6 54 0
+	.loc 6 54 0
 //       IF
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x8002	//BEQ.W	FMAIN+D4 
-	.loc 6 48 0
-	.loc 6 48 0
+	.inst.n	0xF000,0x8002	//BEQ.W	FMAIN+E8 
+	.loc 6 55 0
+	.loc 6 55 0
 //        SLCAN_LOOP
-	.inst.n	0xF7FF,0xFCDE	//BL	SLCAN_LOOP
-	.loc 6 49 0
-	.loc 6 49 0
+	.inst.n	0xF7FF,0xFCB8	//BL	SLCAN_LOOP
+	.loc 6 56 0
+	.loc 6 56 0
 //        THEN
-	.loc 6 50 0
-	.loc 6 50 0
+	.loc 6 57 0
+	.loc 6 57 0
 //
 
-	.loc 6 51 0
-	.loc 6 51 0
+	.loc 6 58 0
+	.loc 6 58 0
 //     MEID  @ 1 =
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
@@ -323,63 +361,66 @@ FMAIN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 6 52 0
-	.loc 6 52 0
+	.loc 6 59 0
+	.loc 6 59 0
 //     IF	REST
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x8002	//BEQ.W	FMAIN+F4 
-	.inst.n	0xF7FF,0xFC16	//BL	REST
-	.loc 6 53 0
-	.loc 6 53 0
+	.inst.n	0xF000,0x8002	//BEQ.W	FMAIN+108 
+	.inst.n	0xF7FF,0xFBF0	//BL	REST
+	.loc 6 60 0
+	.loc 6 60 0
 //     THEN
-	.loc 6 54 0
-	.loc 6 54 0
+	.loc 6 61 0
+	.loc 6 61 0
+//   
+	.loc 6 62 0
+	.loc 6 62 0
 //    &MAIN PERFORM
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
 	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
-	.inst.n	0xF7FD,0xFA0D	//BL	loadEXECUTE
-	.loc 6 55 0
-	.loc 6 55 0
+	.inst.n	0xF7FD,0xF9E5	//BL	loadEXECUTE
+	.loc 6 63 0
+	.loc 6 63 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 6 56 0
-	.loc 6 56 0
+	.loc 6 64 0
+	.loc 6 64 0
 //
 
-	.loc 6 57 0
-	.loc 6 57 0
+	.loc 6 65 0
+	.loc 6 65 0
 //: FFMAIN
 	.inst.n	0xFFFF @ ?????
 
 	.global FFMAIN
 FFMAIN:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 6 58 0
-	.loc 6 58 0
+	.loc 6 66 0
+	.loc 6 66 0
 //[ ASMARM_BIG
-	.loc 6 59 0
-	.loc 6 59 0
+	.loc 6 67 0
+	.loc 6 67 0
 //	MOVS	DSTK,R0
 	.inst.n	0x0007		//MOVS	R7, R0
-	.loc 6 60 0
-	.loc 6 60 0
+	.loc 6 68 0
+	.loc 6 68 0
 //ASM_END ]
-	.loc 6 61 0
-	.loc 6 61 0
+	.loc 6 69 0
+	.loc 6 69 0
 //
 
-	.loc 6 62 0
-	.loc 6 62 0
+	.loc 6 70 0
+	.loc 6 70 0
 // \ PPP \
-	.loc 6 63 0
-	.loc 6 63 0
+	.loc 6 71 0
+	.loc 6 71 0
 //  FMAIN
-	.inst.n	0xF7FF,0xFF78	//BL	FMAIN
-	.loc 6 64 0
-	.loc 6 64 0
+	.inst.n	0xF7FF,0xFF6E	//BL	FMAIN
+	.loc 6 72 0
+	.loc 6 72 0
 //;
-		POP	{R15}
-	.loc 6 65 0
-	.loc 6 65 0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 6 73 0
+	.loc 6 73 0
 //
 

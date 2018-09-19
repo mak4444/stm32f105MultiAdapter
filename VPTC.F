@@ -26,8 +26,8 @@ THEN
 ;
 
 : HS? ( adr -- adr flag )
- DUP HSSSS @ + @
- OVER @ =  ;
+ DUP HSSSS @ + W@
+ OVER W@ =  ;
 
 fload MetaCortex/src.f 
 DECIMAL

@@ -5,7 +5,7 @@
  BEGIN  [_ DECIMAL 
  	['] QUIT
  	 CATCH
- 	  ." ERR=" .   $D EMIT $A EMIT SP0 @ SP!
+ 	  ." ERR=" .  $D EMIT $A EMIT SP0 @ SP!
  AGAIN
 
 ;
@@ -25,6 +25,10 @@ VARIABLE &MAIN
    GetForthWords FORTH-WORDLIST_ !
    FORTH_ DEFINITIONS_
 ;
+
+: MEID.
+  -USB  CR  S" MEID=" 
+   ;	
  
 : FMAIN
 
@@ -36,14 +40,17 @@ VARIABLE &MAIN
     V_DOCONST !
     ['] DOCONST V_DOCONST CELL+ !
 
-	stm32f107_usb_init
-
-	VAR_ORIG_SET
-     MEID
-       VAR_BIG - 
-      RAMIMG +  @ MEID !
+\	stm32f107_usb_init
 	
-  	MMENU   MEID  @    0= 
+	 	VAR_ORIG_SET  MEID VAR_BIG - RAMIMG +  @ MEID !
+	
+\  '$' SERIAL-EMIT
+ \ '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT
+ \ MEID.  TYPE   MEID @ . CR
+  
+\   -USB   cr ." MEID=" MEID @ .  cr   +USB
+  	MMENU   MEID  @
+  	  cr ." me=" dup . 0= 
        IF
         SLCAN_LOOP
         THEN
@@ -51,6 +58,7 @@ VARIABLE &MAIN
      MEID  @ 1 =
      IF	REST
      THEN
+   
     &MAIN PERFORM
 ;
 

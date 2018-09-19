@@ -40,7 +40,7 @@ usbsubio:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:usbsubkeyque+1
 	MOVT R6, #:upper16:usbsubkeyque
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+12 @ 0xC
 	MOVT	R6, #:upper16:sp_buff+12 @ 0xC
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -52,7 +52,7 @@ usbsubio:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:usbsubkey+1
 	MOVT R6, #:upper16:usbsubkey
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+4 
 	MOVT	R6, #:upper16:sp_buff+4 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -67,7 +67,7 @@ usbsubio:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:usbsubemitque+1
 	MOVT R6, #:upper16:usbsubemitque
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+8 
 	MOVT	R6, #:upper16:sp_buff+8 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -79,7 +79,7 @@ usbsubio:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:usbsubemit+1
 	MOVT R6, #:upper16:usbsubemit
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -177,7 +177,7 @@ subusb:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:SERIALsubKEYque+1
 	MOVT R6, #:upper16:SERIALsubKEYque
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+12 @ 0xC
 	MOVT	R6, #:upper16:sp_buff+12 @ 0xC
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -189,7 +189,7 @@ subusb:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:SERIALsubKEY+1
 	MOVT R6, #:upper16:SERIALsubKEY
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+4 
 	MOVT	R6, #:upper16:sp_buff+4 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -201,7 +201,7 @@ subusb:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:SERIALsubEMITque+1
 	MOVT R6, #:upper16:SERIALsubEMITque
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+8 
 	MOVT	R6, #:upper16:sp_buff+8 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -213,7 +213,7 @@ subusb:	.inst.n	0xB500		//PUSH	{R14}
 
 	MOVW R6, #:lower16:SERIALsubEMIT+1
 	MOVT R6, #:upper16:SERIALsubEMIT
-		MOV	R0, R6
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -255,15 +255,15 @@ TRANS:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+2A 
 	.inst.n	0xF7FE,0xF833	//BL	usbsubkey
-	.inst.n	0xF7FE,0xF807	//BL	SERIALsubEMIT
+	.inst.n	0xF7FE,0xF805	//BL	SERIALsubEMIT
 	.loc 4 48 0
 	.loc 4 48 0
 //  AGAIN
-	.inst.n	0xE7EA		//B.N	100051E2
+	.inst.n	0xE7EA		//B.N	10005246
 	.loc 4 49 0
 	.loc 4 49 0
 //;
-		POP	{R15}
+	.inst.n	0xBD00		//POP	{R15}
 	.loc 4 50 0
 	.loc 4 50 0
 //

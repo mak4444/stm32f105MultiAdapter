@@ -9,13 +9,15 @@
 #include <string.h>
 #include <libopencm3/cm3/common.h>
 #include <libopencm3/stm32/tools.h>
-#include <libopencm3/stm32/otg_fs.h>
-#include <libopencm3/stm32/otg_hs.h>
+//#include <libopencm3/stm32/otg_hs.h>
+//#include <libopencm3/stm32/otg_fs.h>
+#include <libopencm3/usb/dwc/otg_fs.h>
+
 #include <libopencm3/usb/usbd.h>
 //#include "usb_private.h"
 //#include "usb_fx07_common.h"
 #include <../lib/usb/usb_private.h>
-#include <../lib/usb/usb_fx07_common.h>
+//#include <../lib/usb/usb_fx07_common.h>
 
 extern usbd_device *usbd_dev;
 extern uint8_t ep;

@@ -203,12 +203,26 @@ GET_MENUID:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
 	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
-		POP	{R15}
+	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 22 0
 	.loc 7 22 0
+//: GET_MEID MEID ;
+
+	.global GET_MEID
+GET_MEID:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 7 23 0
+	.loc 7 23 0
 //
 
-	.loc 7 23 0
-	.loc 7 23 0
+	.loc 7 24 0
+	.loc 7 24 0
+//
+
+	.loc 7 25 0
+	.loc 7 25 0
 //
 

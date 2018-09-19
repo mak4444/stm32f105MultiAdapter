@@ -25,7 +25,8 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/flash.h>
 #include <libopencm3/stm32/rcc.h>
-#include <can_driver.h>
+//#include <slcan/can_driver.h>
+#include "can_driver.h"
 
 struct can_tx_msg {
 	uint32_t std_id;
@@ -171,8 +172,11 @@ bool can_setup_mmo(void)
 			__asm__("nop");
 	}
 
+//			void can_filter_id_mask_32bit_init(uint32_t nr, uint32_t id,
+//							   uint32_t mask, uint32_t fifo, bool enable);
+
 	/* CAN filter 0 init. */
-	can_filter_id_mask_32bit_init(CAN1,
+	can_filter_id_mask_32bit_init( // mmo CAN1,
 				0,     /* Filter ID */
 				0,     /* CAN ID */
 				0,     /* CAN ID mask */

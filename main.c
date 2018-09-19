@@ -6,8 +6,12 @@
 
 #include <libopencm3/cm3/common.h>
 #include <libopencm3/stm32/tools.h>
-#include <libopencm3/stm32/otg_fs.h>
+//#include <libopencm3/stm32/otg_fs.h>
+#include <libopencm3/usb/dwc/otg_fs.h>
 #include <libopencm3/usb/usbd.h>
+
+
+#include <libopencm3/stm32/usart.h>
 #include "uart1.h"
 
 
@@ -76,26 +80,37 @@ void stm32f107_USBdInit(void)
 }
 
 void FORTH_MAIN(int *);
+extern usbd_device *usbd_dev;
 
 int tttt;
 int main(void)
 {
 
-	rcc_clock_setup_in_hse_8mhz_out_72mhz();
+//	rcc_clock_setup_in_hse_8mhz_out_72mhz();
 
 	clock_setup();
-	usart_setup();
+	usart1_setup();
+	usart2_setup();
 
-	nndeb();
+//	nndeb();
 //	flash_unlock();
-//	stm32f107_usb_init();
+	stm32f107_usb_init();
+
+//	while(1){usbd_poll(usbd_dev);} // stm32fx07_poll();
 
 	CDSTK = &sp_buff[dp_size];
+
 	*--CDSTK=0x77;
-	hht(0);
-	hht(1);
-	hht(0x78665544);
-	hht(0xabc);
+
+	usart_send_blocking(USART2,'*');
+//	for(;;)		usart_send_blocking(USART2,'U');
+
+
+//	hht(0);
+//	hht(1);
+//	hht(0x78665544);
+//	hht(0xabc);
+
 	FFMAIN(CDSTK);
 
 }

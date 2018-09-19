@@ -827,7 +827,8 @@ ASM_END
 CODE SERIAL-EMIT
 	push {lr}
 	MOV	r1,	TOS		\ r0=N2
-	ldr	r0, = 0x40013800
+	ldr	r0, = 0x40013800 \ usart1
+	ldr	r0, = 0x40004400 \ usart2
 	bl ' usart_send_blocking
 	DROP,
 	pop  {pc}
@@ -842,7 +843,7 @@ ASM_END
 CODE SERIAL-KEY?
 	push {lr}
 	STR	TOS, [DSTK, #-4]!		\ DUP
-	bl '  ComCnt1
+	bl '  ComCnt2
 	mov	TOS,r0
 	pop  {pc}
 ASM_END
@@ -850,7 +851,7 @@ ASM_END
 CODE SERIAL-KEY
 	push {lr}
 	STR	TOS, [DSTK, #-4]!		\ DUP
-	bl '  WGetPort1 
+	bl '  WGetPort2 
 	mov	TOS,r0
 	pop  {pc}
 ASM_END
