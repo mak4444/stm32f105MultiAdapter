@@ -2,36 +2,25 @@
 : <MAIN>
    HELLO
    
- BEGIN  [_ DECIMAL 
+ BEGIN  [_  
  	['] QUIT
  	 CATCH
- 	  ." ERR=" .  $D EMIT $A EMIT SP0 @ SP!
+ 	  ." ERR=" .  $D EMIT $A EMIT SP0 @ SP!  DECIMAL_
  AGAIN
-
 ;
 
 VARIABLE &MAIN 
 
-: VAR_ORIG_SET
-     SP@ SP0 !
-   CONTEXT CELL+ 0!
-   [']  <MAIN> &MAIN ! 
- \ ['] SERIAL-EMIT HOOK-EMIT !
- \ ['] SERIAL-KEY HOOK-KEY !
- \ ['] serial-key? hook-key? !
-   +USB  
-  [ DHERE $10 + LIT, ] DP_ ! 
-   DECIMAL_
-   GetForthWords FORTH-WORDLIST_ !
-   FORTH_ DEFINITIONS_
-;
-
 : MEID.
   -USB  CR  S" MEID=" 
-   ;	
+  ;	
  
 : FMAIN
-
+   SAVE_Q
+   IF	REST
+   ELSE	VAR_ORIG_SET
+   THEN	 	
+	 	 
     $f000f8df \	ldr.w	pc, [pc]
     V_DOVAR !
     ['] DOCREATE V_DOVAR CELL+ !
@@ -42,18 +31,23 @@ VARIABLE &MAIN
 
 \	stm32f107_usb_init
 	
-	 	VAR_ORIG_SET  MEID VAR_BIG - RAMIMG +  @ MEID !
-	
+\ 	MEID	VAR_BIG - RAMIMG +  @ MEID !
+		
 \  '$' SERIAL-EMIT
  \ '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT
  \ MEID.  TYPE   MEID @ . CR
   
 \   -USB   cr ." MEID=" MEID @ .  cr   +USB
+
   	MMENU   MEID  @
-  	  cr ." me=" dup . 0= 
+  	  cr ." me=" dup . 2 = 
        IF
         SLCAN_LOOP
         THEN
+
+     MEID  @ 3 =
+     IF	USB<>UART
+     THEN
 
      MEID  @ 1 =
      IF	REST

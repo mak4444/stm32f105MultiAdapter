@@ -82,16 +82,14 @@ SECTIONS
 		*(.data*)	/* Read-write initialized data */
 		. = ALIGN(4);
 		_edata = .;
+		. = ALIGN(0x200);
+		__flash_buf = .;
+		. = ALIGN(0x200);                           
+		__first_run_flg = .;
+		LONG (0x33333333)
+		*(.flash_data_forth*)
 	} >ram AT >rom
 	_data_loadaddr = LOADADDR(.data);
-
-	.flash_data_forth : {
-		. = ALIGN(0x100);
-		__first_run_flg = .;
-		LONG (0)
-		__flash_buf = .;
-		*(.flash_data_forth*)
-	}  >rom
 
 	.bss : {
 		*(.bss*)	/* Read-write zero initialized data */

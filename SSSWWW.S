@@ -1,4 +1,11 @@
 
+	Wortbirne6 0 "VAR_END"
+	push {lr};BL DOCONST
+	.word 0x200084B8 
+	Wortbirne6 0 "GET_MAIN"
+	B GET_MAIN
+	Wortbirne6 0 "GET_&UBAUDR"
+	B GET_andUBAUDR
 	Wortbirne6 0 "GET_MEID"
 	B GET_MEID
 	Wortbirne6 0 "GET_MENUID"
@@ -47,11 +54,9 @@
 	B FMAIN
 	Wortbirne6 0 "MEID."
 	B MEIDdot
-	Wortbirne6 0 "VAR_ORIG_SET"
-	B VAR_ORIG_SET
 	Wortbirne6 0 "&MAIN"
 	push {lr};BL DOCONST
-	.word 0x200084B0 
+	.word 0x200084B4 
 	Wortbirne6 0 "<MAIN>"
 	B lessMAINgreat
 	Wortbirne6 0 "MMENU"
@@ -66,7 +71,7 @@
 	B KEY0
 	Wortbirne6 0 "TTTIME"
 	push {lr};BL DOCONST
-	.word 0x200084AC 
+	.word 0x200084B0 
 	Wortbirne6 0 "CURUP"
 	B CURUP
 	Wortbirne6 0 ">MENU"
@@ -75,17 +80,17 @@
 	B MENUSless
 	Wortbirne6 0 "MESAID"
 	push {lr};BL DOCONST
-	.word 0x200084A8 
+	.word 0x200084AC 
 	Wortbirne6 0 "MENUW<"
 	B MENUWless
 	Wortbirne6 0 "MENU<"
 	B MENUless
 	Wortbirne6 0 "MEID"
 	push {lr};BL DOCONST
-	.word 0x200084A4 
+	.word 0x200084A8 
 	Wortbirne6 0 "MENUID"
 	push {lr};BL DOCONST
-	.word 0x200084A0 
+	.word 0x200084A4 
 	Wortbirne6 0 "SLCAN_LOOP"
 	B SLCAN_LOOP
 	Wortbirne6 0 "SLCANSPIN"
@@ -94,17 +99,18 @@
 	B SLCANGETLINE
 	Wortbirne6 0 "LPOS"
 	push {lr};BL DOCONST
-	.word 0x2000849C 
+	.word 0x200084A0 
 	Wortbirne6 0 "LINEBUF"
 	push {lr};BL DOCONST
-	.word 0x200082A8 
+	.word 0x200082AC 
+	Wortbirne6 0 "USB<>UART"
+	B USBlessgreatUART
+	Wortbirne6 0 "VAR_ORIG_SET"
+	B VAR_ORIG_SET
 	Wortbirne6 0 "REST"
 	B REST
 	Wortbirne6 0 "SAVE"
 	B SAVE
-	Wortbirne6 0 "RAMIMG"
-	push {lr};BL DOCONST
-	.word 0x8007000 
 	Wortbirne6 0 "TRANS"
 	B TRANS
 	Wortbirne6 0 "-usb"
@@ -115,6 +121,16 @@
 	B usbsubio
 	Wortbirne6 0 "usb-emit?"
 	B usbsubemitque
+	Wortbirne6 0 "UBR!"
+	B UBRsave
+	Wortbirne6 0 "UBR_SET"
+	B UBR_SET
+	Wortbirne6 0 "USART2"
+	push {lr};BL DOCONST
+	.word 0x4004400 
+	Wortbirne6 0 "&UBAUDR"
+	push {lr};BL DOCONST
+	.word 0x200082A8 
 	Wortbirne6 0 "ZCOUNT"
 	B ZCOUNT
 	Wortbirne6 0 "SCAN"
@@ -527,6 +543,8 @@
 	B J
 	Wortbirne6 0 "I"
 	B I
+	Wortbirne6 0 "UBAUDR!"
+	B UBAUDRsave
 	Wortbirne6 0 "SLCAN_DECODE"
 	B SLCAN_DECODE
 	Wortbirne6 0 "CAN_CNT"

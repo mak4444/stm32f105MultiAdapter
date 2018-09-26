@@ -792,6 +792,25 @@ EXPORT
   THROW
 ;
 
+: VAL>ASM 
+  PARSE-NAME  TYPE ." _OF = 0x" H. CR 
+;
+
+: VAR>ASM 
+   0x20008000 -
+ VAL>ASM
+;
+
+
+
+: TC_VAR_GEN (  ADDR LEN -- )
+  R/W CREATE-FILE THROW
+  STDOUT @ >R
+  STDOUT !
+  INCLUDED CATCH
+  STDOUT @ CLOSE-FILE R> STDOUT ! THROW
+  THROW
+;
 
 
 : T-START  ( n -- )  \ n 

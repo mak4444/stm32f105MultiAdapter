@@ -901,5 +901,11 @@ VARIABLE LAST
 
 : ZCOUNT ( zaddr -- addr n )   dup dup if  65535 0 scan drop over - then ;
 
+VARIABLE &UBAUDR
+
+ 0x4004400 CONSTANT USART2
+
+: UBR_SET  &UBAUDR @ USART2 UBAUDR! ;
+: UBR! &UBAUDR ! UBR_SET ; 
 
 

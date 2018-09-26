@@ -924,7 +924,6 @@ CODE CAN_CNT
 	pop  {pc}
 ASM_END
 
-
 CODE SLCAN_DECODE ( adr -- )
 	push {lr}
 	MOV	r0,	TOS		\ r0=N2
@@ -932,4 +931,17 @@ CODE SLCAN_DECODE ( adr -- )
 	DROP,
 	pop  {pc}
 ASM_END
+
+CODE UBAUDR! (  baud  usart -- )
+	push {lr}
+ 	mov	r0, TOS
+ 	ldmia	DSTK!, {r1}
+    bl	' usart_set_baudrate
+	DROP,
+	pop  {pc}
+ASM_END
+
+
+
+
 

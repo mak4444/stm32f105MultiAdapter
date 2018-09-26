@@ -35,7 +35,6 @@ SECTIONS
 		*(.text*)	/* Program code */
 		. = ALIGN(4);
 		*(.rodata*)	/* Read-only data */
-		. = ALIGN(4);
 	} >rom
 
 	/* C++ Static constructors/destructors, also used for __attribute__
@@ -45,6 +44,7 @@ SECTIONS
 		__preinit_array_start = .;
 		KEEP (*(.preinit_array))
 		__preinit_array_end = .;
+		LONG (0x99999999)
 	} >rom
 	.init_array : {
 		. = ALIGN(4);
@@ -52,12 +52,16 @@ SECTIONS
 		KEEP (*(SORT(.init_array.*)))
 		KEEP (*(.init_array))
 		__init_array_end = .;
+		LONG (0x99999991)
 	} >rom
 	.fini_array : {
 		. = ALIGN(4);
 		__fini_array_start = .;
 		KEEP (*(.fini_array))
 		KEEP (*(SORT(.fini_array.*)))
+		. = ALIGN(4);
+		__first_run_flg = .;
+		LONG (-1)
 		__fini_array_end = .;
 	} >rom
 
@@ -67,11 +71,13 @@ SECTIONS
 	 */
 	.ARM.extab : {
 		*(.ARM.extab*)
+		LONG (0x99999992)
 	} >rom
 	.ARM.exidx : {
 		__exidx_start = .;
 		*(.ARM.exidx*)
 		__exidx_end = .;
+		LONG (0x99999993)
 	} >rom
 
 	. = ALIGN(4);
@@ -82,16 +88,14 @@ SECTIONS
 		*(.data*)	/* Read-write initialized data */
 		. = ALIGN(4);
 		_edata = .;
+		LONG (0x99999994)
+		. = ALIGN(0x200);
+		__flash_buf = .;
+		. = ALIGN(0x200);                           
+		LONG (0x33333333)
+		*(.flash_data_forth*)
 	} >ram AT >rom
 	_data_loadaddr = LOADADDR(.data);
-
-	.flash_data_forth : {
-		. = ALIGN(0x100);
-		__first_run_flg = .;
-		LONG (0)
-		__flash_buf = .;
-		*(.flash_data_forth*)
-	}  >rom
 
 	.bss : {
 		*(.bss*)	/* Read-write zero initialized data */
@@ -107,6 +111,8 @@ SECTIONS
 	/DISCARD/ : { *(.eh_frame) }
 
 	. = ALIGN(4);
+
+
 	end = .;
 }
 

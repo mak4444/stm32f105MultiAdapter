@@ -1,7 +1,7 @@
 	.file 5 "SRC/menu.4"
 	.loc 5 1 0
 	.loc 5 1 0
-//$8007000 CONSTANT RAMIMG
+//\ $8007000 CONSTANT RAMIMG
 	.loc 5 2 0
 	.loc 5 2 0
 //
@@ -20,29 +20,27 @@ SAVE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 5 0
 	.loc 5 5 0
 //  RAMIMG DUP FLASH-ERASE
+	BL	RAMIMG
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF247,0x0600	//MOVW	R6, #:lower16:134246400 @ 0x8007000
-	.inst.n	0xF6C0,0x0600	//MOVT	R6, #:upper16:134246400 @ 0x8007000
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF7FE,0xF835	//BL	FLASHsubERASE
+	.inst.n	0xF7FE,0xF813	//BL	FLASHsubERASE
 	.loc 5 6 0
 	.loc 5 6 0
 //  HERE_ VAR_BIG
-	.inst.n	0xF7FE,0xFDA5	//BL	HERE_
+	.inst.n	0xF7FE,0xFD8B	//BL	HERE_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
 	.loc 5 7 0
 	.loc 5 7 0
 //  DO I W@ OVER FLASH! 2+  2 +LOOP
-	.inst.n	0xF7FE,0xF857	//BL	cDOcend
+	.inst.n	0xF7FE,0xF83C	//BL	cDOcend
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xE89D,0x0042	//LDMIA.W	R13, {R1, R6}
 	.inst.n	0x1876		//ADDS	R6, R6, R1
 	.inst.n	0x8836		//LDRH	R6, [R6, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
-	.inst.n	0xF7FE,0xF819	//BL	FLASHsave
+	.inst.n	0xF7FD,0xFFF7	//BL	FLASHsave
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
@@ -51,7 +49,7 @@ SAVE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xEB10,0x0006	//ADDS.W	R0, R0, R6
 	.inst.n	0xB401		//PUSH	{R0}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD7E9		//BVC.N	100052A2
+	.inst.n	0xD7E9		//BVC.N	100053C6
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 8 0
 	.loc 5 8 0
@@ -78,9 +76,7 @@ REST:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 13 0
 	.loc 5 13 0
 //	RAMIMG
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF247,0x0600	//MOVW	R6, #:lower16:134246400 @ 0x8007000
-	.inst.n	0xF6C0,0x0600	//MOVT	R6, #:upper16:134246400 @ 0x8007000
+	BL	RAMIMG
 	.loc 5 14 0
 	.loc 5 14 0
 //	VAR_BIG
@@ -97,9 +93,8 @@ REST:	.inst.n	0xB500		//PUSH	{R14}
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
 	.inst.n	0x1B86		//SUBS	R6, R0, R6
-	.inst.n	0x4630		//MOV	R0, R6
-	.inst.n	0xF247,0x0600	//MOVW	R6, #:lower16:134246400 @ 0x8007000
-	.inst.n	0xF6C0,0x0600	//MOVT	R6, #:upper16:134246400 @ 0x8007000
+	BL	RAMIMG
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4630		//MOV	R0, R6
@@ -109,7 +104,7 @@ REST:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 16 0
 	.loc 5 16 0
 //	CMOVE
-	.inst.n	0xF7FD,0xFF82	//BL	CMOVE
+	.inst.n	0xF7FD,0xFF66	//BL	CMOVE
 	.loc 5 17 0
 	.loc 5 17 0
 //;
@@ -120,29 +115,123 @@ REST:	.inst.n	0xB500		//PUSH	{R14}
 
 	.loc 5 19 0
 	.loc 5 19 0
-//CREATE  LINEBUF 500 ALLOT
+//: VAR_ORIG_SET
+	.inst.n	0xFFFF @ ?????
+
+	.global VAR_ORIG_SET
+VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 20 0
 	.loc 5 20 0
-//VARIABLE LPOS
+//	ORIGIMG
+	BL	ORIGIMG
 	.loc 5 21 0
 	.loc 5 21 0
+//	VAR_BIG
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.loc 5 22 0
+	.loc 5 22 0
+//	DP_  VAR_BIG  - ORIGIMG  +  @  VAR_BIG - 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	.inst.n	0x4630		//MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	BL	ORIGIMG
+	.inst.n	0xCF01		//LDMIA	R7!, {R0}
+	.inst.n	0x1986		//ADDS	R6, R0, R6
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+0 
+	MOVT	R6, #:upper16:sp_buff+0 
+	.inst.n	0x1B86		//SUBS	R6, R0, R6
+	.loc 5 23 0
+	.loc 5 23 0
+//	CMOVE
+	.inst.n	0xF7FD,0xFF42	//BL	CMOVE
+	.loc 5 24 0
+	.loc 5 24 0
+//	SP@ SP0 !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x463E		//MOV	R6, R7
+	.inst.n	0x4630		//MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
+	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 5 25 0
+	.loc 5 25 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 5 26 0
+	.loc 5 26 0
 //
 
-	.loc 5 22 0
-	.loc 5 22 0
+	.loc 5 27 0
+	.loc 5 27 0
+//: USB<>UART
+	.inst.n	0xFFFF @ ?????
+
+	.global USBlessgreatUART
+USBlessgreatUART:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 5 28 0
+	.loc 5 28 0
+//  BEGIN  usb-key? IF usb-key SERIAL-EMIT THEN
+	.inst.n	0xF7FD,0xFF7E	//BL	usbsubkeyque
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	USBlessgreatUART+16 
+	.inst.n	0xF7FD,0xFF7F	//BL	usbsubkey
+	.inst.n	0xF7FD,0xFF51	//BL	SERIALsubEMIT
+	.loc 5 29 0
+	.loc 5 29 0
+//  	SERIAL-key? IF SERIAL-key USB-emit THEN
+	.inst.n	0xF7FD,0xFF60	//BL	SERIALsubKEYque
+	.inst.n	0x4236		//TST	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8004	//BEQ.W	USBlessgreatUART+2A 
+	.inst.n	0xF7FD,0xFF61	//BL	SERIALsubKEY
+	.inst.n	0xF7FD,0xFF66	//BL	usbsubemit
+	.loc 5 30 0
+	.loc 5 30 0
+//  AGAIN  
+	.inst.n	0xE7EA		//B.N	100054A2
+	.loc 5 31 0
+	.loc 5 31 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 5 32 0
+	.loc 5 32 0
+//
+
+	.loc 5 33 0
+	.loc 5 33 0
+//CREATE  LINEBUF 500 ALLOT
+	.loc 5 34 0
+	.loc 5 34 0
+//VARIABLE LPOS
+	.loc 5 35 0
+	.loc 5 35 0
+//
+
+	.loc 5 36 0
+	.loc 5 36 0
 //: SLCANGETLINE ( -- addr )
 	.inst.n	0xFFFF @ ?????
 
 	.global SLCANGETLINE
 SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 23 0
-	.loc 5 23 0
+	.loc 5 37 0
+	.loc 5 37 0
 //		  	nndeb0
 	BL	nndeb0
-	.loc 5 24 0
-	.loc 5 24 0
+	.loc 5 38 0
+	.loc 5 38 0
 //  KEY? 0= IF 0 BREAK
-	.inst.n	0xF7FE,0xF8D5	//BL	KEYque
+	.inst.n	0xF7FE,0xF87B	//BL	KEYque
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -150,12 +239,12 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2600		//MOVS	R6, #0
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 25 0
-	.loc 5 25 0
+	.loc 5 39 0
+	.loc 5 39 0
 //  KEY
-	.inst.n	0xF7FE,0xF8C0	//BL	KEY
-	.loc 5 26 0
-	.loc 5 26 0
+	.inst.n	0xF7FE,0xF866	//BL	KEY
+	.loc 5 40 0
+	.loc 5 40 0
 //   DUP $A =
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
@@ -163,13 +252,13 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 27 0
-	.loc 5 27 0
+	.loc 5 41 0
+	.loc 5 41 0
 //   OVER
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
-	.loc 5 28 0
-	.loc 5 28 0
+	.loc 5 42 0
+	.loc 5 42 0
 //    $D = OR
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x260D		//MOVS	R6, #13
@@ -178,334 +267,290 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x4306		//ORRS	R6, R0
-	.loc 5 29 0
-	.loc 5 29 0
+	.loc 5 43 0
+	.loc 5 43 0
 //   OVER
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
-	.loc 5 30 0
-	.loc 5 30 0
+	.loc 5 44 0
+	.loc 5 44 0
 //   0= OR
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x4306		//ORRS	R6, R0
-	.loc 5 31 0
-	.loc 5 31 0
+	.loc 5 45 0
+	.loc 5 45 0
 //   IF
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x801D	//BEQ.W	SLCANGETLINE+92 
-	.loc 5 32 0
-	.loc 5 32 0
+	.loc 5 46 0
+	.loc 5 46 0
 //		  	nndeb
 	BL	nndeb
-	.loc 5 33 0
-	.loc 5 33 0
+	.loc 5 47 0
+	.loc 5 47 0
 //     DROP 0 LINEBUF LPOS @ + C!  LPOS 0!
 	.inst.n	0x2600		//MOVS	R6, #0
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
-	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
+	MOVW	R6, #:lower16:sp_buff+684 @ 0x2AC
+	MOVT	R6, #:upper16:sp_buff+684 @ 0x2AC
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x7030		//STRB	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
-	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
-	.loc 5 34 0
-	.loc 5 34 0
+	MOVW	R6, #:lower16:sp_buff+684 @ 0x2AC
+	MOVT	R6, #:upper16:sp_buff+684 @ 0x2AC
+	.loc 5 48 0
+	.loc 5 48 0
 //       LINEBUF  
-	.loc 5 35 0
-	.loc 5 35 0
+	.loc 5 49 0
+	.loc 5 49 0
 //   ELSE
-	.inst.n	0xE031		//B.N	10005422
-	.loc 5 36 0
-	.loc 5 36 0
+	.inst.n	0xE031		//B.N	100055C6
+	.loc 5 50 0
+	.loc 5 50 0
 //\ !!	  	nndeb
-	.loc 5 37 0
-	.loc 5 37 0
+	.loc 5 51 0
+	.loc 5 51 0
 //\ [ ' DoTDTST TO TDTST ]
-	.loc 5 38 0
-	.loc 5 38 0
+	.loc 5 52 0
+	.loc 5 52 0
 //     500
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF44F,0x70FA	//MOV.W	R0, #500 @ 0x1F4
-	.loc 5 39 0
-	.loc 5 39 0
+	.loc 5 53 0
+	.loc 5 53 0
 //       LPOS @
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1B80		//SUBS	R0, R0, R6
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 40 0
-	.loc 5 40 0
+	.loc 5 54 0
+	.loc 5 54 0
 //      U<
-	.loc 5 41 0
-	.loc 5 41 0
+	.loc 5 55 0
+	.loc 5 55 0
 //       IF
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8009	//BEQ.W	SLCANGETLINE+C0 
-	.loc 5 42 0
-	.loc 5 42 0
+	.loc 5 56 0
+	.loc 5 56 0
 //        LPOS 0!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 43 0
-	.loc 5 43 0
+	.loc 5 57 0
+	.loc 5 57 0
 //       THEN
-	.loc 5 44 0
-	.loc 5 44 0
+	.loc 5 58 0
+	.loc 5 58 0
 //   		LINEBUF
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
-	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
-	.loc 5 45 0
-	.loc 5 45 0
+	MOVW	R6, #:lower16:sp_buff+684 @ 0x2AC
+	MOVT	R6, #:upper16:sp_buff+684 @ 0x2AC
+	.loc 5 59 0
+	.loc 5 59 0
 //   		 LPOS @
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
-	.loc 5 46 0
-	.loc 5 46 0
+	.loc 5 60 0
+	.loc 5 60 0
 //   		  +
-	.loc 5 47 0
-	.loc 5 47 0
+	.loc 5 61 0
+	.loc 5 61 0
 //   		   C!
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x7030		//STRB	R0, [R6, #0]
 	.inst.n	0x2601		//MOVS	R6, #1
-	.loc 5 48 0
-	.loc 5 48 0
+	.loc 5 62 0
+	.loc 5 62 0
 //   		    1 LPOS +!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1180 @ 0x49C
-	MOVT	R6, #:upper16:sp_buff+1180 @ 0x49C
+	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
+	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
 	.inst.n	0x6831		//LDR	R1, [R6, #0]
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x1840		//ADDS	R0, R0, R1
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x2600		//MOVS	R6, #0
-	.loc 5 49 0
-	.loc 5 49 0
+	.loc 5 63 0
+	.loc 5 63 0
 //   		     0 
-	.loc 5 50 0
-	.loc 5 50 0
+	.loc 5 64 0
+	.loc 5 64 0
 //   THEN
-	.loc 5 51 0
-	.loc 5 51 0
+	.loc 5 65 0
+	.loc 5 65 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 52 0
-	.loc 5 52 0
+	.loc 5 66 0
+	.loc 5 66 0
 //
 
-	.loc 5 53 0
-	.loc 5 53 0
+	.loc 5 67 0
+	.loc 5 67 0
 //: SLCANSPIN ( -- )
 
 	.global SLCANSPIN
 SLCANSPIN:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 54 0
-	.loc 5 54 0
+	.loc 5 68 0
+	.loc 5 68 0
 //\    slcan_getline
-	.loc 5 55 0
-	.loc 5 55 0
+	.loc 5 69 0
+	.loc 5 69 0
 //    SLCANGETLINE
 	.inst.n	0xF7FF,0xFF81	//BL	SLCANGETLINE
-	.loc 5 56 0
-	.loc 5 56 0
+	.loc 5 70 0
+	.loc 5 70 0
 //      ?DUP
-	.inst.n	0xF7FD,0xFE9C	//BL	queDUP
-	.loc 5 57 0
-	.loc 5 57 0
+	.inst.n	0xF7FD,0xFE3A	//BL	queDUP
+	.loc 5 71 0
+	.loc 5 71 0
 //    IF
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8008	//BEQ.W	SLCANSPIN+22 
-	.loc 5 58 0
-	.loc 5 58 0
+	.loc 5 72 0
+	.loc 5 72 0
 //        DUP SLCAN_DECODE
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF7FD,0xFF71	//BL	SLCAN_DECODE
-	.loc 5 59 0
-	.loc 5 59 0
+	.inst.n	0xF7FD,0xFF0F	//BL	SLCAN_DECODE
+	.loc 5 73 0
+	.loc 5 73 0
 //        ZCOUNT TYPE
-	.inst.n	0xF7FF,0xFE77	//BL	ZCOUNT
-	.inst.n	0xF7FE,0xF88B	//BL	TYPE
-	.loc 5 60 0
-	.loc 5 60 0
+	.inst.n	0xF7FF,0xFE1D	//BL	ZCOUNT
+	.inst.n	0xF7FE,0xF831	//BL	TYPE
+	.loc 5 74 0
+	.loc 5 74 0
 //    THEN
-	.loc 5 61 0
-	.loc 5 61 0
+	.loc 5 75 0
+	.loc 5 75 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 62 0
-	.loc 5 62 0
+	.loc 5 76 0
+	.loc 5 76 0
 //
 
-	.loc 5 63 0
-	.loc 5 63 0
+	.loc 5 77 0
+	.loc 5 77 0
 //: SLCAN_LOOP
 
 	.global SLCAN_LOOP
 SLCAN_LOOP:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 64 0
-	.loc 5 64 0
+	.loc 5 78 0
+	.loc 5 78 0
 //  BEGIN
-	.loc 5 65 0
-	.loc 5 65 0
+	.loc 5 79 0
+	.loc 5 79 0
 //     CAN_CNT
-	.inst.n	0xF7FD,0xFF62	//BL	CAN_CNT
-	.loc 5 66 0
-	.loc 5 66 0
+	.inst.n	0xF7FD,0xFF00	//BL	CAN_CNT
+	.loc 5 80 0
+	.loc 5 80 0
 //     if
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8006	//BEQ.W	SLCAN_LOOP+1A 
-	.loc 5 67 0
-	.loc 5 67 0
+	.loc 5 81 0
+	.loc 5 81 0
 //     		TXBUF SLCAN_RXSPIN TYPE 
 	BL	TXBUF
-	.inst.n	0xF7FD,0xFF53	//BL	SLCAN_RXSPIN
-	.inst.n	0xF7FE,0xF87D	//BL	TYPE
-	.loc 5 68 0
-	.loc 5 68 0
+	.inst.n	0xF7FD,0xFEF1	//BL	SLCAN_RXSPIN
+	.inst.n	0xF7FE,0xF823	//BL	TYPE
+	.loc 5 82 0
+	.loc 5 82 0
 //\		  	slcan_rx_spin_mmo
-	.loc 5 69 0
-	.loc 5 69 0
+	.loc 5 83 0
+	.loc 5 83 0
 //
 
-	.loc 5 70 0
-	.loc 5 70 0
+	.loc 5 84 0
+	.loc 5 84 0
 //     then
-	.loc 5 71 0
-	.loc 5 71 0
+	.loc 5 85 0
+	.loc 5 85 0
 //    	SLCANSPIN \
 	.inst.n	0xF7FF,0xFFDF	//BL	SLCANSPIN
-	.loc 5 72 0
-	.loc 5 72 0
+	.loc 5 86 0
+	.loc 5 86 0
 //\    	 slcan_spin
-	.loc 5 73 0
-	.loc 5 73 0
+	.loc 5 87 0
+	.loc 5 87 0
 //  AGAIN
-	.inst.n	0xE7F0		//B.N	1000544A
-	.loc 5 74 0
-	.loc 5 74 0
+	.inst.n	0xE7F0		//B.N	100055EE
+	.loc 5 88 0
+	.loc 5 88 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 75 0
-	.loc 5 75 0
+	.loc 5 89 0
+	.loc 5 89 0
 //
 
-	.loc 5 76 0
-	.loc 5 76 0
+	.loc 5 90 0
+	.loc 5 90 0
 //\ : XXX ;
-	.loc 5 77 0
-	.loc 5 77 0
+	.loc 5 91 0
+	.loc 5 91 0
 //VARIABLE MENUID
-	.loc 5 78 0
-	.loc 5 78 0
+	.loc 5 92 0
+	.loc 5 92 0
 //VARIABLE MEID
-	.loc 5 79 0
-	.loc 5 79 0
+	.loc 5 93 0
+	.loc 5 93 0
 //
 
-	.loc 5 80 0
-	.loc 5 80 0
+	.loc 5 94 0
+	.loc 5 94 0
 //\ 2 MENUID !
-	.loc 5 81 0
-	.loc 5 81 0
+	.loc 5 95 0
+	.loc 5 95 0
 //
 
-	.loc 5 82 0
-	.loc 5 82 0
+	.loc 5 96 0
+	.loc 5 96 0
 //
 
-	.loc 5 83 0
-	.loc 5 83 0
+	.loc 5 97 0
+	.loc 5 97 0
 //: MENU<
 	.inst.n	0xFFFF @ ?????
 
 	.global MENUless
 MENUless:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 84 0
-	.loc 5 84 0
+	.loc 5 98 0
+	.loc 5 98 0
 //  $D EMIT $A EMIT 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260D		//MOVS	R6, #13
-	.inst.n	0xF7FE,0xF820	//BL	EMIT
+	.inst.n	0xF7FD,0xFFC6	//BL	EMIT
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260A		//MOVS	R6, #10
-	.inst.n	0xF7FE,0xF81B	//BL	EMIT
-	.loc 5 85 0
-	.loc 5 85 0
+	.inst.n	0xF7FD,0xFFC1	//BL	EMIT
+	.loc 5 99 0
+	.loc 5 99 0
 //  ."   " 
-	.inst.n	0xF7FE,0xF857	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFFFD	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
-	.inst.n	0xF7FE,0xF867	//BL	TYPE
-	.loc 5 86 0
-	.loc 5 86 0
+	.inst.n	0xF7FE,0xF80D	//BL	TYPE
+	.loc 5 100 0
+	.loc 5 100 0
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
-	.inst.n	0x6836		//LDR	R6, [R6, #0]
-	.inst.n	0x4046		//EORS	R6, R0
-	.inst.n	0x3E01		//SUBS	R6, #1
-	.inst.n	0x41B6		//SBCS	R6, R6
-	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x800B	//BEQ.W	MENUless+54 
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x261B		//MOVS	R6, #27
-	.inst.n	0xF7FE,0xF802	//BL	EMIT
-	.inst.n	0xF7FE,0xF83E	//BL	cSdticcend
-	.inst.n	0x5B03		//LDRH	R3, [R0, R4]
-	.inst.n	0x6D37		//LDR	R7, [R6, #80]
-	.inst.n	0xF7FE,0xF84E	//BL	TYPE
-	.loc 5 87 0
-	.loc 5 87 0
-//;
-	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 88 0
-	.loc 5 88 0
-//
-
-	.loc 5 89 0
-	.loc 5 89 0
-//: MENUW<
-	.inst.n	0xFFFF @ ?????
-
-	.global MENUWless
-MENUWless:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 90 0
-	.loc 5 90 0
-//  $D EMIT $A EMIT 
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x260D		//MOVS	R6, #13
-	.inst.n	0xF7FD,0xFFF4	//BL	EMIT
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x260A		//MOVS	R6, #10
-	.inst.n	0xF7FD,0xFFEF	//BL	EMIT
-	.loc 5 91 0
-	.loc 5 91 0
-//  DUP MEID @ = IF ." * " ELSE ."   "  THEN 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
@@ -515,23 +560,67 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800B	//BEQ.W	MENUless+54 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x261B		//MOVS	R6, #27
+	.inst.n	0xF7FD,0xFFA8	//BL	EMIT
+	.inst.n	0xF7FD,0xFFE4	//BL	cSdticcend
+	.inst.n	0x5B03		//LDRH	R3, [R0, R4]
+	.inst.n	0x6D37		//LDR	R7, [R6, #80]
+	.inst.n	0xF7FD,0xFFF4	//BL	TYPE
+	.loc 5 101 0
+	.loc 5 101 0
+//;
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 5 102 0
+	.loc 5 102 0
+//
+
+	.loc 5 103 0
+	.loc 5 103 0
+//: MENUW<
+	.inst.n	0xFFFF @ ?????
+
+	.global MENUWless
+MENUWless:	.inst.n	0xB500		//PUSH	{R14}
+	.loc 5 104 0
+	.loc 5 104 0
+//  $D EMIT $A EMIT 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260D		//MOVS	R6, #13
+	.inst.n	0xF7FD,0xFF9A	//BL	EMIT
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x260A		//MOVS	R6, #10
+	.inst.n	0xF7FD,0xFF95	//BL	EMIT
+	.loc 5 105 0
+	.loc 5 105 0
+//  DUP MEID @ = IF ." * " ELSE ."   "  THEN 
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0x4630		//MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
+	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8007	//BEQ.W	MENUWless+40 
-	.inst.n	0xF7FE,0xF81D	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFFC3	//BL	cSdticcend
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
-	.inst.n	0xF7FE,0xF82D	//BL	TYPE
-	.inst.n	0xE005		//B.N	10005510
-	.inst.n	0xF7FE,0xF816	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFFD3	//BL	TYPE
+	.inst.n	0xE005		//B.N	100056B4
+	.inst.n	0xF7FD,0xFFBC	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
-	.inst.n	0xF7FE,0xF826	//BL	TYPE
-	.loc 5 92 0
-	.loc 5 92 0
+	.inst.n	0xF7FD,0xFFCC	//BL	TYPE
+	.loc 5 106 0
+	.loc 5 106 0
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -540,59 +629,59 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF000,0x800B	//BEQ.W	MENUWless+7E 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x261B		//MOVS	R6, #27
-	.inst.n	0xF7FD,0xFFC1	//BL	EMIT
-	.inst.n	0xF7FD,0xFFFD	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFF67	//BL	EMIT
+	.inst.n	0xF7FD,0xFFA3	//BL	cSdticcend
 	.inst.n	0x5B03		//LDRH	R3, [R0, R4]
 	.inst.n	0x6D37		//LDR	R7, [R6, #80]
-	.inst.n	0xF7FE,0xF80D	//BL	TYPE
-	.loc 5 93 0
-	.loc 5 93 0
+	.inst.n	0xF7FD,0xFFB3	//BL	TYPE
+	.loc 5 107 0
+	.loc 5 107 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 94 0
-	.loc 5 94 0
+	.loc 5 108 0
+	.loc 5 108 0
 //VARIABLE MESAID
-	.loc 5 95 0
-	.loc 5 95 0
+	.loc 5 109 0
+	.loc 5 109 0
 //: MENUS<
 
 	.global MENUSless
 MENUSless:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 96 0
-	.loc 5 96 0
+	.loc 5 110 0
+	.loc 5 110 0
 //  $D EMIT $A EMIT 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260D		//MOVS	R6, #13
-	.inst.n	0xF7FD,0xFFB4	//BL	EMIT
+	.inst.n	0xF7FD,0xFF5A	//BL	EMIT
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x260A		//MOVS	R6, #10
-	.inst.n	0xF7FD,0xFFAF	//BL	EMIT
-	.loc 5 97 0
-	.loc 5 97 0
+	.inst.n	0xF7FD,0xFF55	//BL	EMIT
+	.loc 5 111 0
+	.loc 5 111 0
 //  MESAID @ IF ." * " ELSE ."   "  THEN 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
+	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8007	//BEQ.W	MENUSless+3A 
-	.inst.n	0xF7FD,0xFFE0	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFF86	//BL	cSdticcend
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
-	.inst.n	0xF7FD,0xFFF0	//BL	TYPE
-	.inst.n	0xE005		//B.N	1000558A
-	.inst.n	0xF7FD,0xFFD9	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFF96	//BL	TYPE
+	.inst.n	0xE005		//B.N	1000572E
+	.inst.n	0xF7FD,0xFF7F	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
-	.inst.n	0xF7FD,0xFFE9	//BL	TYPE
-	.loc 5 98 0
-	.loc 5 98 0
+	.inst.n	0xF7FD,0xFF8F	//BL	TYPE
+	.loc 5 112 0
+	.loc 5 112 0
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -601,33 +690,33 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF000,0x800B	//BEQ.W	MENUSless+78 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x261B		//MOVS	R6, #27
-	.inst.n	0xF7FD,0xFF84	//BL	EMIT
-	.inst.n	0xF7FD,0xFFC0	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFF2A	//BL	EMIT
+	.inst.n	0xF7FD,0xFF66	//BL	cSdticcend
 	.inst.n	0x5B03		//LDRH	R3, [R0, R4]
 	.inst.n	0x6D37		//LDR	R7, [R6, #80]
-	.inst.n	0xF7FD,0xFFD0	//BL	TYPE
-	.loc 5 99 0
-	.loc 5 99 0
+	.inst.n	0xF7FD,0xFF76	//BL	TYPE
+	.loc 5 113 0
+	.loc 5 113 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 100 0
-	.loc 5 100 0
+	.loc 5 114 0
+	.loc 5 114 0
 //
 
-	.loc 5 101 0
-	.loc 5 101 0
+	.loc 5 115 0
+	.loc 5 115 0
 //: >MENU
 	.inst.n	0xFFFF @ ?????
 
 	.global greatMENU
 greatMENU:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 102 0
-	.loc 5 102 0
-// DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+
+	.loc 5 116 0
+	.loc 5 116 0
+//  DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+   ."      "
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -636,67 +725,73 @@ greatMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF000,0x800B	//BEQ.W	greatMENU+34 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x261B		//MOVS	R6, #27
-	.inst.n	0xF7FD,0xFF68	//BL	EMIT
-	.inst.n	0xF7FD,0xFFA4	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFF0E	//BL	EMIT
+	.inst.n	0xF7FD,0xFF4A	//BL	cSdticcend
 	.inst.n	0x5B03		//LDRH	R3, [R0, R4]
 	.inst.n	0x6D30		//LDR	R0, [R6, #80]
-	.inst.n	0xF7FD,0xFFB4	//BL	TYPE
+	.inst.n	0xF7FD,0xFF5A	//BL	TYPE
 	.inst.n	0x3601		//ADDS	R6, #1
-	.loc 5 103 0
-	.loc 5 103 0
+	.inst.n	0xF7FD,0xFF43	//BL	cSdticcend
+	.inst.n	0x2005		//MOVS	R0, #5
+	.inst.n	0x2020		//MOVS	R0, #32
+	.inst.n	0x2020		//MOVS	R0, #32
+	.inst.n	0xF7FD,0xFF52	//BL	TYPE
+	.loc 5 117 0
+	.loc 5 117 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 104 0
-	.loc 5 104 0
+	.loc 5 118 0
+	.loc 5 118 0
 //
 
-	.loc 5 105 0
-	.loc 5 105 0
+	.loc 5 119 0
+	.loc 5 119 0
 //: CURUP $1B EMIT ." [A" ;
+	.inst.n	0xFFFF @ ?????
 
 	.global CURUP
 CURUP:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x261B		//MOVS	R6, #27
-	.inst.n	0xF7FD,0xFF5A	//BL	EMIT
-	.inst.n	0xF7FD,0xFF96	//BL	cSdticcend
+	.inst.n	0xF7FD,0xFEF8	//BL	EMIT
+	.inst.n	0xF7FD,0xFF34	//BL	cSdticcend
 	.inst.n	0x5B02		//LDRH	R2, [R0, R4]
 	.inst.n	0xFF41 @ ?????
-	.inst.n	0xF7FD,0xFFA6	//BL	TYPE
+	.inst.n	0xF7FD,0xFF44	//BL	TYPE
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 106 0
-	.loc 5 106 0
+	.loc 5 120 0
+	.loc 5 120 0
 //VARIABLE TTTIME
-	.loc 5 107 0
-	.loc 5 107 0
+	.loc 5 121 0
+	.loc 5 121 0
 //: KEY0
 	.inst.n	0xFFFF @ ?????
 
 	.global KEY0
 KEY0:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 108 0
-	.loc 5 108 0
+	.loc 5 122 0
+	.loc 5 122 0
 // KEY ; \  KEY? DUP IF DROP KEY THEN ;
-	.inst.n	0xF7FD,0xFF59	//BL	KEY
+	.inst.n	0xF7FD,0xFEF7	//BL	KEY
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 109 0
-	.loc 5 109 0
+	.loc 5 123 0
+	.loc 5 123 0
 //
 
-	.loc 5 110 0
-	.loc 5 110 0
+	.loc 5 124 0
+	.loc 5 124 0
 //: KEYW
 
 	.global KEYW
 KEYW:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 111 0
-	.loc 5 111 0
+	.loc 5 125 0
+	.loc 5 125 0
 // 599999
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF242,0x76BF	//MOVW	R6, #:lower16:599999 @ 0x927BF
 	.inst.n	0xF2C0,0x0609	//MOVT	R6, #:upper16:599999 @ 0x927BF
-	.loc 5 112 0
-	.loc 5 112 0
+	.loc 5 126 0
+	.loc 5 126 0
 // BEGIN 1- DUP 0= IF BREAK  KEY?
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
@@ -705,44 +800,44 @@ KEYW:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8001	//BEQ.W	KEYW+20 
 	.inst.n	0xBD00		//POP	{R15}
-	.inst.n	0xF7FD,0xFF50	//BL	KEYque
-	.loc 5 113 0
-	.loc 5 113 0
-// UNTIL DROP 7 TTTIME !
+	.inst.n	0xF7FD,0xFEEE	//BL	KEYque
+	.loc 5 127 0
+	.loc 5 127 0
+// UNTIL DROP 10 TTTIME !
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F1		//BEQ.N	1000562A
-	.inst.n	0x2007		//MOVS	R0, #7
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	.inst.n	0xD0F1		//BEQ.N	100057DE
+	.inst.n	0x200A		//MOVS	R0, #10
+	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
+	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 114 0
-	.loc 5 114 0
+	.loc 5 128 0
+	.loc 5 128 0
 // KEY ; \  KEY? DUP IF DROP KEY THEN ;
-	.inst.n	0xF7FD,0xFF3A	//BL	KEY
+	.inst.n	0xF7FD,0xFED8	//BL	KEY
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 115 0
-	.loc 5 115 0
+	.loc 5 129 0
+	.loc 5 129 0
 //
 
-	.loc 5 116 0
-	.loc 5 116 0
+	.loc 5 130 0
+	.loc 5 130 0
 //: CHMEHU
 	.inst.n	0xFFFF @ ?????
 
 	.global CHMEHU
 CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 117 0
-	.loc 5 117 0
+	.loc 5 131 0
+	.loc 5 131 0
 //  $1B =
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x261B		//MOVS	R6, #27
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 118 0
-	.loc 5 118 0
+	.loc 5 132 0
+	.loc 5 132 0
 // IF  KEY0 [CHAR] [  =
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8044	//BEQ.W	CHMEHU+9A 
@@ -752,14 +847,14 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 119 0
-	.loc 5 119 0
+	.loc 5 133 0
+	.loc 5 133 0
 //   IF KEY0
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x803A	//BEQ.W	CHMEHU+9A 
 	.inst.n	0xF7FF,0xFFC7	//BL	KEY0
-	.loc 5 120 0
-	.loc 5 120 0
+	.loc 5 134 0
+	.loc 5 134 0
 //      DUP [CHAR] A =  IF DROP DUP 1- MENUID @ +   ELSE 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
@@ -772,13 +867,13 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
-	.inst.n	0xE017		//B.N	100056DE
-	.loc 5 121 0
-	.loc 5 121 0
+	.inst.n	0xE017		//B.N	10005892
+	.loc 5 135 0
+	.loc 5 135 0
 //         [CHAR] B =  IF  MENUID @ 1+   ELSE 
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x2642		//MOVS	R6, #66
@@ -788,184 +883,240 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8009	//BEQ.W	CHMEHU+74 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
-	.inst.n	0xE006		//B.N	100056DE
-	.loc 5 122 0
-	.loc 5 122 0
+	.inst.n	0xE006		//B.N	10005892
+	.loc 5 136 0
+	.loc 5 136 0
 //             MENUID @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
-	.loc 5 123 0
-	.loc 5 123 0
+	.loc 5 137 0
+	.loc 5 137 0
 //      THEN  THEN OVER MOD MENUID !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
-	.inst.n	0xF7FD,0xFD1F	//BL	MOD
+	.inst.n	0xF7FD,0xFCB5	//BL	MOD
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 124 0
-	.loc 5 124 0
+	.loc 5 138 0
+	.loc 5 138 0
 //   THEN
-	.loc 5 125 0
-	.loc 5 125 0
+	.loc 5 139 0
+	.loc 5 139 0
 // THEN   
-	.loc 5 126 0
-	.loc 5 126 0
+	.loc 5 140 0
+	.loc 5 140 0
 //   0 DO  CURUP LOOP
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2600		//MOVS	R6, #0
-	.inst.n	0xF7FD,0xFE28	//BL	cDOcend
+	.inst.n	0xF7FD,0xFDC5	//BL	cDOcend
 	.inst.n	0xF7FF,0xFF7A	//BL	CURUP
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F9		//BVC.N	10005700
+	.inst.n	0xD7F9		//BVC.N	100058B4
 	.inst.n	0xB002		//ADD	SP, #8
-	.loc 5 127 0
-	.loc 5 127 0
+	.loc 5 141 0
+	.loc 5 141 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 128 0
-	.loc 5 128 0
+	.loc 5 142 0
+	.loc 5 142 0
 //\ EOF 
-	.loc 5 129 0
-	.loc 5 129 0
+	.loc 5 143 0
+	.loc 5 143 0
 //
 
-	.loc 5 130 0
-	.loc 5 130 0
+	.loc 5 144 0
+	.loc 5 144 0
 //: mmmemu
 
 	.global mmmemu
 mmmemu:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 131 0
-	.loc 5 131 0
-// MENUW< ." CAN"  >MENU
-	.inst.n	0xF7FF,0xFED7	//BL	MENUWless
-	.inst.n	0xF7FD,0xFF0D	//BL	cSdticcend
-	.inst.n	0x4303		//ORRS	R3, R0
-	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005824] 0xCF4041B6
-	.inst.n	0xF7FD,0xFF1D	//BL	TYPE
-	.inst.n	0xF7FF,0xFF4D	//BL	greatMENU
-	.loc 5 132 0
-	.loc 5 132 0
-// MENUW< ." FORTH (rest)"  >MENU
-	.inst.n	0xF7FF,0xFECD	//BL	MENUWless
-	.inst.n	0xF7FD,0xFF03	//BL	cSdticcend
-	.inst.n	0x460C		//MOV	R4, R1
-	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005884] 0x46A0F248
-	.inst.n	0x2820		//CMP	R0, #32
-	.inst.n	0x6572		//STR	R2, [R6, #84]
-	.inst.n	0x7473		//STRB	R3, [R6, #17]
-	.inst.n	0xFF29 @ ?????
-	.inst.n	0xF7FD,0xFF0E	//BL	TYPE
-	.inst.n	0xF7FF,0xFF3E	//BL	greatMENU
-	.loc 5 133 0
-	.loc 5 133 0
+	.loc 5 145 0
+	.loc 5 145 0
 // MENUW< ." FORTH (original)"  >MENU
-	.inst.n	0xF7FF,0xFEBE	//BL	MENUWless
-	.inst.n	0xF7FD,0xFEF4	//BL	cSdticcend
+	.inst.n	0xF7FF,0xFECF	//BL	MENUWless
+	.inst.n	0xF7FD,0xFEAB	//BL	cSdticcend
 	.inst.n	0x4610		//MOV	R0, R2
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x100058A4] 0xF2486D04
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A24] 0x3E014046
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x726F		//STRB	R7, [R5, #9]
 	.inst.n	0x6769		//STR	R1, [R5, #116]
 	.inst.n	0x6E69		//LDR	R1, [R5, #100]
 	.inst.n	0x6C61		//LDR	R1, [R4, #68]
 	.inst.n	0xFF29 @ ?????
-	.inst.n	0xF7FD,0xFEFD	//BL	TYPE
-	.inst.n	0xF7FF,0xFF2D	//BL	greatMENU
-	.loc 5 134 0
-	.loc 5 134 0
+	.inst.n	0xF7FD,0xFEB4	//BL	TYPE
+	.inst.n	0xF7FF,0xFF3E	//BL	greatMENU
+	.loc 5 146 0
+	.loc 5 146 0
+// MENUW< ." FORTH (rest)"  >MENU
+	.inst.n	0xF7FF,0xFEBE	//BL	MENUWless
+	.inst.n	0xF7FD,0xFE9A	//BL	cSdticcend
+	.inst.n	0x460C		//MOV	R4, R1
+	.inst.n	0x524F		//STRH	R7, [R1, R1]
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A48] 0xF000CF40
+	.inst.n	0x2820		//CMP	R0, #32
+	.inst.n	0x6572		//STR	R2, [R6, #84]
+	.inst.n	0x7473		//STRB	R3, [R6, #17]
+	.inst.n	0xFF29 @ ?????
+	.inst.n	0xF7FD,0xFEA5	//BL	TYPE
+	.inst.n	0xF7FF,0xFF2F	//BL	greatMENU
+	.loc 5 147 0
+	.loc 5 147 0
+// MENUW< ." CAN"  >MENU
+	.inst.n	0xF7FF,0xFEAF	//BL	MENUWless
+	.inst.n	0xF7FD,0xFE8B	//BL	cSdticcend
+	.inst.n	0x4303		//ORRS	R3, R0
+	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005A18] 0xF84741B6
+	.inst.n	0xF7FD,0xFE9B	//BL	TYPE
+	.inst.n	0xF7FF,0xFF25	//BL	greatMENU
+	.loc 5 148 0
+	.loc 5 148 0
+// MENUW< ." USB-UART transit"  >MENU  ." UART BAUDR = "  &UBAUDR @ .
+	.inst.n	0xF7FF,0xFEA5	//BL	MENUWless
+	.inst.n	0xF7FD,0xFE81	//BL	cSdticcend
+	.inst.n	0x5510		//STRB	R0, [R2, R4]
+	.inst.n	0x4253		//NEGS	R3, R2
+	.inst.n	0x552D		//STRB	R5, [R5, R4]
+	.inst.n	0x5241		//STRH	R1, [R0, R1]
+	.inst.n	0x2054		//MOVS	R0, #84
+	.inst.n	0x7274		//STRB	R4, [R6, #9]
+	.inst.n	0x6E61		//LDR	R1, [R4, #100]
+	.inst.n	0x6973		//LDR	R3, [R6, #20]
+	.inst.n	0xFF74 @ ?????
+	.inst.n	0xF7FD,0xFE8A	//BL	TYPE
+	.inst.n	0xF7FF,0xFF14	//BL	greatMENU
+	.inst.n	0xF7FD,0xFE72	//BL	cSdticcend
+	.inst.n	0x550D		//STRB	R5, [R1, R4]
+	.inst.n	0x5241		//STRH	R1, [R0, R1]
+	.inst.n	0x2054		//MOVS	R0, #84
+	.inst.n	0x4142		//ADCS	R2, R0
+	.inst.n	0x4455		//ADD	R5, R10
+	.inst.n	0x2052		//MOVS	R0, #82
+	.inst.n	0x203D		//MOVS	R0, #61
+	.inst.n	0xF7FD,0xFE7D	//BL	TYPE
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
+	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0xF7FD,0xFF66	//BL	dot
+	.loc 5 149 0
+	.loc 5 149 0
+//
+
+	.loc 5 150 0
+	.loc 5 150 0
 // MENUS< ." SAVE"  >MENU
-	.inst.n	0xF7FF,0xFEED	//BL	MENUSless
-	.inst.n	0xF7FD,0xFEE3	//BL	cSdticcend
+	.inst.n	0xF7FF,0xFEC0	//BL	MENUSless
+	.inst.n	0xF7FD,0xFE5C	//BL	cSdticcend
 	.inst.n	0x5304		//STRH	R4, [R0, R4]
 	.inst.n	0x5641		//LDRSB	R1, [R0, R1]
 	.inst.n	0xFF45 @ ?????
-	.inst.n	0xF7FD,0xFEF2	//BL	TYPE
-	.inst.n	0xF7FF,0xFF22	//BL	greatMENU
-	.loc 5 135 0
-	.loc 5 135 0
+	.inst.n	0xF7FD,0xFE6B	//BL	TYPE
+	.inst.n	0xF7FF,0xFEF5	//BL	greatMENU
+	.loc 5 151 0
+	.loc 5 151 0
 // MENU< ." START"  >MENU
-	.inst.n	0xF7FF,0xFE76	//BL	MENUless
-	.inst.n	0xF7FD,0xFED8	//BL	cSdticcend
+	.inst.n	0xF7FF,0xFE49	//BL	MENUless
+	.inst.n	0xF7FD,0xFE51	//BL	cSdticcend
 	.inst.n	0x5305		//STRH	R5, [R0, R4]
 	.inst.n	0x4154		//ADCS	R4, R2
 	.inst.n	0x5452		//STRB	R2, [R2, R1]
-	.inst.n	0xF7FD,0xFEE7	//BL	TYPE
-	.inst.n	0xF7FF,0xFF17	//BL	greatMENU
-	.loc 5 136 0
-	.loc 5 136 0
+	.inst.n	0xF7FD,0xFE60	//BL	TYPE
+	.inst.n	0xF7FF,0xFEEA	//BL	greatMENU
+	.loc 5 152 0
+	.loc 5 152 0
 //
 
-	.loc 5 137 0
-	.loc 5 137 0
+	.loc 5 153 0
+	.loc 5 153 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 138 0
-	.loc 5 138 0
+	.loc 5 154 0
+	.loc 5 154 0
 //: MMENU
+	.inst.n	0xFFFF @ ?????
 
 	.global MMENU
 MMENU:	.inst.n	0xB500		//PUSH	{R14}
-	.loc 5 139 0
-	.loc 5 139 0
-// 7 TTTIME !
+	.loc 5 155 0
+	.loc 5 155 0
+// \ 9 0 DO CR LOOP
+	.loc 5 156 0
+	.loc 5 156 0
+// 10 TTTIME !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x2007		//MOVS	R0, #7
+	.inst.n	0x200A		//MOVS	R0, #10
+	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
+	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
+	.inst.n	0x6030		//STR	R0, [R6, #0]
 	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
 	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
-	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
-	.loc 5 140 0
-	.loc 5 140 0
+	.loc 5 157 0
+	.loc 5 157 0
 // MESAID 0!
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
-	.loc 5 141 0
-	.loc 5 141 0
-// MEID @ 3 MOD MENUID ! 
-	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
+	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	.loc 5 158 0
+	.loc 5 158 0
+// MEID @ 4 U< IF MEID 0! THEN
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x1B80		//SUBS	R0, R0, R6
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x8009	//BEQ.W	MMENU+46 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x2603		//MOVS	R6, #3
-	.inst.n	0xF7FD,0xFCB0	//BL	MOD
-	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
+	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 142 0
-	.loc 5 142 0
+	.loc 5 159 0
+	.loc 5 159 0
+// MEID @ MENUID !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
+	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 5 160 0
+	.loc 5 160 0
+//  
+	.loc 5 161 0
+	.loc 5 161 0
 // BEGIN  0
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2600		//MOVS	R6, #0
-	.loc 5 143 0
-	.loc 5 143 0
+	.loc 5 162 0
+	.loc 5 162 0
 //  mmmemu   DUP >R
-	.inst.n	0xF7FF,0xFF99	//BL	mmmemu
+	.inst.n	0xF7FF,0xFF62	//BL	mmmemu
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xB440		//PUSH	{R6}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 144 0
-	.loc 5 144 0
+	.loc 5 163 0
+	.loc 5 163 0
 // KEYW
-	.inst.n	0xF7FF,0xFF19	//BL	KEYW
-	.loc 5 145 0
-	.loc 5 145 0
+	.inst.n	0xF7FF,0xFEE2	//BL	KEYW
+	.loc 5 164 0
+	.loc 5 164 0
 // dup   $D  =
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
@@ -973,8 +1124,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 146 0
-	.loc 5 146 0
+	.loc 5 165 0
+	.loc 5 165 0
 // over  $a  = OR DUP
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
@@ -986,75 +1137,75 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x4306		//ORRS	R6, R0
 	.inst.n	0x4236		//TST	R6, R6
-	.inst.n	0xF000,0x8035	//BEQ.W	MMENU+E8 
-	.loc 5 147 0
-	.loc 5 147 0
-// if   MENUID @ 3 U< IF MENUID @ MEID ! THEN
+	.inst.n	0xF000,0x8035	//BEQ.W	MMENU+10A 
+	.loc 5 166 0
+	.loc 5 166 0
+// if   MENUID @ 4 U< IF MENUID @ MEID ! THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
-	.inst.n	0x2603		//MOVS	R6, #3
+	.inst.n	0x2604		//MOVS	R6, #4
 	.inst.n	0x1B80		//SUBS	R0, R0, R6
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x800E	//BEQ.W	MMENU+B4 
+	.inst.n	0xF000,0x800E	//BEQ.W	MMENU+D6 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
-	.inst.n	0x6836		//LDR	R6, [R6, #0]
-	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
 	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
-	.inst.n	0x6030		//STR	R0, [R6, #0]
-	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 148 0
-	.loc 5 148 0
-//   MENUID @ 3 = IF
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
-	.inst.n	0x6830		//LDR	R0, [R6, #0]
-	.inst.n	0x2603		//MOVS	R6, #3
-	.inst.n	0x4046		//EORS	R6, R0
-	.inst.n	0x3E01		//SUBS	R6, #1
-	.inst.n	0x41B6		//SBCS	R6, R6
-	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x800C	//BEQ.W	MMENU+E8 
-	.loc 5 149 0
-	.loc 5 149 0
-//    SAVE
-	.inst.n	0xF7FF,0xFD06	//BL	SAVE
-	.loc 5 150 0
-	.loc 5 150 0
-//     -1 MESAID !
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF06F,0x0000	//MVN.W	R0, #0 
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
+	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
 	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 151 0
-	.loc 5 151 0
+	.loc 5 167 0
+	.loc 5 167 0
+//   MENUID @ 4 = IF
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	.inst.n	0x6830		//LDR	R0, [R6, #0]
+	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x4046		//EORS	R6, R0
+	.inst.n	0x3E01		//SUBS	R6, #1
+	.inst.n	0x41B6		//SBCS	R6, R6
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.inst.n	0xF000,0x800C	//BEQ.W	MMENU+10A 
+	.loc 5 168 0
+	.loc 5 168 0
+//    SAVE
+	.inst.n	0xF7FF,0xFC8B	//BL	SAVE
+	.loc 5 169 0
+	.loc 5 169 0
+//     -1 MESAID !
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	.inst.n	0xF06F,0x0000	//MVN.W	R0, #0 
+	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
+	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 5 170 0
+	.loc 5 170 0
 //      THEN	 
-	.loc 5 152 0
-	.loc 5 152 0
+	.loc 5 171 0
+	.loc 5 171 0
 // then   
-	.loc 5 153 0
-	.loc 5 153 0
+	.loc 5 172 0
+	.loc 5 172 0
 // 0=
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x41B6		//SBCS	R6, R6
-	.loc 5 154 0
-	.loc 5 154 0
+	.loc 5 173 0
+	.loc 5 173 0
 //
 
-	.loc 5 155 0
-	.loc 5 155 0
+	.loc 5 174 0
+	.loc 5 174 0
 // MENUID @ R> 1- <> OR
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
@@ -1065,58 +1216,58 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x4306		//ORRS	R6, R0
-	.loc 5 156 0
-	.loc 5 156 0
+	.loc 5 175 0
+	.loc 5 175 0
 //
 
-	.loc 5 157 0
-	.loc 5 157 0
+	.loc 5 176 0
+	.loc 5 176 0
 // TTTIME @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
+	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
-	.loc 5 158 0
-	.loc 5 158 0
-// 9 EMIT DUP .
+	.loc 5 177 0
+	.loc 5 177 0
+// \ 9 EMIT
+	.loc 5 178 0
+	.loc 5 178 0
+//  DUP .
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0x2609		//MOVS	R6, #9
-	.inst.n	0xF7FD,0xFDFF	//BL	EMIT
-	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	.inst.n	0xF7FD,0xFF3F	//BL	dot
-	.loc 5 159 0
-	.loc 5 159 0
+	.inst.n	0xF7FD,0xFEAB	//BL	dot
+	.loc 5 179 0
+	.loc 5 179 0
 // DUP 1- TTTIME !   
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
+	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.loc 5 160 0
-	.loc 5 160 0
+	.loc 5 180 0
+	.loc 5 180 0
 // 0<> AND
 	.inst.n	0x4276		//NEGS	R6, R6
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x4006		//ANDS	R6, R0
-	.loc 5 161 0
-	.loc 5 161 0
+	.loc 5 181 0
+	.loc 5 181 0
 // WHILE  CHMEHU
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xF000,0x8003	//BEQ.W	MMENU+156 
-	.inst.n	0xF7FF,0xFEBA	//BL	CHMEHU
-	.loc 5 162 0
-	.loc 5 162 0
+	.inst.n	0xF000,0x8003	//BEQ.W	MMENU+16E 
+	.inst.n	0xF7FF,0xFE88	//BL	CHMEHU
+	.loc 5 182 0
+	.loc 5 182 0
 // REPEAT 2DROP
-	.inst.n	0xE774		//B.N	100057D4
+	.inst.n	0xE779		//B.N	100059F6
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
-	.loc 5 163 0
-	.loc 5 163 0
+	.loc 5 183 0
+	.loc 5 183 0
 //;
 	.inst.n	0xBD00		//POP	{R15}
-	.loc 5 164 0
-	.loc 5 164 0
+	.loc 5 184 0
+	.loc 5 184 0
 //
 

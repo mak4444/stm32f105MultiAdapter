@@ -1,4 +1,4 @@
-$8007000 CONSTANT RAMIMG
+\ $8007000 CONSTANT RAMIMG
 
 : SAVE
   flash_unlock  
@@ -14,6 +14,20 @@ $8007000 CONSTANT RAMIMG
 	VAR_BIG
 	DP_  VAR_BIG  - RAMIMG  +  @  VAR_BIG - 
 	CMOVE
+;
+
+: VAR_ORIG_SET
+	ORIGIMG
+	VAR_BIG
+	DP_  VAR_BIG  - ORIGIMG  +  @  VAR_BIG - 
+	CMOVE
+	SP@ SP0 !
+;
+
+: USB<>UART
+  BEGIN  usb-key? IF usb-key SERIAL-EMIT THEN
+  	SERIAL-key? IF SERIAL-key USB-emit THEN
+  AGAIN  
 ;
 
 CREATE  LINEBUF 500 ALLOT
@@ -99,7 +113,7 @@ VARIABLE MESAID
 ;
 
 : >MENU
- DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+
+  DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+   ."      "
 ;
 
 : CURUP $1B EMIT ." [A" ;
@@ -110,7 +124,7 @@ VARIABLE TTTIME
 : KEYW
  599999
  BEGIN 1- DUP 0= IF BREAK  KEY?
- UNTIL DROP 7 TTTIME !
+ UNTIL DROP 10 TTTIME !
  KEY ; \  KEY? DUP IF DROP KEY THEN ;
 
 : CHMEHU
@@ -128,24 +142,29 @@ VARIABLE TTTIME
 \ EOF 
 
 : mmmemu
- MENUW< ." CAN"  >MENU
- MENUW< ." FORTH (rest)"  >MENU
  MENUW< ." FORTH (original)"  >MENU
+ MENUW< ." FORTH (rest)"  >MENU
+ MENUW< ." CAN"  >MENU
+ MENUW< ." USB-UART transit"  >MENU  ." UART BAUDR = "  &UBAUDR @ .
+
  MENUS< ." SAVE"  >MENU
  MENU< ." START"  >MENU
 
 ;
 : MMENU
- 7 TTTIME !
+ \ 9 0 DO CR LOOP
+ 10 TTTIME !
  MESAID 0!
- MEID @ 3 MOD MENUID ! 
+ MEID @ 4 U< IF MEID 0! THEN
+ MEID @ MENUID !
+  
  BEGIN  0
   mmmemu   DUP >R
  KEYW
  dup   $D  =
  over  $a  = OR DUP
- if   MENUID @ 3 U< IF MENUID @ MEID ! THEN
-   MENUID @ 3 = IF
+ if   MENUID @ 4 U< IF MENUID @ MEID ! THEN
+   MENUID @ 4 = IF
     SAVE
      -1 MESAID !
       THEN	 
@@ -155,7 +174,8 @@ VARIABLE TTTIME
  MENUID @ R> 1- <> OR
 
  TTTIME @
- 9 EMIT DUP .
+ \ 9 EMIT
+  DUP .
  DUP 1- TTTIME !   
  0<> AND
  WHILE  CHMEHU

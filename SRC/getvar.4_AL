@@ -201,8 +201,8 @@ GET_VAR_BIG:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_MENUID
 GET_MENUID:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1184 @ 0x4A0
-	MOVT	R6, #:upper16:sp_buff+1184 @ 0x4A0
+	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
+	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 22 0
 	.loc 7 22 0
@@ -211,18 +211,34 @@ GET_MENUID:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_MEID
 GET_MEID:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
+	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 23 0
 	.loc 7 23 0
-//
+//: GET_&UBAUDR &UBAUDR ;
 
+	.global GET_andUBAUDR
+GET_andUBAUDR:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
+	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
+	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 24 0
 	.loc 7 24 0
+//: GET_MAIN &MAIN ;
+
+	.global GET_MAIN
+GET_MAIN:	.inst.n	0xB500		//PUSH	{R14}
+	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
+	MOVW	R6, #:lower16:sp_buff+1204 @ 0x4B4
+	MOVT	R6, #:upper16:sp_buff+1204 @ 0x4B4
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 7 25 0
+	.loc 7 25 0
 //
 
-	.loc 7 25 0
-	.loc 7 25 0
+	.loc 7 26 0
+	.loc 7 26 0
 //
 

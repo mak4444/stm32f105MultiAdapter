@@ -18,6 +18,11 @@
 
 .endm
 
+.macro setvar Name,Vval
+	. = o_d_forth + \Name
+	.word \Vval
+.endm
+
 @	.global QWERTY
 @QWERTY:
 
@@ -45,9 +50,11 @@ PForthWords:
 	Wortbirne6 0 "SAVE"
 	B SAVE
 
+	.global RAMIMG
 	Wortbirne6 0 "RAMIMG"
+RAMIMG:
 	push {lr};BL DOCONST
-	.word 0x8007000
+	.word __flash_buf
 
 	Wortbirne6 0 "MEID"
 	B GET_MEID
@@ -170,11 +177,41 @@ PForthWords:
 	Wortbirne6 0 "usb-key?"
 	B usbsubkeyque
 
+	Wortbirne6 0 "UBAUDR!"
+	B UBAUDRsave
+	Wortbirne6 0 "UBR_SET"
+	B UBR_SET
+
+	Wortbirne6 0 "UBR!"
+	B UBRsave
+
+	Wortbirne6 0 "&UBAUDR"
+	B GET_andUBAUDR
+
 	.global TXBUF
 	Wortbirne6 0 "TXBUF"
 TXBUF:
 	push {lr};BL DOCONST
 	.word txbuf
+
+	.global TXBUF
+	Wortbirne6 0 "RC-END"
+RC_END:
+	push {lr};BL DOCONST
+	.word __fini_array_end
+
+	.global SAVE_Q
+	Wortbirne6 0 "SAVE_Q"
+SAVE_Q:
+	STR	r6, [R7, #-4]!
+	ldr r0, = __first_run_flg
+	ldr r6,[r0]
+	bx	lr	
+.ltorg
+
+
+	Wortbirne6 0 "SLCAN_RXSPIN"
+	B SLCAN_RXSPIN
 
 	Wortbirne6 0 "SLCAN_RXSPIN"
 	B SLCAN_RXSPIN
@@ -746,6 +783,13 @@ TXBUF:
 	Wortbirne6 0 "R>"
 	B Rgreat
 
+	.global ORIGIMG
+	Wortbirne6 0 "ORIGIMG"
+ORIGIMG:
+	push {lr};BL DOCONST
+	.word origin_data_forth
+
+
 9:      .word 0  @ Link einfügen  Insert Link
         .hword 0     @ Flags setzen, diesmal 2 Bytes ! Wir haben Platz und Ideen :-)  Flag field, 2 bytes, space for ideas left !
 
@@ -768,8 +812,32 @@ GetForthWords:
 	ldr	pc, = 0x12345679
 .ltorg
 
+.include "FVARS.S"
 
+.p2align 1
+	.global origin_data_forth
+origin_data_forth:
+o_d_forth:
+	setvar HOOKEMIT_OF	usbsubemit+1
+	setvar HOOKKEY_OF	usbsubkey+1
+	setvar HOOKEMITQ_OF	usbsubkeyque+1
+	setvar HOOKKEYQ_OF	usbsubkeyque+1
+	setvar BASE_OF		10
+	setvar CONTEXT_OF FORTHWORDLIST_OF + sp_buff
+	.word 0
+	setvar FORTHWORDLIST_OF	PForthWords+6
+	setvar CURRENT_OF FORTHWORDLIST_OF + sp_buff
+	setvar DP_OF VAR_END_OF + sp_buff
+	setvar UBAUDR_OF	115201
+	setvar MEID_OF		0
+	setvar MAIN_OF		lessMAINgreat+1
 
+	. = o_d_forth + VAR_END_OF
+	.word 0x37373737
 
+//	.section 		.flash_data_forth // myflash
+//__fbig = .
+//	.word 1,2,3,4,5,6,7,8,9
+//	.word 0x77777
 
 
