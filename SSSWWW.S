@@ -1,7 +1,7 @@
 
 	Wortbirne6 0 "VAR_END"
 	push {lr};BL DOCONST
-	.word 0x200084B8 
+	.word 0x20008484 
 	Wortbirne6 0 "GET_MAIN"
 	B GET_MAIN
 	Wortbirne6 0 "GET_&UBAUDR"
@@ -54,9 +54,6 @@
 	B FMAIN
 	Wortbirne6 0 "MEID."
 	B MEIDdot
-	Wortbirne6 0 "&MAIN"
-	push {lr};BL DOCONST
-	.word 0x200084B4 
 	Wortbirne6 0 "<MAIN>"
 	B lessMAINgreat
 	Wortbirne6 0 "MMENU"
@@ -71,7 +68,7 @@
 	B KEY0
 	Wortbirne6 0 "TTTIME"
 	push {lr};BL DOCONST
-	.word 0x200084B0 
+	.word 0x20008480 
 	Wortbirne6 0 "CURUP"
 	B CURUP
 	Wortbirne6 0 ">MENU"
@@ -80,17 +77,14 @@
 	B MENUSless
 	Wortbirne6 0 "MESAID"
 	push {lr};BL DOCONST
-	.word 0x200084AC 
+	.word 0x2000847C 
 	Wortbirne6 0 "MENUW<"
 	B MENUWless
 	Wortbirne6 0 "MENU<"
 	B MENUless
-	Wortbirne6 0 "MEID"
-	push {lr};BL DOCONST
-	.word 0x200084A8 
 	Wortbirne6 0 "MENUID"
 	push {lr};BL DOCONST
-	.word 0x200084A4 
+	.word 0x20008478 
 	Wortbirne6 0 "SLCAN_LOOP"
 	B SLCAN_LOOP
 	Wortbirne6 0 "SLCANSPIN"
@@ -99,10 +93,10 @@
 	B SLCANGETLINE
 	Wortbirne6 0 "LPOS"
 	push {lr};BL DOCONST
-	.word 0x200084A0 
+	.word 0x20008474 
 	Wortbirne6 0 "LINEBUF"
 	push {lr};BL DOCONST
-	.word 0x200082AC 
+	.word 0x20008280 
 	Wortbirne6 0 "USB<>UART"
 	B USBlessgreatUART
 	Wortbirne6 0 "VAR_ORIG_SET"
@@ -128,9 +122,6 @@
 	Wortbirne6 0 "USART2"
 	push {lr};BL DOCONST
 	.word 0x4004400 
-	Wortbirne6 0 "&UBAUDR"
-	push {lr};BL DOCONST
-	.word 0x200082A8 
 	Wortbirne6 0 "ZCOUNT"
 	B ZCOUNT
 	Wortbirne6 0 "SCAN"
@@ -147,10 +138,10 @@
 	B CONSTANT_
 	Wortbirne6 0 "V_DOCONST"
 	push {lr};BL DOCONST
-	.word 0x200082A0 
+	.word 0x20008278 
 	Wortbirne6 0 "V_DOVAR"
 	push {lr};BL DOCONST
-	.word 0x20008298 
+	.word 0x20008270 
 	Wortbirne6 0 "POSTPONE_"
 	B POSTPONE_
 	Wortbirne6 0 "[COMPILE]_"
@@ -185,7 +176,7 @@
 	B RESOLVEsubLEAVE_
 	Wortbirne6 0 "'LEAVE_"
 	push {lr};BL DOCONST
-	.word 0x20008290 
+	.word 0x2000826C 
 	Wortbirne6 0 "REPEAT_"
 	B REPEAT_
 	Wortbirne6 0 "WHILE_"
@@ -264,7 +255,7 @@
 	B LINKcom
 	Wortbirne6 0 "LAST"
 	push {lr};BL DOCONST
-	.word 0x2000828C 
+	.word 0x20008268 
 	Wortbirne6 0 "LALIGNED_"
 	B LALIGNED_
 	Wortbirne6 0 "HALIGNED_"
@@ -297,7 +288,7 @@
 	B OKdot
 	Wortbirne6 0 "SP0"
 	push {lr};BL DOCONST
-	.word 0x20008288 
+	.word 0x20008264 
 	Wortbirne6 0 "INTERPRET_"
 	B INTERPRET_
 	Wortbirne6 0 "?STACK"
@@ -314,7 +305,7 @@
 	B CATCH
 	Wortbirne6 0 "HANDLER"
 	push {lr};BL DOCONST
-	.word 0x20008284 
+	.word 0x20008260 
 	Wortbirne6 0 "DIGIT"
 	B DIGIT
 	Wortbirne6 0 "LITERAL_"
@@ -339,12 +330,9 @@
 	B HERE_
 	Wortbirne6 0 "ALLOT_"
 	B ALLOT_
-	Wortbirne6 0 "DP_"
-	push {lr};BL DOCONST
-	.word 0x20008280 
 	Wortbirne6 0 "STATE"
 	push {lr};BL DOCONST
-	.word 0x2000827C 
+	.word 0x2000825C 
 	Wortbirne6 0 "SFIND"
 	B SFIND
 	Wortbirne6 0 "2NIP"
@@ -397,16 +385,16 @@
 	B SOURCE
 	Wortbirne6 0 ">IN"
 	push {lr};BL DOCONST
-	.word 0x20008278 
+	.word 0x20008258 
 	Wortbirne6 0 "ATIB"
 	push {lr};BL DOCONST
-	.word 0x20008274 
+	.word 0x20008254 
 	Wortbirne6 0 "#TIB"
 	push {lr};BL DOCONST
-	.word 0x20008270 
+	.word 0x20008250 
 	Wortbirne6 0 "TIB"
 	push {lr};BL DOCONST
-	.word 0x200081A4 
+	.word 0x20008184 
 	Wortbirne6 0 "ACCEPT"
 	B ACCEPT
 	Wortbirne6 0 "WORDS_"
@@ -419,15 +407,6 @@
 	B DEFINITIONS_
 	Wortbirne6 0 "FORTH_"
 	B FORTH_
-	Wortbirne6 0 "CURRENT"
-	push {lr};BL DOCONST
-	.word 0x200081A0 
-	Wortbirne6 0 "FORTH-WORDLIST_"
-	push {lr};BL DOCONST
-	.word 0x2000819C 
-	Wortbirne6 0 "CONTEXT"
-	push {lr};BL DOCONST
-	.word 0x20008158 
 	Wortbirne6 0 "CONTEXT-SIZE"
 	push {lr};BL DOCONST
 	.word 0x10 
@@ -465,13 +444,10 @@
 	B HEX_
 	Wortbirne6 0 "PAD"
 	push {lr};BL DOCONST
-	.word 0x20008148 
-	Wortbirne6 0 "BASE"
-	push {lr};BL DOCONST
-	.word 0x20008044 
+	.word 0x20008174 
 	Wortbirne6 0 "HLD"
 	push {lr};BL DOCONST
-	.word 0x20008040 
+	.word 0x20008070 
 	Wortbirne6 0 "zzz"
 	B zzz
 	Wortbirne6 0 "XXX"
@@ -479,10 +455,10 @@
 	.word 0x55 
 	Wortbirne6 0 "VXXC"
 	push {lr};BL DOCONST
-	.word 0x20008014 
+	.word 0x20008044 
 	Wortbirne6 0 "VXXX"
 	push {lr};BL DOCONST
-	.word 0x20008010 
+	.word 0x20008040 
 	Wortbirne6 0 "TYPE"
 	B TYPE
 	Wortbirne6 0 "(S")"
@@ -507,12 +483,6 @@
 	Wortbirne6 0 "HOOK-EMIT?"
 	push {lr};BL DOCONST
 	.word 0x20008008 
-	Wortbirne6 0 "HOOK-KEY"
-	push {lr};BL DOCONST
-	.word 0x20008004 
-	Wortbirne6 0 "HOOK-EMIT"
-	push {lr};BL DOCONST
-	.word 0x20008000 
 	Wortbirne6 0 "UMOD"
 	B UMOD
 	Wortbirne6 0 "U/"

@@ -23,6 +23,16 @@
 	.word \Vval
 .endm
 
+.macro bssvar Name,Vval
+	.word \Vval
+.endm
+
+.macro bssvarz Name,Vval
+	.word \Vval
+	.word 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0
+.endm
+
+
 @	.global QWERTY
 @QWERTY:
 
@@ -814,20 +824,25 @@ GetForthWords:
 
 .include "FVARS.S"
 
+	.global bcc_forth
+bcc_forth:
+	.include "SRC/bssvar.s"
+
 .p2align 1
 	.global origin_data_forth
 origin_data_forth:
 o_d_forth:
+
 	setvar HOOKEMIT_OF	usbsubemit+1
 	setvar HOOKKEY_OF	usbsubkey+1
-	setvar HOOKEMITQ_OF	usbsubkeyque+1
+	setvar HOOKEMITQ_OF	usbsubemitque+1
 	setvar HOOKKEYQ_OF	usbsubkeyque+1
 	setvar BASE_OF		10
 	setvar CONTEXT_OF FORTHWORDLIST_OF + sp_buff
 	.word 0
 	setvar FORTHWORDLIST_OF	PForthWords+6
-	setvar CURRENT_OF FORTHWORDLIST_OF + sp_buff
-	setvar DP_OF VAR_END_OF + sp_buff
+	setvar CURRENT_OF  FORTHWORDLIST_OF + sp_buff
+	setvar DP_OF   VAR_END_OF + sp_buff
 	setvar UBAUDR_OF	115201
 	setvar MEID_OF		0
 	setvar MAIN_OF		lessMAINgreat+1

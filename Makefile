@@ -226,13 +226,13 @@ print-%:
 	$(Q)$(CXX) $(TGT_CXXFLAGS) $(CXXFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).cpp
 
 amain.o:  amain.s SRC/HPROC.4_AL SRC/main.4_AL SRC/PRIMITIVES.4_AL \
- SRC/USB.4_AL SRC/getvar.4_AL SRC/loop.4_AL SRC/menu.4_AL
+ SRC/USB.4_AL SRC/getvar.4_AL SRC/loop.4_AL SRC/menu.4_AL SRC/bssvar.s FVARS.S 
 	$(CC) $(CFLAGS) -o amain.o -c amain.s
 
 SRC/Wortbirne.o:  SRC/Wortbirne.s
 	$(CC) $(CFLAGS) -o SRC/Wortbirne.o -c SRC/Wortbirne.s -g
 
-SRC/%.4_AL: SRC/%.4 VForthM/LinuxSPF32VM
+SRC/%.4_AL: SRC/%.4 VForthM/LinuxSPF32VM SRC/bssvar.s
 	./ss.sh
 
 clean:
