@@ -284,7 +284,7 @@ MODULE: TC
 : 2VARIABLE  D2ALIGN CREATE 2 CELLS  ALLOT ;
 
 : bssvar  VARIABLE postpone \ ;
-: bssvarz  VARIABLE postpone \  15 allot ;
+: bssvarz  VARIABLE postpone \  16 cells allot ;
 
 : ?OLD
   S"  DP @ THERE? 0= IF" EVALUATE
@@ -805,7 +805,7 @@ EXPORT
 ;
 
 
-
+/*
 : TC_VAR_GEN (  ADDR LEN -- )
   R/W CREATE-FILE THROW
   STDOUT @ >R
@@ -814,7 +814,7 @@ EXPORT
   STDOUT @ CLOSE-FILE R> STDOUT ! THROW
   THROW
 ;
-
+*/
 
 : T-START  ( n -- )  \ n 
 \+ YDP_FL 1 TO YDP_FL
