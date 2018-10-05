@@ -471,8 +471,8 @@ zzz:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2674		//MOVS	R6, #116
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+116 @ 0x74
-	MOVT	R6, #:upper16:sp_buff+116 @ 0x74
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
 	.inst.n	0xF116,0x061C	//ADDS.W	R6, R6, #28 @ 0x1C
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -543,14 +543,14 @@ HOLD:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 96 0
 //  HLD @ 1- DUP HLD ! C!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+160 @ 0xA0
-	MOVT	R6, #:upper16:sp_buff+160 @ 0xA0
+	MOVW	R6, #:lower16:sp_buff+112 @ 0x70
+	MOVT	R6, #:upper16:sp_buff+112 @ 0x70
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+160 @ 0xA0
-	MOVT	R6, #:upper16:sp_buff+160 @ 0xA0
+	MOVW	R6, #:lower16:sp_buff+112 @ 0x70
+	MOVT	R6, #:upper16:sp_buff+112 @ 0x70
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
@@ -573,20 +573,20 @@ lessn:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 100 0
 //  PAD 1- HLD !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+420 @ 0x1A4
-	MOVT	R6, #:upper16:sp_buff+420 @ 0x1A4
+	MOVW	R6, #:lower16:sp_buff+372 @ 0x174
+	MOVT	R6, #:upper16:sp_buff+372 @ 0x174
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+160 @ 0xA0
-	MOVT	R6, #:upper16:sp_buff+160 @ 0xA0
+	MOVW	R6, #:lower16:sp_buff+112 @ 0x70
+	MOVT	R6, #:upper16:sp_buff+112 @ 0x70
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x2600		//MOVS	R6, #0
 	.loc 3 101 0
 	.loc 3 101 0
 //  0 PAD 1- C!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+420 @ 0x1A4
-	MOVT	R6, #:upper16:sp_buff+420 @ 0x1A4
+	MOVW	R6, #:lower16:sp_buff+372 @ 0x174
+	MOVT	R6, #:upper16:sp_buff+372 @ 0x174
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x7030		//STRB	R0, [R6, #0]
@@ -690,12 +690,12 @@ ngreat:	.inst.n	0xB500		//PUSH	{R14}
 //  2DROP HLD @ PAD OVER - 1-
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+160 @ 0xA0
-	MOVT	R6, #:upper16:sp_buff+160 @ 0xA0
+	MOVW	R6, #:lower16:sp_buff+112 @ 0x70
+	MOVT	R6, #:upper16:sp_buff+112 @ 0x70
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+420 @ 0x1A4
-	MOVT	R6, #:upper16:sp_buff+420 @ 0x1A4
+	MOVW	R6, #:lower16:sp_buff+372 @ 0x174
+	MOVT	R6, #:upper16:sp_buff+372 @ 0x174
 	.inst.n	0x4630		//MOV	R0, R6
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0x1B86		//SUBS	R6, R0, R6
@@ -897,8 +897,8 @@ CR:	.inst.n	0xB500		//PUSH	{R14}
 	.global FORTH_
 FORTH_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+88 @ 0x58
-	MOVT	R6, #:upper16:sp_buff+88 @ 0x58
+	MOVW	R6, #:lower16:sp_buff+40 @ 0x28
+	MOVT	R6, #:upper16:sp_buff+40 @ 0x28
 	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+20 @ 0x14
 	MOVT	R6, #:upper16:sp_buff+20 @ 0x14
@@ -923,8 +923,8 @@ DEFINITIONS_:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+20 @ 0x14
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -1203,11 +1203,11 @@ SOURCE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 208 0
 // TIB #TIB @ ;
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+436 @ 0x1B4
-	MOVT	R6, #:upper16:sp_buff+436 @ 0x1B4
+	MOVW	R6, #:lower16:sp_buff+388 @ 0x184
+	MOVT	R6, #:upper16:sp_buff+388 @ 0x184
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
-	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	MOVW	R6, #:lower16:sp_buff+592 @ 0x250
+	MOVT	R6, #:upper16:sp_buff+592 @ 0x250
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 209 0
@@ -1224,11 +1224,11 @@ SOURCEsave:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 211 0
 //  #TIB ! ATIB ! ;
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
-	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	MOVW	R6, #:lower16:sp_buff+592 @ 0x250
+	MOVT	R6, #:upper16:sp_buff+592 @ 0x250
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+644 @ 0x284
-	MOVT	R6, #:upper16:sp_buff+644 @ 0x284
+	MOVW	R6, #:lower16:sp_buff+596 @ 0x254
+	MOVT	R6, #:upper16:sp_buff+596 @ 0x254
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -1250,8 +1250,8 @@ EndOfChunk:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 215 0
 // >IN @ SOURCE NIP < 0=        \ >IN не меньше, чем длина чанка
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFFD6	//BL	SOURCE
 	.inst.n	0x3704		//ADDS	R7, #4
@@ -1295,8 +1295,8 @@ CharAddr:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 223 0
 //  SOURCE DROP >IN @ +
 	.inst.n	0xF7FF,0xFFC5	//BL	SOURCE
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x1986		//ADDS	R6, R0, R6
@@ -1400,8 +1400,8 @@ SkipDelimiters:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x800B	//BEQ.W	SkipDelimiters+24 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -1458,8 +1458,8 @@ SkipWord:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x800B	//BEQ.W	SkipWord+24 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -1484,16 +1484,16 @@ ParseWord:	.inst.n	0xB500		//PUSH	{R14}
 // CharAddr >IN @  SkipWord
 	.inst.n	0xF7FF,0xFF93	//BL	CharAddr
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFFE0	//BL	SkipWord
 	.loc 3 255 0
 	.loc 3 255 0
 // >IN @ - NEGATE ;
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1A36		//SUBS	R6, R6, R0
 	.inst.n	0xBD00		//POP	{R15}
@@ -1518,18 +1518,18 @@ PARSEsubNAME:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 260 0
 //  >IN @ 1+ #TIB @ MIN >IN !   \ для совместимости с spf3.16
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
-	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	MOVW	R6, #:lower16:sp_buff+592 @ 0x250
+	MOVT	R6, #:upper16:sp_buff+592 @ 0x250
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFA82	//BL	MIN
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 261 0
@@ -1572,8 +1572,8 @@ SkipUpTo:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 267 0
 //    >IN 1+!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -1604,8 +1604,8 @@ PARSE_:	.inst.n	0xB500		//PUSH	{R14}
 //  CharAddr >IN @
 	.inst.n	0xF7FF,0xFF41	//BL	CharAddr
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 274 0
 	.loc 3 274 0
@@ -1621,16 +1621,16 @@ PARSE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 276 0
 //  >IN @ - NEGATE
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1A36		//SUBS	R6, R6, R0
 	.loc 3 277 0
 	.loc 3 277 0
 //  >IN 1+!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0x6030		//STR	R0, [R6, #0]
@@ -1652,21 +1652,21 @@ QUERY:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 281 0
 //	TIB 180 ACCEPT #TIB !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+436 @ 0x1B4
-	MOVT	R6, #:upper16:sp_buff+436 @ 0x1B4
+	MOVW	R6, #:lower16:sp_buff+388 @ 0x184
+	MOVT	R6, #:upper16:sp_buff+388 @ 0x184
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x26B4		//MOVS	R6, #180
 	.inst.n	0xF7FF,0xFE7E	//BL	ACCEPT
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
-	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
+	MOVW	R6, #:lower16:sp_buff+592 @ 0x250
+	MOVT	R6, #:upper16:sp_buff+592 @ 0x250
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x2000		//MOVS	R0, #0
 	.loc 3 282 0
 	.loc 3 282 0
 //	0 >IN !  0 SOURCE + C! ;
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x2600		//MOVS	R6, #0
 	.inst.n	0xF7FF,0xFECF	//BL	SOURCE
@@ -2231,8 +2231,8 @@ SFIND:	.inst.n	0xB500		//PUSH	{R14}
 	.global ALLOT_
 ALLOT_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x6831		//LDR	R1, [R6, #0]
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x1840		//ADDS	R0, R0, R1
@@ -2250,8 +2250,8 @@ ALLOT_:	.inst.n	0xB500		//PUSH	{R14}
 	.global HERE_
 HERE_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 378 0
@@ -2625,8 +2625,8 @@ COMPILEcom_:	.inst.n	0xB500		//PUSH	{R14}
 	.global _2LITERAL_
 _2LITERAL_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -2644,8 +2644,8 @@ _2LITERAL_:	.inst.n	0xB500		//PUSH	{R14}
 	.global LITERAL_
 LITERAL_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -2770,8 +2770,8 @@ CATCH:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x463E		//MOV	R6, R7
 	.inst.n	0xB440		//PUSH	{R6}
-	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
-	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xB440		//PUSH	{R6}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -2780,8 +2780,8 @@ CATCH:	.inst.n	0xB500		//PUSH	{R14}
 //  RP@ HANDLER !
 	.inst.n	0xF7FE,0xFEB2	//BL	RPload
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
-	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 449 0
@@ -2794,8 +2794,8 @@ CATCH:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
-	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 451 0
@@ -2831,8 +2831,8 @@ THROW:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8024	//BEQ.W	THROW+56 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
-	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 458 0
 	.loc 3 458 0
@@ -2851,8 +2851,8 @@ THROW:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+656 @ 0x290
-	MOVT	R6, #:upper16:sp_buff+656 @ 0x290
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.loc 3 461 0
@@ -3239,8 +3239,8 @@ INTERPRET_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8012	//BEQ.W	INTERPRET_+40 
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -3393,8 +3393,8 @@ HELLO:	.inst.n	0xB500		//PUSH	{R14}
 	.global SETsubCURRENT
 SETsubCURRENT:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -3409,8 +3409,8 @@ SETsubCURRENT:	.inst.n	0xB500		//PUSH	{R14}
 	.global GETsubCURRENT
 GETsubCURRENT:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 553 0
@@ -3702,8 +3702,8 @@ ALIGN_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFC0D	//BL	HERE_
 	.inst.n	0xF7FF,0xFFF3	//BL	ALIGNED_
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -3763,8 +3763,8 @@ LINKcom:	.inst.n	0xB500		//PUSH	{R14}
 //  HERE_ LAST !
 	.inst.n	0xF7FF,0xFBEC	//BL	HERE_
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
-	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 602 0
@@ -3790,8 +3790,8 @@ HEADERcom_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 606 0
 //  CURRENT @ LINK, ;
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFFE3	//BL	LINKcom
 	.inst.n	0xBD00		//POP	{R15}
@@ -3813,8 +3813,8 @@ HALIGN_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 610 0
 // DP_ ! ;
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -3894,15 +3894,15 @@ SHEADER_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 626 0
 // LAST @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
-	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 627 0
 	.loc 3 627 0
 //  CURRENT @
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.loc 3 628 0
@@ -3935,8 +3935,8 @@ IMMEDIATE_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x2601		//MOVS	R6, #1
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
-	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FF,0xFB07	//BL	NAMEgreatF
 	.inst.n	0x6831		//LDR	R1, [R6, #0]
@@ -4012,8 +4012,8 @@ xticy_:	.inst.n	0xB500		//PUSH	{R14}
 	.global y_
 y_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0xF7FE,0xFC08	//BL	ON
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 3 647 0
@@ -4023,8 +4023,8 @@ y_:	.inst.n	0xB500		//PUSH	{R14}
 	.global x_
 x_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -4104,12 +4104,12 @@ end_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 661 0
 // LAST @ CURRENT @ !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+664 @ 0x298
-	MOVT	R6, #:upper16:sp_buff+664 @ 0x298
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+92 @ 0x5C
-	MOVT	R6, #:upper16:sp_buff+92 @ 0x5C
+	MOVW	R6, #:lower16:sp_buff+44 @ 0x2C
+	MOVT	R6, #:upper16:sp_buff+44 @ 0x2C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -4816,8 +4816,8 @@ THEN_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x1B86		//SUBS	R6, R0, R6
 	.inst.n	0xF7FF,0xF8D4	//BL	HERE_
 	.inst.n	0xB440		//PUSH	{R6}
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0x9E00		//LDR	R6, [SP, #0]
@@ -4831,8 +4831,8 @@ THEN_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 748 0
@@ -4962,8 +4962,8 @@ RESOLVEsubLEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 768 0
 //          'LEAVE_ @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 769 0
 	.loc 3 769 0
@@ -5052,8 +5052,8 @@ LEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 785 0
 //   'LEAVE_ @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 786 0
 	.loc 3 786 0
@@ -5064,8 +5064,8 @@ LEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xF83C	//BL	HERE_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1B86		//SUBS	R6, R0, R6
 	.loc 3 787 0
@@ -5083,8 +5083,8 @@ LEAVE_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 789 0
 // 'LEAVE_ !
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 790 0
@@ -5105,8 +5105,8 @@ queDO_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 793 0
 //  'LEAVE_ @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 794 0
 	.loc 3 794 0
@@ -5142,8 +5142,8 @@ queDO_:	.inst.n	0xB500		//PUSH	{R14}
 // W,_ 'LEAVE_ !
 	.inst.n	0xF7FF,0xF81F	//BL	Wcom_
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 802 0
@@ -5175,8 +5175,8 @@ DO_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 808 0
 //  'LEAVE_ @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 3 809 0
 	.loc 3 809 0
@@ -5330,8 +5330,8 @@ LOOP_:	.inst.n	0xB500		//PUSH	{R14}
 // RESOLVE-LEAVE_ 'LEAVE_ !
 	.inst.n	0xF7FF,0xFF0D	//BL	RESOLVEsubLEAVE_
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 836 0
@@ -5371,8 +5371,8 @@ addLOOP_:	.inst.n	0xB500		//PUSH	{R14}
 // RESOLVE-LEAVE_ 'LEAVE_ !
 	.inst.n	0xF7FF,0xFEEF	//BL	RESOLVEsubLEAVE_
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+668 @ 0x29C
-	MOVT	R6, #:upper16:sp_buff+668 @ 0x29C
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 3 842 0
@@ -5457,8 +5457,8 @@ sl_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FE,0xFCBB	//BL	SOURCE
 	.inst.n	0x3704		//ADDS	R7, #4
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+648 @ 0x288
-	MOVT	R6, #:upper16:sp_buff+648 @ 0x288
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xBD00		//POP	{R15}
@@ -5518,8 +5518,8 @@ Sdtic_:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 3 864 0
 //	STATE @ IF SLIT,_ THEN ;
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+652 @ 0x28C
-	MOVT	R6, #:upper16:sp_buff+652 @ 0x28C
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -5625,8 +5625,8 @@ CONSTANT_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFB41	//BL	HEADER_
 	.inst.n	0xF7FF,0xFB7B	//BL	NESTcom_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+680 @ 0x2A8
-	MOVT	R6, #:upper16:sp_buff+680 @ 0x2A8
+	MOVW	R6, #:lower16:sp_buff+632 @ 0x278
+	MOVT	R6, #:upper16:sp_buff+632 @ 0x278
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xF7FE,0xFF8C	//BL	COMPILEcom_
 	.inst.n	0xF7FE,0xFEC0	//BL	com_
@@ -5641,8 +5641,8 @@ CREATE_:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFB2F	//BL	HEADER_
 	.inst.n	0xF7FF,0xFB69	//BL	NESTcom_
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+672 @ 0x2A0
-	MOVT	R6, #:upper16:sp_buff+672 @ 0x2A0
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xF7FE,0xFF7A	//BL	COMPILEcom_
 	.inst.n	0xBD00		//POP	{R15}
@@ -5824,8 +5824,8 @@ ZCOUNT:	.inst.n	0xB500		//PUSH	{R14}
 	.global UBR_SET
 UBR_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+100 @ 0x64
-	MOVT	R6, #:upper16:sp_buff+100 @ 0x64
+	MOVW	R6, #:lower16:sp_buff+52 @ 0x34
+	MOVT	R6, #:upper16:sp_buff+52 @ 0x34
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF244,0x4600	//MOVW	R6, #:lower16:67126272 @ 0x4004400
@@ -5840,8 +5840,8 @@ UBR_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.global UBRsave
 UBRsave:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+100 @ 0x64
-	MOVT	R6, #:upper16:sp_buff+100 @ 0x64
+	MOVW	R6, #:lower16:sp_buff+52 @ 0x34
+	MOVT	R6, #:upper16:sp_buff+52 @ 0x34
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF7FF,0xFFE4	//BL	UBR_SET

@@ -18,13 +18,18 @@
 
 .endm
 
+.macro setvar Name,Vval
+	. = o_d_forth + \Name
+	.word \Vval
+.endm
+
 .macro bssvar Name,Vval
 	.word \Vval
 .endm
 
 .macro bssvarz Name,Vval
 	.word \Vval
-	.word 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0
+	.word 0,0,0,0 //  , 0,0,0,0, 0,0,0,0, 0,0,0,0
 .endm
 
 
@@ -817,16 +822,38 @@ GetForthWords:
 	ldr	pc, = 0x12345679
 .ltorg
 
-//.include "FVARS.S"
+.include "FVARS.S"
 
 	.global bcc_forth
-//bcc_forth:
-//	.include "SRC/bssvar.s"
+bcc_forth:
+	.include "SRC/bssvar.s"
 
 .p2align 1
 	.global origin_data_forth
 origin_data_forth:
 o_d_forth:
-	.include "SRC/bssvar.s"
+//	.include "SRC/bssvar.s"
+
+	setvar HOOKEMIT_OF	usbsubemit+1
+	setvar HOOKKEY_OF	usbsubkey+1
+	setvar HOOKEMITQ_OF	usbsubemitque+1
+	setvar HOOKKEYQ_OF	usbsubkeyque+1
+	setvar BASE_OF		10
+	setvar CONTEXT_OF FORTHWORDLIST_OF + sp_buff
+	.word 0
+	setvar FORTHWORDLIST_OF	PForthWords+6
+	setvar CURRENT_OF  FORTHWORDLIST_OF + sp_buff
+	setvar DP_OF   VAR_END_OF + sp_buff
+	setvar UBAUDR_OF	115201
+	setvar MEID_OF		0
+	setvar MAIN_OF		lessMAINgreat+1
+
+	. = o_d_forth + VAR_END_OF
+	.word 0x37373737
+
+//	.section 		.flash_data_forth // myflash
+//__fbig = .
+//	.word 1,2,3,4,5,6,7,8,9
+//	.word 0x77777
 
 

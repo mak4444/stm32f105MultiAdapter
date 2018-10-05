@@ -284,11 +284,7 @@ MODULE: TC
 : 2VARIABLE  D2ALIGN CREATE 2 CELLS  ALLOT ;
 
 : bssvar  VARIABLE postpone \ ;
-: bssvarz  VARIABLE postpone \
-\  17 
- 4 cells
- allot
- ;
+: bssvarz  VARIABLE postpone \  15 allot ;
 
 : ?OLD
   S"  DP @ THERE? 0= IF" EVALUATE

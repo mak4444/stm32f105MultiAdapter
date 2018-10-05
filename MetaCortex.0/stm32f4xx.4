@@ -1,0 +1,95 @@
+
+#define	RCC_CR       	0x40023800	\ Clock control register
+#define	RCC_AHB1ENR	0x40023830	\ AHB1 peripheral clock enable register
+#define	RCC_APB2ENR 0x40023844	\ APB2 peripheral clock enable register
+#define	RCC_PLLSAICFGR 	0x40023888	\ PLL configuration register for SAI1, LCD, VCO
+#define	RCC_DCKCFGR	0x4002388C	\ Dedicated Clock Configuration Register
+
+#define RCC_PLLCFGR  0x40023804	\ RCC PLL configuration register
+#define RCC_CFGR     0x40023808	\ RCC Clock configuration register
+
+#define HSEON			1  16 <<		\ HSE clock enable							(RW)
+#define HSERDY			1  17 <<		\ HSE clock ready flag						(R)
+#define PLLSRC			1  22 <<		\ Main PLL(PLL) and audio PLL (PLLI2S) entry clock source 	(RW)
+#define PLLQ			0xF 24 <<	\ Main PLL (PLL) division factor for USB OTG FS, SDIO and random number generator clocks (RW)
+#define PLLON			1  24 <<		\ Main PLL (PLL) enable					(RW)
+#define PLLRDY			1  25 <<		\ Main PLL (PLL) clock ready flag			(R)
+#define RCCSW			3				\ System clock switch				 (RW)
+#define	PLLISAION	1 28 <<		\ PLLSAI enable			(RW)
+#define	PLLSAIRDY	1 29 <<		\ PLLSAI clock ready flag	(R)
+
+#define	GPIOE_MODER	0x40021000	\ GPIO port mode register (GPIOx_MODER)			( reset val 0x0000 0000 )
+#define	GPIOE_OTYPER	0x40021004	\ GPIO port output type register (GPIOx_OTYPER)		( reset val 0x0000 0000 )
+#define	GPIOE_OSPEEDR	0x40021008	\ GPIO port output speed register (GPIOx_OSPEEDR)	( reset val 0x0000 0000 )
+#define	GPIOE_PUPDR	0x4002100C	\ GPIO port pull-up/pull-down register (GPIOx_PUPDR)	( reset val 0x0000 0000 )
+#define	GPIOE_AFRL  	0x40021020	\ GPIO alternate function low register (GPIOx_AFRL)	( reset val 0x0000 0000 )
+#define	GPIOE_AFRH  	0x40021024	\ GPIO alternate function high register (GPIOx_AFRH)	( reset val 0x0000 0000 )
+
+
+#define	GPIOD_MODER	0x40020C00	\ GPIO port mode register (GPIOx_MODER)			( reset val 0x0000 0000 )
+#define	GPIOD_OTYPER	0x40020C04	\ GPIO port output type register (GPIOx_OTYPER)		( reset val 0x0000 0000 )
+#define	GPIOD_OSPEEDR	0x40020C08	\ GPIO port output speed register (GPIOx_OSPEEDR)	( reset val 0x0000 0000 )
+#define	GPIOD_PUPDR	0x40020C0C	\ GPIO port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+#define	GPIOD_AFRL 	0x40020C20	\ GPIO alternate function low register (GPIOx_AFRL)	( reset val 0x0000 0000 )
+#define	GPIOD_AFRH 	0x40020C24	\ GPIO alternate function high register (GPIOx_AFRH)	( reset val 0x0000 0000 )
+
+
+#define	GPIOG_MODER	0x40021800	\ GPIO port mode register (GPIOx_MODER)					( reset val 0x0000 0000 )
+#define	GPIOG_OTYPER	0x40021804	\ GPIO port output type register (GPIOx_OTYPER)			( reset val 0x0000 0000 )
+#define	GPIOG_OSPEEDR	0x40021808	\ GPIO port output speed register (GPIOx_OSPEEDR)			( reset val 0x0000 0000 )
+#define	GPIOG_PUPDR	0x4002180C	\ GPIO port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+#define	GPIOG_AFRL 	0x40021820	\ GPIO alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOG_AFRH 	0x40021824	\ GPIO alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+
+#define	GPIOF_MODER	0x40021400	\ GPIO port mode register (GPIOx_MODER)					( reset val 0x0000 0000 )
+#define	GPIOF_OTYPER	0x40021404	\ GPIO port output type register (GPIOx_OTYPER)			( reset val 0x0000 0000 )
+#define	GPIOF_OSPEEDR	0x40021408	\ GPIO port output speed register (GPIOx_OSPEEDR)			( reset val 0x0000 0000 )
+#define	GPIOF_PUPDR	0x4002140C	\ GPIO port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+#define	GPIOF_AFRL 	0x40021420	\ GPIO alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOF_AFRH 	0x40021424	\ GPIO alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+
+#define	GPIOH_MODER	0x40021C00	\ GPIO port mode register (GPIOx_MODER)					( reset val 0x0000 0000 )
+#define	GPIOH_OTYPER	0x40021C04	\ GPIO port output type register (GPIOx_OTYPER)			( reset val 0x0000 0000 )
+#define	GPIOH_OSPEEDR	0x40021C08	\ GPIO port output speed register (GPIOx_OSPEEDR)			( reset val 0x0000 0000 )
+#define	GPIOH_PUPDR	0x40021C0C	\ GPIO port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+#define	GPIOH_AFRL 	0x40021C20	\ GPIO alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOH_AFRH 	0x40021C24	\ GPIO alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+
+#define	RCC_AHB3ENR   	0x40023838	\ RCC AHB3 peripheral clock enable register
+#define	FMC_SDCR_1	0xA0000140	\ SDRAM Control register 1		( reset val 0x000002D0 )
+#define	FMC_SDTR_1	0xA0000148	\ SDRAM Timing register 1 
+#define	FMC_SDCMR	0xA0000150	\ SDRAM Command Mode register
+#define	FMC_SDRTR	0xA0000154	\ SDRAM Refresh Timer register
+#define	FMC_SDSR	0xA0000158	\ SDRAM Status register
+
+
+#define	GPIOI_MODER	0x40022000	\ port mode register (GPIOx_MODER)			( reset val 0x0000 0000 )
+#define	GPIOI_OTYPER	0x40022004	\ port output type register (GPIOx_OTYPER)		( reset val 0x0000 0000 )
+#define	GPIOI_OSPEEDR	0x40022008	\ port output speed register (GPIOx_OSPEEDR)		( reset val 0x0000 0000 )
+#define	GPIOI_PUPDR	0x4002200C	\ port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+
+#define	GPIOI_AFRL 	0x40022020	\ alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOI_AFRH 	0x40022024	\ alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+
+#define	GPIOJ_MODER	0x40022400	\ port mode register (GPIOx_MODER)			( reset val 0x0000 0000 )
+#define	GPIOJ_OTYPER	0x40022404	\ port output type register (GPIOx_OTYPER)		( reset val 0x0000 0000 )
+#define	GPIOJ_OSPEEDR	0x40022408	\ port output speed register (GPIOx_OSPEEDR)		( reset val 0x0000 0000 )
+#define	GPIOJ_PUPDR	0x4002240C	\ port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+
+#define	GPIOJ_AFRL 	0x40022420	\ alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOJ_AFRH 	0x40022424	\ alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+
+#define	GPIOK_MODER	0x40022800	\ port mode register (GPIOx_MODER)			( reset val 0x0000 0000 )
+#define	GPIOK_OTYPER	0x40022804	\ port output type register (GPIOx_OTYPER)		( reset val 0x0000 0000 )
+#define	GPIOK_OSPEEDR	0x40022808	\ port output speed register (GPIOx_OSPEEDR)		( reset val 0x0000 0000 )
+#define	GPIOK_PUPDR	0x4002280C	\ port pull-up/pull-down register (GPIOx_PUPDR)		( reset val 0x0000 0000 )
+
+#define	GPIOK_AFRL 	0x40022820	\ alternate function low register (GPIOx_AFRL)		( reset val 0x0000 0000 )
+#define	GPIOK_AFRH 	0x40022824	\ alternate function high register (GPIOx_AFRH)		( reset val 0x0000 0000 )
+
+

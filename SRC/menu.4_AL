@@ -87,8 +87,8 @@ REST:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 15 0
 //	DP_  VAR_BIG  - RAMIMG  +  @  VAR_BIG - 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
@@ -134,8 +134,8 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 22 0
 //	DP_  VAR_BIG  - ORIGIMG  +  @  VAR_BIG - 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+96 @ 0x60
-	MOVT	R6, #:upper16:sp_buff+96 @ 0x60
+	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
+	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
 	.inst.n	0x4630		//MOV	R0, R6
 	MOVW	R6, #:lower16:sp_buff+0 
 	MOVT	R6, #:upper16:sp_buff+0 
@@ -158,8 +158,8 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x463E		//MOV	R6, R7
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+660 @ 0x294
-	MOVT	R6, #:upper16:sp_buff+660 @ 0x294
+	MOVW	R6, #:lower16:sp_buff+612 @ 0x264
+	MOVT	R6, #:upper16:sp_buff+612 @ 0x264
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 25 0
@@ -294,21 +294,21 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 //     DROP 0 LINEBUF LPOS @ + C!  LPOS 0!
 	.inst.n	0x2600		//MOVS	R6, #0
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+688 @ 0x2B0
-	MOVT	R6, #:upper16:sp_buff+688 @ 0x2B0
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x7030		//STRB	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+688 @ 0x2B0
-	MOVT	R6, #:upper16:sp_buff+688 @ 0x2B0
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
 	.loc 5 48 0
 	.loc 5 48 0
 //       LINEBUF  
@@ -330,8 +330,8 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 53 0
 	.loc 5 53 0
 //       LPOS @
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1B80		//SUBS	R0, R0, R6
 	.inst.n	0x41B6		//SBCS	R6, R6
@@ -347,8 +347,8 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 56 0
 //        LPOS 0!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -359,14 +359,14 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 58 0
 //   		LINEBUF
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+688 @ 0x2B0
-	MOVT	R6, #:upper16:sp_buff+688 @ 0x2B0
+	MOVW	R6, #:lower16:sp_buff+640 @ 0x280
+	MOVT	R6, #:upper16:sp_buff+640 @ 0x280
 	.loc 5 59 0
 	.loc 5 59 0
 //   		 LPOS @
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.loc 5 60 0
@@ -382,8 +382,8 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 62 0
 //   		    1 LPOS +!
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1188 @ 0x4A4
-	MOVT	R6, #:upper16:sp_buff+1188 @ 0x4A4
+	MOVW	R6, #:lower16:sp_buff+1140 @ 0x474
+	MOVT	R6, #:upper16:sp_buff+1140 @ 0x474
 	.inst.n	0x6831		//LDR	R1, [R6, #0]
 	.inst.n	0xCF01		//LDMIA	R7!, {R0}
 	.inst.n	0x1840		//ADDS	R0, R0, R1
@@ -553,8 +553,8 @@ MENUless:	.inst.n	0xB500		//PUSH	{R14}
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -597,8 +597,8 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 //  DUP MEID @ = IF ." * " ELSE ."   "  THEN 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+104 @ 0x68
-	MOVT	R6, #:upper16:sp_buff+104 @ 0x68
+	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
+	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -619,8 +619,8 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -660,8 +660,8 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 111 0
 //  MESAID @ IF ." * " ELSE ."   "  THEN 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	MOVW	R6, #:lower16:sp_buff+1148 @ 0x47C
+	MOVT	R6, #:upper16:sp_buff+1148 @ 0x47C
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -680,8 +680,8 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 // DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -715,8 +715,8 @@ greatMENU:	.inst.n	0xB500		//PUSH	{R14}
 //  DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+   ."      "
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4046		//EORS	R6, R0
 	.inst.n	0x3E01		//SUBS	R6, #1
@@ -808,8 +808,8 @@ KEYW:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xD0F1		//BEQ.N	100057DE
 	.inst.n	0x200A		//MOVS	R0, #10
-	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
-	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
+	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
+	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 128 0
@@ -867,8 +867,8 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x683E		//LDR	R6, [R7, #0]
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
 	.inst.n	0xE017		//B.N	10005892
@@ -883,8 +883,8 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8009	//BEQ.W	CHMEHU+74 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
 	.inst.n	0xE006		//B.N	10005892
@@ -892,8 +892,8 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 136 0
 //             MENUID @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 5 137 0
 	.loc 5 137 0
@@ -902,8 +902,8 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x687E		//LDR	R6, [R7, #4]
 	.inst.n	0xF7FD,0xFCB5	//BL	MOD
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 138 0
@@ -1006,8 +1006,8 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x203D		//MOVS	R0, #61
 	.inst.n	0xF7FD,0xFE7D	//BL	TYPE
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+100 @ 0x64
-	MOVT	R6, #:upper16:sp_buff+100 @ 0x64
+	MOVW	R6, #:lower16:sp_buff+52 @ 0x34
+	MOVT	R6, #:upper16:sp_buff+52 @ 0x34
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF7FD,0xFF66	//BL	dot
 	.loc 5 149 0
@@ -1057,18 +1057,18 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 // 10 TTTIME !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x200A		//MOVS	R0, #10
-	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
-	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
+	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
+	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	MOVW	R6, #:lower16:sp_buff+1148 @ 0x47C
+	MOVT	R6, #:upper16:sp_buff+1148 @ 0x47C
 	.loc 5 157 0
 	.loc 5 157 0
 // MESAID 0!
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
-	MOVW	R6, #:lower16:sp_buff+104 @ 0x68
-	MOVT	R6, #:upper16:sp_buff+104 @ 0x68
+	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
+	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
 	.loc 5 158 0
 	.loc 5 158 0
 // MEID @ 4 U< IF MEID 0! THEN
@@ -1079,8 +1079,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8009	//BEQ.W	MMENU+46 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+104 @ 0x68
-	MOVT	R6, #:upper16:sp_buff+104 @ 0x68
+	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
+	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -1088,12 +1088,12 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 159 0
 // MEID @ MENUID !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+104 @ 0x68
-	MOVT	R6, #:upper16:sp_buff+104 @ 0x68
+	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
+	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 160 0
@@ -1142,8 +1142,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 166 0
 // if   MENUID @ 4 U< IF MENUID @ MEID ! THEN
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x2604		//MOVS	R6, #4
 	.inst.n	0x1B80		//SUBS	R0, R0, R6
@@ -1151,20 +1151,20 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x800E	//BEQ.W	MMENU+D6 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+104 @ 0x68
-	MOVT	R6, #:upper16:sp_buff+104 @ 0x68
+	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
+	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 167 0
 	.loc 5 167 0
 //   MENUID @ 4 = IF
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6830		//LDR	R0, [R6, #0]
 	.inst.n	0x2604		//MOVS	R6, #4
 	.inst.n	0x4046		//EORS	R6, R0
@@ -1181,8 +1181,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 //     -1 MESAID !
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xF06F,0x0000	//MVN.W	R0, #0 
-	MOVW	R6, #:lower16:sp_buff+1196 @ 0x4AC
-	MOVT	R6, #:upper16:sp_buff+1196 @ 0x4AC
+	MOVW	R6, #:lower16:sp_buff+1148 @ 0x47C
+	MOVT	R6, #:upper16:sp_buff+1148 @ 0x47C
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 170 0
@@ -1204,8 +1204,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 174 0
 // MENUID @ R> 1- <> OR
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1192 @ 0x4A8
-	MOVT	R6, #:upper16:sp_buff+1192 @ 0x4A8
+	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
+	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0xBC40		//POP	{R6}
@@ -1224,8 +1224,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 176 0
 // TTTIME @
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
-	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
+	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
+	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.loc 5 177 0
 	.loc 5 177 0
@@ -1241,8 +1241,8 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x3E01		//SUBS	R6, #1
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+1200 @ 0x4B0
-	MOVT	R6, #:upper16:sp_buff+1200 @ 0x4B0
+	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
+	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 180 0

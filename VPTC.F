@@ -62,5 +62,5 @@ MCR .( ZS=) 2DUP MH. MH.
 fload promram.4 
 
 S" SSSWWW.S" SWRD
-\ S" SRC/ggvar.4" S" FVARS.S"  TC_VAR_GEN
+S" SRC/ggvar.4" S" FVARS.S"  TC_VAR_GEN
 
