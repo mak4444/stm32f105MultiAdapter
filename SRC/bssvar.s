@@ -10,4 +10,5 @@
 	bssvar DP_		VAR_END_OF + sp_buff
 	bssvar &UBAUDR		115200
 	bssvar MEID		0
+	bssvar 'LEAVE_		0
 	bssvar &MAIN		lessMAINgreat+1

@@ -905,9 +905,28 @@ VARIABLE LAST
 
 \ VARIABLE &UBAUDR
 
- 0x4004400 CONSTANT USART2
+ 0x40004400 CONSTANT USART2
 
-: UBR_SET  &UBAUDR @ USART2 UBAUDR! ;
+: UBR_SET 
+ &UBAUDR
+ @
+ USART2
+ UBAUDR!
+ ;
 : UBR! &UBAUDR ! UBR_SET ; 
+
+\EOF
+
+: CELL/ 2 >> ;
+: DEPTH
+  SP0 @ SP@ - CELL/ 1- ;
+
+: .S ( --- )
+\ Show the contents of the stack.
+     DEPTH IF
+      0 DEPTH 2 - DO I PICK . -1 +LOOP 
+     ELSE ." Empty " THEN ;
+
+
 
 

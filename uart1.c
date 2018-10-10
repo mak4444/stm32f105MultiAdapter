@@ -175,6 +175,10 @@ void slcan_usart2_write( uint8_t * adr, int len)
 {
 	while(len--) usart_send_blocking(USART2,*adr++);
 }
+void br_rest()
+{
+	usart_set_baudrate(USART2, 115200);
+}
 
 void usart2_setup(void)
 {

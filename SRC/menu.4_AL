@@ -49,7 +49,7 @@ SAVE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xEB10,0x0006	//ADDS.W	R0, R0, R6
 	.inst.n	0xB401		//PUSH	{R0}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD7E9		//BVC.N	100053C6
+	.inst.n	0xD7E9		//BVC.N	100053E6
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 8 0
 	.loc 5 8 0
@@ -132,7 +132,7 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+0 
 	.loc 5 22 0
 	.loc 5 22 0
-//	DP_  VAR_BIG  - ORIGIMG  +  @  VAR_BIG - 
+//	DP_  VAR_BIG  - ORIGIMG  +  @ VAR_BIG - 
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	MOVW	R6, #:lower16:sp_buff+48 @ 0x30
 	MOVT	R6, #:upper16:sp_buff+48 @ 0x30
@@ -158,8 +158,8 @@ VAR_ORIG_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
 	.inst.n	0x463E		//MOV	R6, R7
 	.inst.n	0x4630		//MOV	R0, R6
-	MOVW	R6, #:lower16:sp_buff+612 @ 0x264
-	MOVT	R6, #:upper16:sp_buff+612 @ 0x264
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0x6030		//STR	R0, [R6, #0]
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.loc 5 25 0
@@ -198,7 +198,7 @@ USBlessgreatUART:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 30 0
 	.loc 5 30 0
 //  AGAIN  
-	.inst.n	0xE7EA		//B.N	100054A2
+	.inst.n	0xE7EA		//B.N	100054C2
 	.loc 5 31 0
 	.loc 5 31 0
 //;
@@ -315,7 +315,7 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 49 0
 	.loc 5 49 0
 //   ELSE
-	.inst.n	0xE031		//B.N	100055C6
+	.inst.n	0xE031		//B.N	100055E6
 	.loc 5 50 0
 	.loc 5 50 0
 //\ !!	  	nndeb
@@ -492,7 +492,7 @@ SLCAN_LOOP:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 87 0
 	.loc 5 87 0
 //  AGAIN
-	.inst.n	0xE7F0		//B.N	100055EE
+	.inst.n	0xE7F0		//B.N	1000560E
 	.loc 5 88 0
 	.loc 5 88 0
 //;
@@ -609,7 +609,7 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FD,0xFFD3	//BL	TYPE
-	.inst.n	0xE005		//B.N	100056B4
+	.inst.n	0xE005		//B.N	100056D4
 	.inst.n	0xF7FD,0xFFBC	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -670,7 +670,7 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FD,0xFF96	//BL	TYPE
-	.inst.n	0xE005		//B.N	1000572E
+	.inst.n	0xE005		//B.N	1000574E
 	.inst.n	0xF7FD,0xFF7F	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -806,7 +806,7 @@ KEYW:	.inst.n	0xB500		//PUSH	{R14}
 // UNTIL DROP 10 TTTIME !
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F1		//BEQ.N	100057DE
+	.inst.n	0xD0F1		//BEQ.N	100057FE
 	.inst.n	0x200A		//MOVS	R0, #10
 	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
 	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
@@ -871,7 +871,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
-	.inst.n	0xE017		//B.N	10005892
+	.inst.n	0xE017		//B.N	100058B2
 	.loc 5 135 0
 	.loc 5 135 0
 //         [CHAR] B =  IF  MENUID @ 1+   ELSE 
@@ -887,7 +887,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
-	.inst.n	0xE006		//B.N	10005892
+	.inst.n	0xE006		//B.N	100058B2
 	.loc 5 136 0
 	.loc 5 136 0
 //             MENUID @
@@ -922,7 +922,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F9		//BVC.N	100058B4
+	.inst.n	0xD7F9		//BVC.N	100058D4
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 141 0
 	.loc 5 141 0
@@ -948,7 +948,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFEAB	//BL	cSdticcend
 	.inst.n	0x4610		//MOV	R0, R2
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A24] 0x3E014046
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A44] 0x3E014046
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x726F		//STRB	R7, [R5, #9]
 	.inst.n	0x6769		//STR	R1, [R5, #116]
@@ -964,7 +964,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFE9A	//BL	cSdticcend
 	.inst.n	0x460C		//MOV	R4, R1
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A48] 0xF000CF40
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005A68] 0xF000CF40
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x6572		//STR	R2, [R6, #84]
 	.inst.n	0x7473		//STRB	R3, [R6, #17]
@@ -977,7 +977,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFEAF	//BL	MENUWless
 	.inst.n	0xF7FD,0xFE8B	//BL	cSdticcend
 	.inst.n	0x4303		//ORRS	R3, R0
-	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005A18] 0xF84741B6
+	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005A38] 0xF84741B6
 	.inst.n	0xF7FD,0xFE9B	//BL	TYPE
 	.inst.n	0xF7FF,0xFF25	//BL	greatMENU
 	.loc 5 148 0
@@ -1067,13 +1067,13 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 // MESAID 0!
 	.inst.n	0x2000		//MOVS	R0, #0
 	.inst.n	0x6030		//STR	R0, [R6, #0]
+	.inst.n	0x2004		//MOVS	R0, #4
+	.loc 5 158 0
+	.loc 5 158 0
+// 4 MEID @ U< IF MEID 0! THEN
 	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
 	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
-	.loc 5 158 0
-	.loc 5 158 0
-// MEID @ 4 U< IF MEID 0! THEN
-	.inst.n	0x6830		//LDR	R0, [R6, #0]
-	.inst.n	0x2604		//MOVS	R6, #4
+	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1B80		//SUBS	R0, R0, R6
 	.inst.n	0x41B6		//SBCS	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
@@ -1261,7 +1261,7 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 182 0
 	.loc 5 182 0
 // REPEAT 2DROP
-	.inst.n	0xE779		//B.N	100059F6
+	.inst.n	0xE779		//B.N	10005A16
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.loc 5 183 0
 	.loc 5 183 0

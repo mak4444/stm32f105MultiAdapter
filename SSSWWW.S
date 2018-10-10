@@ -1,7 +1,4 @@
 
-	Wortbirne6 0 "VAR_END"
-	push {lr};BL DOCONST
-	.word 0x20008484 
 	Wortbirne6 0 "GET_MAIN"
 	B GET_MAIN
 	Wortbirne6 0 "GET_&UBAUDR"
@@ -10,6 +7,8 @@
 	B GET_MEID
 	Wortbirne6 0 "GET_MENUID"
 	B GET_MENUID
+	Wortbirne6 0 "GET_VAR_END"
+	B GET_VAR_END
 	Wortbirne6 0 "GET_VAR_BIG"
 	B GET_VAR_BIG
 	Wortbirne6 0 "GET_HOOKEMIT"
@@ -48,6 +47,9 @@
 	B GET_SP0
 	Wortbirne6 0 "GET_LAST"
 	B GET_LAST
+	Wortbirne6 0 "VAR_END"
+	push {lr};BL DOCONST
+	.word 0x20008484 
 	Wortbirne6 0 "FFMAIN"
 	B FFMAIN
 	Wortbirne6 0 "FMAIN"
@@ -121,7 +123,7 @@
 	B UBR_SET
 	Wortbirne6 0 "USART2"
 	push {lr};BL DOCONST
-	.word 0x4004400 
+	.word 0x40004400 
 	Wortbirne6 0 "ZCOUNT"
 	B ZCOUNT
 	Wortbirne6 0 "SCAN"
@@ -174,9 +176,6 @@
 	B LEAVE_
 	Wortbirne6 0 "RESOLVE-LEAVE_"
 	B RESOLVEsubLEAVE_
-	Wortbirne6 0 "'LEAVE_"
-	push {lr};BL DOCONST
-	.word 0x2000826C 
 	Wortbirne6 0 "REPEAT_"
 	B REPEAT_
 	Wortbirne6 0 "WHILE_"
@@ -255,7 +254,7 @@
 	B LINKcom
 	Wortbirne6 0 "LAST"
 	push {lr};BL DOCONST
-	.word 0x20008268 
+	.word 0x2000826C 
 	Wortbirne6 0 "LALIGNED_"
 	B LALIGNED_
 	Wortbirne6 0 "HALIGNED_"
@@ -288,7 +287,7 @@
 	B OKdot
 	Wortbirne6 0 "SP0"
 	push {lr};BL DOCONST
-	.word 0x20008264 
+	.word 0x20008268 
 	Wortbirne6 0 "INTERPRET_"
 	B INTERPRET_
 	Wortbirne6 0 "?STACK"
@@ -305,7 +304,7 @@
 	B CATCH
 	Wortbirne6 0 "HANDLER"
 	push {lr};BL DOCONST
-	.word 0x20008260 
+	.word 0x20008264 
 	Wortbirne6 0 "DIGIT"
 	B DIGIT
 	Wortbirne6 0 "LITERAL_"
@@ -332,7 +331,7 @@
 	B ALLOT_
 	Wortbirne6 0 "STATE"
 	push {lr};BL DOCONST
-	.word 0x2000825C 
+	.word 0x20008260 
 	Wortbirne6 0 "SFIND"
 	B SFIND
 	Wortbirne6 0 "2NIP"
@@ -385,16 +384,16 @@
 	B SOURCE
 	Wortbirne6 0 ">IN"
 	push {lr};BL DOCONST
-	.word 0x20008258 
+	.word 0x2000825C 
 	Wortbirne6 0 "ATIB"
 	push {lr};BL DOCONST
-	.word 0x20008254 
+	.word 0x20008258 
 	Wortbirne6 0 "#TIB"
 	push {lr};BL DOCONST
-	.word 0x20008250 
+	.word 0x20008254 
 	Wortbirne6 0 "TIB"
 	push {lr};BL DOCONST
-	.word 0x20008184 
+	.word 0x20008188 
 	Wortbirne6 0 "ACCEPT"
 	B ACCEPT
 	Wortbirne6 0 "WORDS_"
@@ -444,10 +443,10 @@
 	B HEX_
 	Wortbirne6 0 "PAD"
 	push {lr};BL DOCONST
-	.word 0x20008174 
+	.word 0x20008178 
 	Wortbirne6 0 "HLD"
 	push {lr};BL DOCONST
-	.word 0x20008070 
+	.word 0x20008074 
 	Wortbirne6 0 "zzz"
 	B zzz
 	Wortbirne6 0 "XXX"
@@ -455,10 +454,10 @@
 	.word 0x55 
 	Wortbirne6 0 "VXXC"
 	push {lr};BL DOCONST
-	.word 0x20008044 
+	.word 0x20008048 
 	Wortbirne6 0 "VXXX"
 	push {lr};BL DOCONST
-	.word 0x20008040 
+	.word 0x20008044 
 	Wortbirne6 0 "TYPE"
 	B TYPE
 	Wortbirne6 0 "(S")"

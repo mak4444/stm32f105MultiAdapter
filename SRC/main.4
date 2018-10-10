@@ -29,16 +29,6 @@
     V_DOCONST !
     ['] DOCONST V_DOCONST CELL+ !
 
-\	stm32f107_usb_init
-	
-\ 	MEID	VAR_BIG - RAMIMG +  @ MEID !
-		
-\  '$' SERIAL-EMIT
- \ '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT '*' SERIAL-EMIT
- \ MEID.  TYPE   MEID @ . CR
-  
-\   -USB   cr ." MEID=" MEID @ .  cr   +USB
-
   	MMENU   MEID  @
   	  cr ." me=" dup . 2 = 
        IF
@@ -50,9 +40,9 @@
      THEN
 
      MEID  @ 1 =
-     IF	REST
+     IF   SAVE_Q IF REST THEN	 	
      THEN
-   
+  
     &MAIN PERFORM
 ;
 

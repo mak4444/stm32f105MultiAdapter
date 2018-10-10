@@ -86,7 +86,7 @@ SECTIONS
 	_data_loadaddr = LOADADDR(.data);
 
 	.flash_data_forth : {
-		. = ALIGN(0x100);
+		. = ALIGN(0x800);
 		__first_run_flg = .;
 		LONG (0)
 		__flash_buf = .;

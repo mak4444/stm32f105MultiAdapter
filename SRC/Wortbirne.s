@@ -72,9 +72,6 @@ RAMIMG:
 	Wortbirne6 0 "VAR_ORIG_SET"
 	B VAR_ORIG_SET
 
-	Wortbirne6 0 "VAR_BIG"
-	B GET_VAR_BIG
-
 	Wortbirne6 0 "FLASH!"
 	B FLASHsave
 
@@ -288,6 +285,9 @@ SAVE_Q:
 
 	Wortbirne6 0 "VAR_BIG"
 	B GET_VAR_BIG
+	Wortbirne6 0 "VAR_END"
+	B GET_VAR_END
+
 	Wortbirne6 0 "LAST"
 	B GET_LAST
 	Wortbirne6 0 "LALIGNED"
@@ -774,8 +774,12 @@ SAVE_Q:
 	B loadEXECUTE
 	Wortbirne6 0 "PERFORM"
 	B loadEXECUTE
-	Wortbirne6 0 "SP!"
+	Wortbirne6 0 "RP!"
 	B SPsave
+	Wortbirne6 0 "RP@"
+	B RPload
+	Wortbirne6 0 "SP!"
+	B RPsave
 	Wortbirne6 0 "SP@"
 	B SPload
 	Wortbirne6 0 ">R>R"
@@ -792,6 +796,14 @@ SAVE_Q:
 
 	Wortbirne6 0 "R>"
 	B Rgreat
+	.global COLD
+	Wortbirne6 0 "COLD"
+COLD:
+	ldr	r7, = sp_steck0 // sp_buff + 0x12c0
+	mov r0, #0
+	ldr	sp, [r0]
+	B FMAIN
+.ltorg
 
 	.global ORIGIMG
 	Wortbirne6 0 "ORIGIMG"
@@ -824,36 +836,21 @@ GetForthWords:
 
 .include "FVARS.S"
 
-	.global bcc_forth
-bcc_forth:
-	.include "SRC/bssvar.s"
+//	.global bcc_forth
+//bcc_forth:
 
 .p2align 1
 	.global origin_data_forth
 origin_data_forth:
 o_d_forth:
-//	.include "SRC/bssvar.s"
 
-	setvar HOOKEMIT_OF	usbsubemit+1
-	setvar HOOKKEY_OF	usbsubkey+1
-	setvar HOOKEMITQ_OF	usbsubemitque+1
-	setvar HOOKKEYQ_OF	usbsubkeyque+1
-	setvar BASE_OF		10
-	setvar CONTEXT_OF FORTHWORDLIST_OF + sp_buff
-	.word 0
-	setvar FORTHWORDLIST_OF	PForthWords+6
-	setvar CURRENT_OF  FORTHWORDLIST_OF + sp_buff
-	setvar DP_OF   VAR_END_OF + sp_buff
-	setvar UBAUDR_OF	115201
-	setvar MEID_OF		0
-	setvar MAIN_OF		lessMAINgreat+1
+	.include "SRC/bssvar.s"
 
-	. = o_d_forth + VAR_END_OF
-	.word 0x37373737
-
-//	.section 		.flash_data_forth // myflash
-//__fbig = .
-//	.word 1,2,3,4,5,6,7,8,9
-//	.word 0x77777
-
+	.global	sp_buff
+	.section	.bss
+	.align	2
+sp_buff:
+	.space	0x12c0
+sp_steck0:
+	.space	8
 

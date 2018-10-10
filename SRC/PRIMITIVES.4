@@ -940,8 +940,10 @@ CODE UBAUDR! (  baud  usart -- )
 	DROP,
 	pop  {pc}
 ASM_END
-
-
-
-
+\EOF
+CODE UBREST (  -- )
+	push {lr}
+	BL ' br_rest
+	pop  {pc}
+ASM_END
 

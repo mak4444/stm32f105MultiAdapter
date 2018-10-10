@@ -225,7 +225,7 @@ print-%:
 	@#printf "  CXX     $(*).cpp\n"
 	$(Q)$(CXX) $(TGT_CXXFLAGS) $(CXXFLAGS) $(TGT_CPPFLAGS) $(CPPFLAGS) -o $(*).o -c $(*).cpp
 
-amain.o:  amain.s SRC/HPROC.4_AL SRC/main.4_AL SRC/PRIMITIVES.4_AL \
+amain.o:  amain.s SRC/HPROC.4_AL SRC/main.4_AL SRC/PRIMITIVES.4_AL SRC/getvar.4_AL \
  SRC/USB.4_AL SRC/getvar.4_AL SRC/loop.4_AL SRC/menu.4_AL SRC/bssvar.s FVARS.S 
 	$(CC) $(CFLAGS) -o amain.o -c amain.s
 

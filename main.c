@@ -16,7 +16,7 @@
 
 
 //mmo>
-
+/*
 #define sp_size 0x80
 #define dp_size 0x1244+sp_size
 int sp_buff[dp_size];
@@ -27,7 +27,7 @@ ctest()
 {
 	*--CDSTK=0x77;
 }
-
+*/
 //void tstsss(void);
 
 /** Initialize the USB device controller hardware of the STM32. */
@@ -82,6 +82,7 @@ void stm32f107_USBdInit(void)
 void FORTH_MAIN(int *);
 extern usbd_device *usbd_dev;
 
+
 int tttt;
 int main(void)
 {
@@ -92,26 +93,15 @@ int main(void)
 	usart1_setup();
 	usart2_setup();
 
-//	nndeb();
-//	flash_unlock();
 	stm32f107_usb_init();
 
-//	while(1){usbd_poll(usbd_dev);} // stm32fx07_poll();
-
-	CDSTK = &sp_buff[dp_size];
-
-	*--CDSTK=0x77;
+//	CDSTK = &sp_buff[dp_size];	*--CDSTK=0x77;
 
 	usart_send_blocking(USART2,'*');
-//	for(;;)		usart_send_blocking(USART2,'U');
 
+	COLD();
 
-//	hht(0);
-//	hht(1);
-//	hht(0x78665544);
-//	hht(0xabc);
-
-	FFMAIN(CDSTK);
+//	FFMAIN(CDSTK);
 
 }
 
