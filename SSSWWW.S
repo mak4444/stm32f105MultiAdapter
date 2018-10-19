@@ -49,7 +49,7 @@
 	B GET_LAST
 	Wortbirne6 0 "VAR_END"
 	push {lr};BL DOCONST
-	.word 0x20008484 
+	.word 0x2000848C 
 	Wortbirne6 0 "FFMAIN"
 	B FFMAIN
 	Wortbirne6 0 "FMAIN"
@@ -70,7 +70,7 @@
 	B KEY0
 	Wortbirne6 0 "TTTIME"
 	push {lr};BL DOCONST
-	.word 0x20008480 
+	.word 0x20008488 
 	Wortbirne6 0 "CURUP"
 	B CURUP
 	Wortbirne6 0 ">MENU"
@@ -79,14 +79,14 @@
 	B MENUSless
 	Wortbirne6 0 "MESAID"
 	push {lr};BL DOCONST
-	.word 0x2000847C 
+	.word 0x20008484 
 	Wortbirne6 0 "MENUW<"
 	B MENUWless
 	Wortbirne6 0 "MENU<"
 	B MENUless
 	Wortbirne6 0 "MENUID"
 	push {lr};BL DOCONST
-	.word 0x20008478 
+	.word 0x20008480 
 	Wortbirne6 0 "SLCAN_LOOP"
 	B SLCAN_LOOP
 	Wortbirne6 0 "SLCANSPIN"
@@ -95,10 +95,10 @@
 	B SLCANGETLINE
 	Wortbirne6 0 "LPOS"
 	push {lr};BL DOCONST
-	.word 0x20008474 
+	.word 0x2000847C 
 	Wortbirne6 0 "LINEBUF"
 	push {lr};BL DOCONST
-	.word 0x20008280 
+	.word 0x20008288 
 	Wortbirne6 0 "USB<>UART"
 	B USBlessgreatUART
 	Wortbirne6 0 "VAR_ORIG_SET"
@@ -117,6 +117,8 @@
 	B usbsubio
 	Wortbirne6 0 "usb-emit?"
 	B usbsubemitque
+	Wortbirne6 0 "CAN!"
+	B CANsave
 	Wortbirne6 0 "UBR!"
 	B UBRsave
 	Wortbirne6 0 "UBR_SET"
@@ -140,10 +142,10 @@
 	B CONSTANT_
 	Wortbirne6 0 "V_DOCONST"
 	push {lr};BL DOCONST
-	.word 0x20008278 
+	.word 0x20008280 
 	Wortbirne6 0 "V_DOVAR"
 	push {lr};BL DOCONST
-	.word 0x20008270 
+	.word 0x20008278 
 	Wortbirne6 0 "POSTPONE_"
 	B POSTPONE_
 	Wortbirne6 0 "[COMPILE]_"
@@ -254,7 +256,7 @@
 	B LINKcom
 	Wortbirne6 0 "LAST"
 	push {lr};BL DOCONST
-	.word 0x2000826C 
+	.word 0x20008270 
 	Wortbirne6 0 "LALIGNED_"
 	B LALIGNED_
 	Wortbirne6 0 "HALIGNED_"
@@ -287,7 +289,7 @@
 	B OKdot
 	Wortbirne6 0 "SP0"
 	push {lr};BL DOCONST
-	.word 0x20008268 
+	.word 0x2000826C 
 	Wortbirne6 0 "INTERPRET_"
 	B INTERPRET_
 	Wortbirne6 0 "?STACK"
@@ -304,7 +306,7 @@
 	B CATCH
 	Wortbirne6 0 "HANDLER"
 	push {lr};BL DOCONST
-	.word 0x20008264 
+	.word 0x20008268 
 	Wortbirne6 0 "DIGIT"
 	B DIGIT
 	Wortbirne6 0 "LITERAL_"
@@ -331,7 +333,7 @@
 	B ALLOT_
 	Wortbirne6 0 "STATE"
 	push {lr};BL DOCONST
-	.word 0x20008260 
+	.word 0x20008264 
 	Wortbirne6 0 "SFIND"
 	B SFIND
 	Wortbirne6 0 "2NIP"
@@ -384,16 +386,16 @@
 	B SOURCE
 	Wortbirne6 0 ">IN"
 	push {lr};BL DOCONST
-	.word 0x2000825C 
+	.word 0x20008260 
 	Wortbirne6 0 "ATIB"
 	push {lr};BL DOCONST
-	.word 0x20008258 
+	.word 0x2000825C 
 	Wortbirne6 0 "#TIB"
 	push {lr};BL DOCONST
-	.word 0x20008254 
+	.word 0x20008258 
 	Wortbirne6 0 "TIB"
 	push {lr};BL DOCONST
-	.word 0x20008188 
+	.word 0x2000818C 
 	Wortbirne6 0 "ACCEPT"
 	B ACCEPT
 	Wortbirne6 0 "WORDS_"
@@ -443,10 +445,10 @@
 	B HEX_
 	Wortbirne6 0 "PAD"
 	push {lr};BL DOCONST
-	.word 0x20008178 
+	.word 0x2000817C 
 	Wortbirne6 0 "HLD"
 	push {lr};BL DOCONST
-	.word 0x20008074 
+	.word 0x20008078 
 	Wortbirne6 0 "zzz"
 	B zzz
 	Wortbirne6 0 "XXX"
@@ -454,10 +456,10 @@
 	.word 0x55 
 	Wortbirne6 0 "VXXC"
 	push {lr};BL DOCONST
-	.word 0x20008048 
+	.word 0x2000804C 
 	Wortbirne6 0 "VXXX"
 	push {lr};BL DOCONST
-	.word 0x20008044 
+	.word 0x20008048 
 	Wortbirne6 0 "TYPE"
 	B TYPE
 	Wortbirne6 0 "(S")"
@@ -512,6 +514,8 @@
 	B J
 	Wortbirne6 0 "I"
 	B I
+	Wortbirne6 0 "CAN_BR_SET"
+	B CAN_BR_SET
 	Wortbirne6 0 "UBAUDR!"
 	B UBAUDRsave
 	Wortbirne6 0 "SLCAN_DECODE"

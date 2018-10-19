@@ -41,6 +41,11 @@ PForthWords:
 
 	Wortbirne6 0 "SLCAN_LOOP"
 	B SLCAN_LOOP
+	Wortbirne6 0 "CAN_BR_SET"
+	b CAN_BR_SET
+	Wortbirne6 0 "CAN!"
+	b CANsave
+
 	Wortbirne6 0 "MENUID"
 	B GET_MENUID
 	Wortbirne6 0 "MENU<"

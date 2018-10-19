@@ -112,8 +112,8 @@ VARIABLE MESAID
  DUP MENUID @ = IF  $1B EMIT ." [7m" THEN
 ;
 
-: >MENU
-  DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+   ."      "
+: >MENU ( n -- n+1 )
+  DUP MENUID @ = IF  $1B EMIT ." [0m" THEN 1+   ."            "
 ;
 
 : CURUP $1B EMIT ." [A" ;
@@ -121,13 +121,13 @@ VARIABLE TTTIME
 : KEY0
  KEY ; \  KEY? DUP IF DROP KEY THEN ;
 
-: KEYW
+: KEYW ( -- c )
  599999
  BEGIN 1- DUP 0= IF BREAK  KEY?
  UNTIL DROP 10 TTTIME !
  KEY ; \  KEY? DUP IF DROP KEY THEN ;
 
-: CHMEHU
+: CHMEHU  ( n keyw -- )
   $1B =
  IF  KEY0 [CHAR] [  =
    IF KEY0
@@ -144,7 +144,7 @@ VARIABLE TTTIME
 : mmmemu
  MENUW< ." FORTH (original)"  >MENU
  MENUW< ." FORTH (rest)"  >MENU
- MENUW< ." CAN"  >MENU
+ MENUW< ." CAN"  >MENU               ."         CAN BAUDR = "  CANBD @ .
  MENUW< ." USB-UART transit"  >MENU  ." UART BAUDR = "  &UBAUDR @ .
 
  MENUS< ." SAVE"  >MENU

@@ -200,13 +200,13 @@ static void set_bitrate(char* line)
         return;
     }
     i -= '0';
-/* mmo
+
     if (can_set_bitrate(br_tbl[i])) {
         slcan_ack(line);
     } else {
         slcan_nack(line);
     }
-*/
+
 }
 
 static void slcan_open(char *line, int mode)
@@ -256,6 +256,8 @@ void slcan_decode_line(char *line)
         break;
     case 'S': // set baud rate, S0-S9
         set_bitrate(line);
+        can_reinit();
+
         break;
     case 'O': // open CAN channel
         slcan_open(line, CAN_MODE_NORMAL);

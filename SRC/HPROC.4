@@ -915,6 +915,9 @@ VARIABLE LAST
  ;
 : UBR! &UBAUDR ! UBR_SET ; 
 
+: CAN!
+      DUP CAN_BR_SET CANBD ! ;
+
 \EOF
 
 : CELL/ 2 >> ;

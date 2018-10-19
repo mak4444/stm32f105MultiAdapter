@@ -2435,7 +2435,7 @@ Mmul:	.inst.n	0x6838		//LDR	R0, [R7, #0]
 //	cbz	TOS, LL0
 
 	.global queDUP
-queDUP:	.inst.n	0xB10E		//CBZ	R6, 1000326C
+queDUP:	.inst.n	0xB10E		//CBZ	R6, 100032E0
 	.loc 1 639 0
 	.loc 1 639 0
 // CODL DUP	( N -- N,N )  \ !!!
@@ -2931,7 +2931,7 @@ FILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 769 0
 	.loc 1 769 0
 //	cbz	r2, LL0
-	.inst.n	0xB122		//CBZ	R2, 10003316
+	.inst.n	0xB122		//CBZ	R2, 1000338A
 	.loc 1 770 0
 	.loc 1 770 0
 //	add	r2, r3
@@ -2947,7 +2947,7 @@ FILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 773 0
 	.loc 1 773 0
 //	bne	LL1
-	.inst.n	0xD1FB		//BNE.N	1000330E
+	.inst.n	0xD1FB		//BNE.N	10003382
 	.loc 1 774 0
 	.loc 1 774 0
 //LL0:	DROP,
@@ -2986,7 +2986,7 @@ WFILL:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 783 0
 	.loc 1 783 0
 //	BNE	LL0
-	.inst.n	0xD1FB		//BNE.N	10003320
+	.inst.n	0xD1FB		//BNE.N	10003394
 	.loc 1 784 0
 	.loc 1 784 0
 //	DROP,
@@ -3013,7 +3013,7 @@ CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 790 0
 	.loc 1 790 0
 //	cbz	TOS, LL0
-	.inst.n	0xB136		//CBZ	R6, 1000333E
+	.inst.n	0xB136		//CBZ	R6, 100033B2
 	.loc 1 791 0
 	.loc 1 791 0
 //	add	TOS, r2
@@ -3033,7 +3033,7 @@ CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 795 0
 	.loc 1 795 0
 //	bne	LL1
-	.inst.n	0xD1F9		//BNE.N	10003332
+	.inst.n	0xD1F9		//BNE.N	100033A6
 	.loc 1 796 0
 	.loc 1 796 0
 //LL0:	DROP,
@@ -3060,7 +3060,7 @@ W2CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 802 0
 	.loc 1 802 0
 //	cbz	TOS, LL0
-	.inst.n	0xB136		//CBZ	R6, 10003354
+	.inst.n	0xB136		//CBZ	R6, 100033C8
 	.loc 1 803 0
 	.loc 1 803 0
 //	add	TOS, r2
@@ -3080,7 +3080,7 @@ W2CMOVE:	.inst.n	0xCF0C		//LDMIA	R7!, {R2, R3}
 	.loc 1 807 0
 	.loc 1 807 0
 //	bne	LL1
-	.inst.n	0xD1F9		//BNE.N	10003348
+	.inst.n	0xD1F9		//BNE.N	100033BC
 	.loc 1 808 0
 	.loc 1 808 0
 //LL0:	DROP,
@@ -3111,7 +3111,7 @@ CMOVEgreat:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
 	.loc 1 815 0
 	.loc 1 815 0
 //	BEQ	LL1
-	.inst.n	0xD009		//BEQ.N	10003372
+	.inst.n	0xD009		//BEQ.N	100033E6
 	.loc 1 816 0
 	.loc 1 816 0
 //	ADD	R0,TOS, R0
@@ -3135,7 +3135,7 @@ CMOVEgreat:	.inst.n	0xCF03		//LDMIA	R7!, {R0, R1}
 	.loc 1 821 0
 	.loc 1 821 0
 //	BNE	LL0
-	.inst.n	0xD1F9		//BNE.N	10003366
+	.inst.n	0xD1F9		//BNE.N	100033DA
 	.loc 1 822 0
 	.loc 1 822 0
 //LL1:
@@ -3169,11 +3169,11 @@ SERIALsubEMIT:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 1 830 0
 	.loc 1 830 0
 //	ldr	r0, = 0x40013800 \ usart1
-	.inst.n	0x4802		//LDR	R0, [PC, #8] @ [0x10003388] 0x40013800
+	.inst.n	0x4802		//LDR	R0, [PC, #8] @ [0x100033FC] 0x40013800
 	.loc 1 831 0
 	.loc 1 831 0
 //	ldr	r0, = 0x40004400 \ usart2
-	.inst.n	0x4803		//LDR	R0, [PC, #12] @ [0x1000338C] 0x40004400
+	.inst.n	0x4803		//LDR	R0, [PC, #12] @ [0x10003400] 0x40004400
 	.loc 1 832 0
 	.loc 1 832 0
 //	bl ' usart_send_blocking
@@ -3553,7 +3553,7 @@ CAN_CNT:	.inst.n	0xB500		//PUSH	{R14}
 SLCAN_DECODE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 1 929 0
 	.loc 1 929 0
-//	MOV	r0,	TOS		\ r0=N2
+//	MOV	r0,	TOS
 	.inst.n	0x4630		//MOV	R0, R6
 	.loc 1 930 0
 	.loc 1 930 0
@@ -3592,7 +3592,7 @@ UBAUDRsave:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xCF02		//LDMIA	R7!, {R1}
 	.loc 1 939 0
 	.loc 1 939 0
-//    bl	' usart_set_baudrate
+//	bl	' usart_set_baudrate
 	BL	usart_set_baudrate
 	.loc 1 940 0
 	.loc 1 940 0
@@ -3607,22 +3607,59 @@ UBAUDRsave:	.inst.n	0xB500		//PUSH	{R14}
 //ASM_END
 	.loc 1 943 0
 	.loc 1 943 0
-//\EOF
+//
 	.loc 1 944 0
 	.loc 1 944 0
-//CODE UBREST (  -- )
+//CODE CAN_BR_SET ( u -- )
 	.loc 1 945 0
 	.loc 1 945 0
 //	push {lr}
+
+	.global CAN_BR_SET
+CAN_BR_SET:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 1 946 0
 	.loc 1 946 0
-//	BL ' br_rest
+//	MOV	r0,	TOS
+	.inst.n	0x4630		//MOV	R0, R6
 	.loc 1 947 0
 	.loc 1 947 0
+//	bl	' can_set_bitrate
+	BL	can_set_bitrate
+	.loc 1 948 0
+	.loc 1 948 0
+//	DROP,
+	.inst.n	0xCF40		//LDMIA	R7!, {R6}
+	.loc 1 949 0
+	.loc 1 949 0
 //	pop  {pc}
-	.loc 1 948 0
-	.loc 1 948 0
+	.inst.n	0xBD00		//POP	{R15}
+	.loc 1 950 0
+	.loc 1 950 0
 //ASM_END
-	.loc 1 949 0
-	.loc 1 949 0
+	.loc 1 951 0
+	.loc 1 951 0
+//
+	.loc 1 952 0
+	.loc 1 952 0
+//
+	.loc 1 953 0
+	.loc 1 953 0
+//\EOF
+	.loc 1 954 0
+	.loc 1 954 0
+//CODE UBREST (  -- )
+	.loc 1 955 0
+	.loc 1 955 0
+//	push {lr}
+	.loc 1 956 0
+	.loc 1 956 0
+//	BL ' br_rest
+	.loc 1 957 0
+	.loc 1 957 0
+//	pop  {pc}
+	.loc 1 958 0
+	.loc 1 958 0
+//ASM_END
+	.loc 1 959 0
+	.loc 1 959 0
 //

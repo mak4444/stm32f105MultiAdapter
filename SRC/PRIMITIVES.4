@@ -926,7 +926,7 @@ ASM_END
 
 CODE SLCAN_DECODE ( adr -- )
 	push {lr}
-	MOV	r0,	TOS		\ r0=N2
+	MOV	r0,	TOS
 	bl ' slcan_decode_line
 	DROP,
 	pop  {pc}
@@ -936,10 +936,20 @@ CODE UBAUDR! (  baud  usart -- )
 	push {lr}
  	mov	r0, TOS
  	ldmia	DSTK!, {r1}
-    bl	' usart_set_baudrate
+	bl	' usart_set_baudrate
 	DROP,
 	pop  {pc}
 ASM_END
+
+CODE CAN_BR_SET ( u -- )
+	push {lr}
+	MOV	r0,	TOS
+	bl	' can_set_bitrate
+	DROP,
+	pop  {pc}
+ASM_END
+
+
 \EOF
 CODE UBREST (  -- )
 	push {lr}

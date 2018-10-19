@@ -11,8 +11,8 @@
 	.global GET_LAST
 GET_LAST:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
-	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
+	MOVW	R6, #:lower16:sp_buff+624 @ 0x270
+	MOVT	R6, #:upper16:sp_buff+624 @ 0x270
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 3 0
 	.loc 7 3 0
@@ -21,8 +21,8 @@ GET_LAST:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_SP0
 GET_SP0:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
-	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
+	MOVW	R6, #:lower16:sp_buff+620 @ 0x26C
+	MOVT	R6, #:upper16:sp_buff+620 @ 0x26C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 4 0
 	.loc 7 4 0
@@ -31,8 +31,8 @@ GET_SP0:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_HANDLER
 GET_HANDLER:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+612 @ 0x264
-	MOVT	R6, #:upper16:sp_buff+612 @ 0x264
+	MOVW	R6, #:lower16:sp_buff+616 @ 0x268
+	MOVT	R6, #:upper16:sp_buff+616 @ 0x268
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 5 0
 	.loc 7 5 0
@@ -51,8 +51,8 @@ GET_DP:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_STATE
 GET_STATE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
-	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
+	MOVW	R6, #:lower16:sp_buff+612 @ 0x264
+	MOVT	R6, #:upper16:sp_buff+612 @ 0x264
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 7 0
 	.loc 7 7 0
@@ -61,8 +61,8 @@ GET_STATE:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_IN
 GET_IN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
-	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
+	MOVW	R6, #:lower16:sp_buff+608 @ 0x260
+	MOVT	R6, #:upper16:sp_buff+608 @ 0x260
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 8 0
 	.loc 7 8 0
@@ -71,8 +71,8 @@ GET_IN:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_ATIB
 GET_ATIB:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
-	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
+	MOVW	R6, #:lower16:sp_buff+604 @ 0x25C
+	MOVT	R6, #:upper16:sp_buff+604 @ 0x25C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 9 0
 	.loc 7 9 0
@@ -81,8 +81,8 @@ GET_ATIB:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_NTIB
 GET_NTIB:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+596 @ 0x254
-	MOVT	R6, #:upper16:sp_buff+596 @ 0x254
+	MOVW	R6, #:lower16:sp_buff+600 @ 0x258
+	MOVT	R6, #:upper16:sp_buff+600 @ 0x258
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 10 0
 	.loc 7 10 0
@@ -91,8 +91,8 @@ GET_NTIB:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_TIB
 GET_TIB:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+392 @ 0x188
-	MOVT	R6, #:upper16:sp_buff+392 @ 0x188
+	MOVW	R6, #:lower16:sp_buff+396 @ 0x18C
+	MOVT	R6, #:upper16:sp_buff+396 @ 0x18C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 11 0
 	.loc 7 11 0
@@ -121,8 +121,8 @@ GET_CONTEXT:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_PAD
 GET_PAD:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+376 @ 0x178
-	MOVT	R6, #:upper16:sp_buff+376 @ 0x178
+	MOVW	R6, #:lower16:sp_buff+380 @ 0x17C
+	MOVT	R6, #:upper16:sp_buff+380 @ 0x17C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 14 0
 	.loc 7 14 0
@@ -141,8 +141,8 @@ GET_BASE:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_HLD
 GET_HLD:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+116 @ 0x74
-	MOVT	R6, #:upper16:sp_buff+116 @ 0x74
+	MOVW	R6, #:lower16:sp_buff+120 @ 0x78
+	MOVT	R6, #:upper16:sp_buff+120 @ 0x78
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 16 0
 	.loc 7 16 0
@@ -201,8 +201,8 @@ GET_VAR_BIG:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_VAR_END
 GET_VAR_END:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1156 @ 0x484
-	MOVT	R6, #:upper16:sp_buff+1156 @ 0x484
+	MOVW	R6, #:lower16:sp_buff+1164 @ 0x48C
+	MOVT	R6, #:upper16:sp_buff+1164 @ 0x48C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 22 0
 	.loc 7 22 0
@@ -211,8 +211,8 @@ GET_VAR_END:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_MENUID
 GET_MENUID:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+1144 @ 0x478
-	MOVT	R6, #:upper16:sp_buff+1144 @ 0x478
+	MOVW	R6, #:lower16:sp_buff+1152 @ 0x480
+	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 23 0
 	.loc 7 23 0
@@ -221,8 +221,8 @@ GET_MENUID:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_MEID
 GET_MEID:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+56 @ 0x38
-	MOVT	R6, #:upper16:sp_buff+56 @ 0x38
+	MOVW	R6, #:lower16:sp_buff+60 @ 0x3C
+	MOVT	R6, #:upper16:sp_buff+60 @ 0x3C
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 24 0
 	.loc 7 24 0
@@ -241,8 +241,8 @@ GET_andUBAUDR:	.inst.n	0xB500		//PUSH	{R14}
 	.global GET_MAIN
 GET_MAIN:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF847,0x6D04	//STR.W	R6, [R7, #-4]!
-	MOVW	R6, #:lower16:sp_buff+64 @ 0x40
-	MOVT	R6, #:upper16:sp_buff+64 @ 0x40
+	MOVW	R6, #:lower16:sp_buff+68 @ 0x44
+	MOVT	R6, #:upper16:sp_buff+68 @ 0x44
 	.inst.n	0xBD00		//POP	{R15}
 	.loc 7 26 0
 	.loc 7 26 0

@@ -18,6 +18,10 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define CAN_BASE_CLOCK 36000000
+
+#define CAN_BASE_BIT_RATE (CAN_BASE_CLOCK / (1 + 12 + 5))
+
 #include <stddef.h>
 #include <libopencm3/cm3/nvic.h>
 #include <libopencm3/cm3/systick.h>
@@ -118,7 +122,50 @@ static void systick_setup(void)
 	systick_counter_enable();
 }
 
-bool can_setup_mmo(void)
+uint32_t prescaler=4; //  500 kbod
+
+bool can_set_bitrate(uint32_t bitrate)
+{
+    if (bitrate > 1000000 ||
+        CAN_BASE_BIT_RATE % bitrate != 0 ||
+        CAN_BASE_BIT_RATE / bitrate > 1024) {
+        // bad range or no exact bitrate possible
+        return false;
+    }
+    prescaler = CAN_BASE_BIT_RATE / bitrate;
+    return true;
+}
+
+bool can_reinit()
+{
+
+ can_disable_irq(CAN1, CAN_IER_FMPIE0);
+
+
+/* Reset CAN. */
+
+can_reset(CAN1);
+
+/* CAN cell init. */
+
+ return (can_init(CAN1,
+			     false,           /* TTCM: Time triggered comm mode? */
+			     true,            /* ABOM: Automatic bus-off management? */
+			     false,           /* AWUM: Automatic wakeup mode? */
+			     false,           /* NART: No automatic retransmission? */
+			     false,           /* RFLM: Receive FIFO locked mode? */
+			     false,           /* TXFP: Transmit FIFO priority? */
+			     CAN_BTR_SJW_1TQ,
+			     CAN_BTR_TS1_12TQ,
+			     CAN_BTR_TS2_5TQ,
+			     prescaler,
+//				     80,
+			     false,
+			     false));             /* BRP+1: Baud rate prescaler */
+
+}
+
+bool can_setup_lo(void)
 {
 	/* Enable peripheral clocks. */
 	rcc_periph_clock_enable(RCC_AFIO);
@@ -144,37 +191,9 @@ bool can_setup_mmo(void)
 
 	can_reset(CAN1);
 
-	/* CAN cell init. */
-			if (can_init(CAN1,
-				     false,           /* TTCM: Time triggered comm mode? */
-				     true,            /* ABOM: Automatic bus-off management? */
-				     false,           /* AWUM: Automatic wakeup mode? */
-				     false,           /* NART: No automatic retransmission? */
-				     false,           /* RFLM: Receive FIFO locked mode? */
-				     false,           /* TXFP: Transmit FIFO priority? */
-				     CAN_BTR_SJW_1TQ,
-				     CAN_BTR_TS1_12TQ,
-				     CAN_BTR_TS2_5TQ,
-				     4,  // 500 kbod
-//				     80,
-				     false,
-				     false))             /* BRP+1: Baud rate prescaler */
-	{         return 0;
-#ifdef mmo
-		gpio_set(GPIOA, GPIO6);		/* LED0 off */
-		gpio_set(GPIOA, GPIO7);		/* LED1 off */
-		gpio_set(GPIOB, GPIO0);		/* LED2 off */
-		gpio_clear(GPIOB, GPIO1);	/* LED3 on */
-#endif
-
-		/* Die because we failed to initialize. */
-		while (1)
-			__asm__("nop");
-	}
-
 //			void can_filter_id_mask_32bit_init(uint32_t nr, uint32_t id,
 //							   uint32_t mask, uint32_t fifo, bool enable);
-
+        can_reinit();
 	/* CAN filter 0 init. */
 	can_filter_id_mask_32bit_init( // mmo CAN1,
 				0,     /* Filter ID */
@@ -185,12 +204,15 @@ bool can_setup_mmo(void)
 
 	/* Enable CAN RX interrupt. */
 	can_enable_irq(CAN1, CAN_IER_FMPIE0);
+
         return 1;
 }
 
 bool can_open(int mode)
 {
-  return can_setup_mmo();
+	/* Enable CAN RX interrupt. */
+ can_setup_lo();
+  return;
 }
 
 #ifdef mmo

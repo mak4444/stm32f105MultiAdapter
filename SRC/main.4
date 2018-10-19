@@ -29,9 +29,11 @@
     V_DOCONST !
     ['] DOCONST V_DOCONST CELL+ !
 
+	SLCAN_LOOP \ tst
+
   	MMENU   MEID  @
   	  cr ." me=" dup . 2 = 
-       IF
+       IF  CANBD @ CAN_BR_SET
         SLCAN_LOOP
         THEN
 

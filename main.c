@@ -99,6 +99,7 @@ int main(void)
 
 	usart_send_blocking(USART2,'*');
 
+//	can_setup_lo();	for(;;);
 	COLD();
 
 //	FFMAIN(CDSTK);
@@ -116,5 +117,7 @@ int main(void)
 // sudo ifconfig slcan0 up
 // sudo ip link set up slcan0
 
-
+//cansend slcan0 016#031555
+//candump slcan0
+//sudo slcand -o -s8 -t hw -S 1000000  /dev/ttyACM0
 
