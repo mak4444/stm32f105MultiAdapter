@@ -122,7 +122,7 @@ static void systick_setup(void)
 	systick_counter_enable();
 }
 
-uint32_t prescaler=4; //  500 kbod
+volatile uint32_t prescaler=4; //  500 kbod
 
 bool can_set_bitrate(uint32_t bitrate)
 {

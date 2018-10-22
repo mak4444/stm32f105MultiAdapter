@@ -49,7 +49,7 @@ SAVE:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xEB10,0x0006	//ADDS.W	R0, R0, R6
 	.inst.n	0xB401		//PUSH	{R0}
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD7E9		//BVC.N	10005482
+	.inst.n	0xD7E9		//BVC.N	1000547E
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 8 0
 	.loc 5 8 0
@@ -198,7 +198,7 @@ USBlessgreatUART:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 30 0
 	.loc 5 30 0
 //  AGAIN  
-	.inst.n	0xE7EA		//B.N	1000555E
+	.inst.n	0xE7EA		//B.N	1000555A
 	.loc 5 31 0
 	.loc 5 31 0
 //;
@@ -315,7 +315,7 @@ SLCANGETLINE:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 49 0
 	.loc 5 49 0
 //   ELSE
-	.inst.n	0xE031		//B.N	10005682
+	.inst.n	0xE031		//B.N	1000567E
 	.loc 5 50 0
 	.loc 5 50 0
 //\ !!	  	nndeb
@@ -492,7 +492,7 @@ SLCAN_LOOP:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 87 0
 	.loc 5 87 0
 //  AGAIN
-	.inst.n	0xE7F0		//B.N	100056AA
+	.inst.n	0xE7F0		//B.N	100056A6
 	.loc 5 88 0
 	.loc 5 88 0
 //;
@@ -609,7 +609,7 @@ MENUWless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FD,0xFFC5	//BL	TYPE
-	.inst.n	0xE005		//B.N	10005770
+	.inst.n	0xE005		//B.N	1000576C
 	.inst.n	0xF7FD,0xFFAE	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -670,7 +670,7 @@ MENUSless:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2A02		//CMP	R2, #2
 	.inst.n	0xFF20 @ ?????
 	.inst.n	0xF7FD,0xFF88	//BL	TYPE
-	.inst.n	0xE005		//B.N	100057EA
+	.inst.n	0xE005		//B.N	100057E6
 	.inst.n	0xF7FD,0xFF71	//BL	cSdticcend
 	.inst.n	0x2002		//MOVS	R0, #2
 	.inst.n	0xFF20 @ ?????
@@ -808,7 +808,7 @@ KEYW:	.inst.n	0xB500		//PUSH	{R14}
 // UNTIL DROP 10 TTTIME !
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
-	.inst.n	0xD0F1		//BEQ.N	1000589E
+	.inst.n	0xD0F1		//BEQ.N	1000589A
 	.inst.n	0x200A		//MOVS	R0, #10
 	MOVW	R6, #:lower16:sp_buff+1160 @ 0x488
 	MOVT	R6, #:upper16:sp_buff+1160 @ 0x488
@@ -873,7 +873,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x1986		//ADDS	R6, R0, R6
-	.inst.n	0xE017		//B.N	10005952
+	.inst.n	0xE017		//B.N	1000594E
 	.loc 5 135 0
 	.loc 5 135 0
 //         [CHAR] B =  IF  MENUID @ 1+   ELSE 
@@ -889,7 +889,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	MOVT	R6, #:upper16:sp_buff+1152 @ 0x480
 	.inst.n	0x6836		//LDR	R6, [R6, #0]
 	.inst.n	0x3601		//ADDS	R6, #1
-	.inst.n	0xE006		//B.N	10005952
+	.inst.n	0xE006		//B.N	1000594E
 	.loc 5 136 0
 	.loc 5 136 0
 //             MENUID @
@@ -924,7 +924,7 @@ CHMEHU:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xBC01		//POP	{R0}
 	.inst.n	0x3001		//ADDS	R0, #1
 	.inst.n	0xB401		//PUSH	{R0}
-	.inst.n	0xD7F9		//BVC.N	10005974
+	.inst.n	0xD7F9		//BVC.N	10005970
 	.inst.n	0xB002		//ADD	SP, #8
 	.loc 5 141 0
 	.loc 5 141 0
@@ -950,7 +950,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFE9B	//BL	cSdticcend
 	.inst.n	0x4610		//MOV	R0, R2
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005AE4] 0xF847CF40
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005AE0] 0xF847CF40
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x726F		//STRB	R7, [R5, #9]
 	.inst.n	0x6769		//STR	R1, [R5, #116]
@@ -966,7 +966,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FD,0xFE8A	//BL	cSdticcend
 	.inst.n	0x460C		//MOV	R4, R1
 	.inst.n	0x524F		//STRH	R7, [R1, R1]
-	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005B08] 0xF84741B6
+	.inst.n	0x4854		//LDR	R0, [PC, #336] @ [0x10005B04] 0xF84741B6
 	.inst.n	0x2820		//CMP	R0, #32
 	.inst.n	0x6572		//STR	R2, [R6, #84]
 	.inst.n	0x7473		//STRB	R3, [R6, #17]
@@ -979,7 +979,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0xF7FF,0xFEAD	//BL	MENUWless
 	.inst.n	0xF7FD,0xFE7B	//BL	cSdticcend
 	.inst.n	0x4303		//ORRS	R3, R0
-	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005AD8] 0xF2484630
+	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005AD4] 0xF2484630
 	.inst.n	0xF7FD,0xFE8B	//BL	TYPE
 	.inst.n	0xF7FF,0xFF23	//BL	greatMENU
 	.inst.n	0xF7FD,0xFE73	//BL	cSdticcend
@@ -988,7 +988,7 @@ mmmemu:	.inst.n	0xB500		//PUSH	{R14}
 	.inst.n	0x2020		//MOVS	R0, #32
 	.inst.n	0x2020		//MOVS	R0, #32
 	.inst.n	0x4320		//ORRS	R0, R4
-	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005AF0] 0x6D04F847
+	.inst.n	0x4E41		//LDR	R6, [PC, #260] @ [0x10005AEC] 0x6D04F847
 	.inst.n	0x4220		//TST	R0, R4
 	.inst.n	0x5541		//STRB	R1, [R0, R5]
 	.inst.n	0x5244		//STRH	R4, [R0, R1]
@@ -1281,7 +1281,7 @@ MMENU:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 5 182 0
 	.loc 5 182 0
 // REPEAT 2DROP
-	.inst.n	0xE779		//B.N	10005AE6
+	.inst.n	0xE779		//B.N	10005AE2
 	.inst.n	0xCF41		//LDMIA	R7!, {R0, R6}
 	.loc 5 183 0
 	.loc 5 183 0
