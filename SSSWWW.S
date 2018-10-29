@@ -117,6 +117,8 @@
 	B usbsubio
 	Wortbirne6 0 "usb-emit?"
 	B usbsubemitque
+	Wortbirne6 0 "SCRCLEAR"
+	B SCRCLEAR
 	Wortbirne6 0 "CAN!"
 	B CANsave
 	Wortbirne6 0 "UBR!"

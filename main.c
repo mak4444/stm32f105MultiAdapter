@@ -95,14 +95,9 @@ int main(void)
 
 	stm32f107_usb_init();
 
-//	CDSTK = &sp_buff[dp_size];	*--CDSTK=0x77;
-
 	usart_send_blocking(USART2,'*');
 
-//	can_setup_lo();	for(;;);
 	COLD();
-
-//	FFMAIN(CDSTK);
 
 }
 

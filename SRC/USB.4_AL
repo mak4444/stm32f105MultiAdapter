@@ -241,25 +241,25 @@ TRANS:	.inst.n	0xB500		//PUSH	{R14}
 	.loc 4 46 0
 	.loc 4 46 0
 //        SERIAL-KEY? IF  SERIAL-KEY USB-EMIT THEN
-	.inst.n	0xF7FD,0xFFEE	//BL	SERIALsubKEYque
+	.inst.n	0xF7FD,0xFFDA	//BL	SERIALsubKEYque
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+16 
-	.inst.n	0xF7FD,0xFFEF	//BL	SERIALsubKEY
-	.inst.n	0xF7FD,0xFFF4	//BL	usbsubemit
+	.inst.n	0xF7FD,0xFFDB	//BL	SERIALsubKEY
+	.inst.n	0xF7FD,0xFFE0	//BL	usbsubemit
 	.loc 4 47 0
 	.loc 4 47 0
 //        USB-KEY? IF  USB-KEY SERIAL-EMIT THEN
-	.inst.n	0xF7FD,0xFFF8	//BL	usbsubkeyque
+	.inst.n	0xF7FD,0xFFE4	//BL	usbsubkeyque
 	.inst.n	0x4236		//TST	R6, R6
 	.inst.n	0xCF40		//LDMIA	R7!, {R6}
 	.inst.n	0xF000,0x8004	//BEQ.W	TRANS+2A 
-	.inst.n	0xF7FD,0xFFF9	//BL	usbsubkey
-	.inst.n	0xF7FD,0xFFCB	//BL	SERIALsubEMIT
+	.inst.n	0xF7FD,0xFFE5	//BL	usbsubkey
+	.inst.n	0xF7FD,0xFFB7	//BL	SERIALsubEMIT
 	.loc 4 48 0
 	.loc 4 48 0
 //  AGAIN
-	.inst.n	0xE7EA		//B.N	1000542A
+	.inst.n	0xE7EA		//B.N	1000548E
 	.loc 4 49 0
 	.loc 4 49 0
 //;

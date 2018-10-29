@@ -161,7 +161,7 @@ CREATE PAD $10 ALLOT
 
 : PPP ;
 
-: WORDS_
+: WORDS_ 9 emit
   CONTEXT @ @
   BEGIN DUP 
   WHILE  DUP COUNT TYPE SPACE
@@ -917,6 +917,10 @@ VARIABLE LAST
 
 : CAN!
       DUP CAN_BR_SET CANBD ! ;
+
+: SCRCLEAR 
+\ Clear the screen.
+  27 EMIT ." [2J" ;
 
 \EOF
 
