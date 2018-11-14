@@ -46,4 +46,4 @@ COLD - перезапуск системы с перезаписью перем�
 
 Download: https://github.com/mak4444/stm32f105MultiAdapter
 
-
+https://sites.google.com/view/industry-4-1-roboholding Индустрия 4.1 - роботовладение
